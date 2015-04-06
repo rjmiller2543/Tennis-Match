@@ -1,0 +1,611 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CA1ACF5FFA002D3D51 /* main.m */; };
+		50B8F1CE1ACF5FFA002D3D51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CD1ACF5FFA002D3D51 /* AppDelegate.m */; };
+		50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CF1ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld */; };
+		50B8F1D41ACF5FFB002D3D51 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1D31ACF5FFB002D3D51 /* MasterViewController.m */; };
+		50B8F1D71ACF5FFB002D3D51 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1D61ACF5FFB002D3D51 /* DetailViewController.m */; };
+		50B8F1DA1ACF5FFB002D3D51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F1D81ACF5FFB002D3D51 /* Main.storyboard */; };
+		50B8F1DC1ACF5FFB002D3D51 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F1DB1ACF5FFB002D3D51 /* Images.xcassets */; };
+		50B8F1DF1ACF5FFB002D3D51 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F1DD1ACF5FFB002D3D51 /* LaunchScreen.xib */; };
+		50B8F1EB1ACF5FFB002D3D51 /* Tennis_MatchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1EA1ACF5FFB002D3D51 /* Tennis_MatchTests.m */; };
+		50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1F71ACF63FE002D3D51 /* MatchCell.m */; };
+		50B8F1FF1ACF6B58002D3D51 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1FE1ACF6B58002D3D51 /* Player.m */; };
+		50B8F2041ACF7119002D3D51 /* NewMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */; };
+		50B8F2091AD1E4E6002D3D51 /* tennis-court.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F2081AD1E4E6002D3D51 /* tennis-court.png */; };
+		50B8F20B1AD1E537002D3D51 /* stadium-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F20A1AD1E537002D3D51 /* stadium-50.png */; };
+		50B8F20D1AD1E549002D3D51 /* group-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F20C1AD1E549002D3D51 /* group-50.png */; };
+		50B8F20F1AD1E569002D3D51 /* info-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F20E1AD1E569002D3D51 /* info-50.png */; };
+		50B8F2121AD1E69A002D3D51 /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F2111AD1E69A002D3D51 /* Game.m */; };
+		50B8F2151AD1E6A7002D3D51 /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F2141AD1E6A7002D3D51 /* Set.m */; };
+		50B8F2181AD1E6B6002D3D51 /* Team.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F2171AD1E6B6002D3D51 /* Team.m */; };
+		50B8F21B1AD1E8F3002D3D51 /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F21A1AD1E8F3002D3D51 /* Match.m */; };
+		50B8F21E1AD1FC45002D3D51 /* NewPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F21D1AD1FC45002D3D51 /* NewPlayerView.m */; };
+		C114E88BAA84E2E4F3C6855E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C6D9330E0026AA286932AB /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		50B8F1E51ACF5FFB002D3D51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50B8F1BD1ACF5FFA002D3D51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50B8F1C41ACF5FFA002D3D51;
+			remoteInfo = "Tennis Match";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		50B8F1C51ACF5FFA002D3D51 /* Tennis Match.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tennis Match.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50B8F1C91ACF5FFA002D3D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50B8F1CA1ACF5FFA002D3D51 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		50B8F1CC1ACF5FFA002D3D51 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		50B8F1CD1ACF5FFA002D3D51 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		50B8F1D01ACF5FFB002D3D51 /* Tennis_Match.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tennis_Match.xcdatamodel; sourceTree = "<group>"; };
+		50B8F1D21ACF5FFB002D3D51 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		50B8F1D31ACF5FFB002D3D51 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		50B8F1D51ACF5FFB002D3D51 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		50B8F1D61ACF5FFB002D3D51 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		50B8F1D91ACF5FFB002D3D51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		50B8F1DB1ACF5FFB002D3D51 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		50B8F1DE1ACF5FFB002D3D51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		50B8F1E41ACF5FFB002D3D51 /* Tennis MatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tennis MatchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50B8F1E91ACF5FFB002D3D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50B8F1EA1ACF5FFB002D3D51 /* Tennis_MatchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tennis_MatchTests.m; sourceTree = "<group>"; };
+		50B8F1F61ACF63FE002D3D51 /* MatchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchCell.h; sourceTree = "<group>"; };
+		50B8F1F71ACF63FE002D3D51 /* MatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchCell.m; sourceTree = "<group>"; };
+		50B8F1FD1ACF6B58002D3D51 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		50B8F1FE1ACF6B58002D3D51 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		50B8F2011ACF6D25002D3D51 /* TennisMatchHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TennisMatchHelper.h; sourceTree = "<group>"; };
+		50B8F2021ACF7119002D3D51 /* NewMatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchViewController.h; sourceTree = "<group>"; };
+		50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchViewController.m; sourceTree = "<group>"; };
+		50B8F2081AD1E4E6002D3D51 /* tennis-court.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tennis-court.png"; sourceTree = "<group>"; };
+		50B8F20A1AD1E537002D3D51 /* stadium-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stadium-50.png"; sourceTree = "<group>"; };
+		50B8F20C1AD1E549002D3D51 /* group-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group-50.png"; sourceTree = "<group>"; };
+		50B8F20E1AD1E569002D3D51 /* info-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-50.png"; sourceTree = "<group>"; };
+		50B8F2101AD1E69A002D3D51 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		50B8F2111AD1E69A002D3D51 /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
+		50B8F2131AD1E6A7002D3D51 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
+		50B8F2141AD1E6A7002D3D51 /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Set.m; sourceTree = "<group>"; };
+		50B8F2161AD1E6B6002D3D51 /* Team.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
+		50B8F2171AD1E6B6002D3D51 /* Team.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Team.m; sourceTree = "<group>"; };
+		50B8F2191AD1E8F3002D3D51 /* Match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
+		50B8F21A1AD1E8F3002D3D51 /* Match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
+		50B8F21C1AD1FC45002D3D51 /* NewPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPlayerView.h; sourceTree = "<group>"; };
+		50B8F21D1AD1FC45002D3D51 /* NewPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPlayerView.m; sourceTree = "<group>"; };
+		57C6D9330E0026AA286932AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		50B8F1C21ACF5FFA002D3D51 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C114E88BAA84E2E4F3C6855E /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50B8F1E11ACF5FFB002D3D51 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		50B8F1BC1ACF5FFA002D3D51 = {
+			isa = PBXGroup;
+			children = (
+				50B8F1C71ACF5FFA002D3D51 /* Tennis Match */,
+				50B8F1E71ACF5FFB002D3D51 /* Tennis MatchTests */,
+				50B8F1C61ACF5FFA002D3D51 /* Products */,
+				8AF5DDE6026CCAF4EB618818 /* Pods */,
+				CEE8BFBEB2CA5AC8DE185F88 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		50B8F1C61ACF5FFA002D3D51 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1C51ACF5FFA002D3D51 /* Tennis Match.app */,
+				50B8F1E41ACF5FFB002D3D51 /* Tennis MatchTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		50B8F1C71ACF5FFA002D3D51 /* Tennis Match */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1CC1ACF5FFA002D3D51 /* AppDelegate.h */,
+				50B8F1CD1ACF5FFA002D3D51 /* AppDelegate.m */,
+				50B8F2001ACF6D12002D3D51 /* Helpers */,
+				50B8F1F91ACF6B2E002D3D51 /* Models */,
+				50B8F1F51ACF63E1002D3D51 /* Views */,
+				50B8F1F41ACF63D6002D3D51 /* Controllers */,
+				50B8F1D81ACF5FFB002D3D51 /* Main.storyboard */,
+				50B8F1DB1ACF5FFB002D3D51 /* Images.xcassets */,
+				50B8F1DD1ACF5FFB002D3D51 /* LaunchScreen.xib */,
+				50B8F1CF1ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld */,
+				50B8F1C81ACF5FFA002D3D51 /* Supporting Files */,
+			);
+			path = "Tennis Match";
+			sourceTree = "<group>";
+		};
+		50B8F1C81ACF5FFA002D3D51 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F20E1AD1E569002D3D51 /* info-50.png */,
+				50B8F20C1AD1E549002D3D51 /* group-50.png */,
+				50B8F20A1AD1E537002D3D51 /* stadium-50.png */,
+				50B8F2081AD1E4E6002D3D51 /* tennis-court.png */,
+				50B8F1C91ACF5FFA002D3D51 /* Info.plist */,
+				50B8F1CA1ACF5FFA002D3D51 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50B8F1E71ACF5FFB002D3D51 /* Tennis MatchTests */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1EA1ACF5FFB002D3D51 /* Tennis_MatchTests.m */,
+				50B8F1E81ACF5FFB002D3D51 /* Supporting Files */,
+			);
+			path = "Tennis MatchTests";
+			sourceTree = "<group>";
+		};
+		50B8F1E81ACF5FFB002D3D51 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1E91ACF5FFB002D3D51 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50B8F1F41ACF63D6002D3D51 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1D21ACF5FFB002D3D51 /* MasterViewController.h */,
+				50B8F1D31ACF5FFB002D3D51 /* MasterViewController.m */,
+				50B8F1D51ACF5FFB002D3D51 /* DetailViewController.h */,
+				50B8F1D61ACF5FFB002D3D51 /* DetailViewController.m */,
+				50B8F2021ACF7119002D3D51 /* NewMatchViewController.h */,
+				50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		50B8F1F51ACF63E1002D3D51 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1F61ACF63FE002D3D51 /* MatchCell.h */,
+				50B8F1F71ACF63FE002D3D51 /* MatchCell.m */,
+				50B8F21C1AD1FC45002D3D51 /* NewPlayerView.h */,
+				50B8F21D1AD1FC45002D3D51 /* NewPlayerView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		50B8F1F91ACF6B2E002D3D51 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F1FD1ACF6B58002D3D51 /* Player.h */,
+				50B8F1FE1ACF6B58002D3D51 /* Player.m */,
+				50B8F2101AD1E69A002D3D51 /* Game.h */,
+				50B8F2111AD1E69A002D3D51 /* Game.m */,
+				50B8F2131AD1E6A7002D3D51 /* Set.h */,
+				50B8F2141AD1E6A7002D3D51 /* Set.m */,
+				50B8F2161AD1E6B6002D3D51 /* Team.h */,
+				50B8F2171AD1E6B6002D3D51 /* Team.m */,
+				50B8F2191AD1E8F3002D3D51 /* Match.h */,
+				50B8F21A1AD1E8F3002D3D51 /* Match.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		50B8F2001ACF6D12002D3D51 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				50B8F2011ACF6D25002D3D51 /* TennisMatchHelper.h */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		8AF5DDE6026CCAF4EB618818 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */,
+				CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CEE8BFBEB2CA5AC8DE185F88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				57C6D9330E0026AA286932AB /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		50B8F1C41ACF5FFA002D3D51 /* Tennis Match */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50B8F1EE1ACF5FFB002D3D51 /* Build configuration list for PBXNativeTarget "Tennis Match" */;
+			buildPhases = (
+				4757EA4C36F64731F73E6B9D /* Check Pods Manifest.lock */,
+				50B8F1C11ACF5FFA002D3D51 /* Sources */,
+				50B8F1C21ACF5FFA002D3D51 /* Frameworks */,
+				50B8F1C31ACF5FFA002D3D51 /* Resources */,
+				8845AB57A0DE31CC6714678A /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Tennis Match";
+			productName = "Tennis Match";
+			productReference = 50B8F1C51ACF5FFA002D3D51 /* Tennis Match.app */;
+			productType = "com.apple.product-type.application";
+		};
+		50B8F1E31ACF5FFB002D3D51 /* Tennis MatchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50B8F1F11ACF5FFB002D3D51 /* Build configuration list for PBXNativeTarget "Tennis MatchTests" */;
+			buildPhases = (
+				50B8F1E01ACF5FFB002D3D51 /* Sources */,
+				50B8F1E11ACF5FFB002D3D51 /* Frameworks */,
+				50B8F1E21ACF5FFB002D3D51 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50B8F1E61ACF5FFB002D3D51 /* PBXTargetDependency */,
+			);
+			name = "Tennis MatchTests";
+			productName = "Tennis MatchTests";
+			productReference = 50B8F1E41ACF5FFB002D3D51 /* Tennis MatchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		50B8F1BD1ACF5FFA002D3D51 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Robert Miller";
+				TargetAttributes = {
+					50B8F1C41ACF5FFA002D3D51 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					50B8F1E31ACF5FFB002D3D51 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 50B8F1C41ACF5FFA002D3D51;
+					};
+				};
+			};
+			buildConfigurationList = 50B8F1C01ACF5FFA002D3D51 /* Build configuration list for PBXProject "Tennis Match" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 50B8F1BC1ACF5FFA002D3D51;
+			productRefGroup = 50B8F1C61ACF5FFA002D3D51 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				50B8F1C41ACF5FFA002D3D51 /* Tennis Match */,
+				50B8F1E31ACF5FFB002D3D51 /* Tennis MatchTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		50B8F1C31ACF5FFA002D3D51 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50B8F20F1AD1E569002D3D51 /* info-50.png in Resources */,
+				50B8F1DA1ACF5FFB002D3D51 /* Main.storyboard in Resources */,
+				50B8F1DF1ACF5FFB002D3D51 /* LaunchScreen.xib in Resources */,
+				50B8F20B1AD1E537002D3D51 /* stadium-50.png in Resources */,
+				50B8F2091AD1E4E6002D3D51 /* tennis-court.png in Resources */,
+				50B8F20D1AD1E549002D3D51 /* group-50.png in Resources */,
+				50B8F1DC1ACF5FFB002D3D51 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50B8F1E21ACF5FFB002D3D51 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4757EA4C36F64731F73E6B9D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8845AB57A0DE31CC6714678A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		50B8F1C11ACF5FFA002D3D51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50B8F2151AD1E6A7002D3D51 /* Set.m in Sources */,
+				50B8F1FF1ACF6B58002D3D51 /* Player.m in Sources */,
+				50B8F1D71ACF5FFB002D3D51 /* DetailViewController.m in Sources */,
+				50B8F21B1AD1E8F3002D3D51 /* Match.m in Sources */,
+				50B8F2041ACF7119002D3D51 /* NewMatchViewController.m in Sources */,
+				50B8F2181AD1E6B6002D3D51 /* Team.m in Sources */,
+				50B8F1D41ACF5FFB002D3D51 /* MasterViewController.m in Sources */,
+				50B8F2121AD1E69A002D3D51 /* Game.m in Sources */,
+				50B8F1CE1ACF5FFA002D3D51 /* AppDelegate.m in Sources */,
+				50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */,
+				50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */,
+				50B8F21E1AD1FC45002D3D51 /* NewPlayerView.m in Sources */,
+				50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50B8F1E01ACF5FFB002D3D51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50B8F1EB1ACF5FFB002D3D51 /* Tennis_MatchTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		50B8F1E61ACF5FFB002D3D51 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50B8F1C41ACF5FFA002D3D51 /* Tennis Match */;
+			targetProxy = 50B8F1E51ACF5FFB002D3D51 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		50B8F1D81ACF5FFB002D3D51 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50B8F1D91ACF5FFB002D3D51 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		50B8F1DD1ACF5FFB002D3D51 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50B8F1DE1ACF5FFB002D3D51 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		50B8F1EC1ACF5FFB002D3D51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		50B8F1ED1ACF5FFB002D3D51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		50B8F1EF1ACF5FFB002D3D51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Tennis Match/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		50B8F1F01ACF5FFB002D3D51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Tennis Match/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		50B8F1F21ACF5FFB002D3D51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Tennis MatchTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tennis Match.app/Tennis Match";
+			};
+			name = Debug;
+		};
+		50B8F1F31ACF5FFB002D3D51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Tennis MatchTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tennis Match.app/Tennis Match";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		50B8F1C01ACF5FFA002D3D51 /* Build configuration list for PBXProject "Tennis Match" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50B8F1EC1ACF5FFB002D3D51 /* Debug */,
+				50B8F1ED1ACF5FFB002D3D51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50B8F1EE1ACF5FFB002D3D51 /* Build configuration list for PBXNativeTarget "Tennis Match" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50B8F1EF1ACF5FFB002D3D51 /* Debug */,
+				50B8F1F01ACF5FFB002D3D51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50B8F1F11ACF5FFB002D3D51 /* Build configuration list for PBXNativeTarget "Tennis MatchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50B8F1F21ACF5FFB002D3D51 /* Debug */,
+				50B8F1F31ACF5FFB002D3D51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		50B8F1CF1ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				50B8F1D01ACF5FFB002D3D51 /* Tennis_Match.xcdatamodel */,
+			);
+			currentVersion = 50B8F1D01ACF5FFB002D3D51 /* Tennis_Match.xcdatamodel */;
+			path = Tennis_Match.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 50B8F1BD1ACF5FFA002D3D51 /* Project object */;
+}

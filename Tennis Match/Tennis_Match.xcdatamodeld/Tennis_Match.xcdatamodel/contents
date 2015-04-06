@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Match" representedClassName="Match">
+        <attribute name="doubles" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="sets" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="teamOne" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="teamTwo" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="playerGames" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="playerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="playerWins" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Match" positionX="-47" positionY="65" width="128" height="118"/>
+        <element name="Player" positionX="241" positionY="86" width="128" height="103"/>
+    </elements>
+</model>
