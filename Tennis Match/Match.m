@@ -18,3 +18,75 @@
 @dynamic teamTwo;
 
 @end
+
+@implementation Sets
+
++ (Class)transformedValueClass
+{
+    return [NSArray class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation TeamOne
+
++ (Class)transformedValueClass
+{
+    return [Team class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation TeamTwo
+
++ (Class)transformedValueClass
+{
+    return [Team class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end

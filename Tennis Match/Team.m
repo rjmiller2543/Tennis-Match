@@ -10,4 +10,19 @@
 
 @implementation Team
 
+-(id)initWithCoder:(NSCoder*)aDecoder {
+    if (self = [super init]) {
+        [self setDoubles:[[aDecoder decodeObjectForKey:@"doubles"] boolValue]];
+        [self setPlayerOne:[aDecoder decodeObjectForKey:@"playerOne"]];
+        [self setPlayerTwo:[aDecoder decodeObjectForKey:@"playerTwo"]];
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder*)aCoder {
+    [aCoder encodeObject:[NSNumber numberWithBool:_doubles] forKey:@"doubles"];
+    [aCoder encodeObject:_playerOne forKey:@"playerOne"];
+    [aCoder encodeObject:_playerTwo forKey:@"playerTwo"];
+}
+
 @end

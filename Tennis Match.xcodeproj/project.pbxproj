@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 507359691AD42FD5007228BA /* NewMatchView.m */; };
+		5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5073596C1AD5B3FF007228BA /* PlayerCell.m */; };
 		50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CA1ACF5FFA002D3D51 /* main.m */; };
 		50B8F1CE1ACF5FFA002D3D51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CD1ACF5FFA002D3D51 /* AppDelegate.m */; };
 		50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CF1ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld */; };
@@ -45,6 +46,8 @@
 /* Begin PBXFileReference section */
 		507359681AD42FD5007228BA /* NewMatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchView.h; sourceTree = "<group>"; };
 		507359691AD42FD5007228BA /* NewMatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchView.m; sourceTree = "<group>"; };
+		5073596B1AD5B3FF007228BA /* PlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerCell.h; sourceTree = "<group>"; };
+		5073596C1AD5B3FF007228BA /* PlayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerCell.m; sourceTree = "<group>"; };
 		50B8F1C51ACF5FFA002D3D51 /* Tennis Match.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tennis Match.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B8F1C91ACF5FFA002D3D51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B8F1CA1ACF5FFA002D3D51 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -196,6 +199,8 @@
 				50B8F21D1AD1FC45002D3D51 /* NewPlayerView.m */,
 				507359681AD42FD5007228BA /* NewMatchView.h */,
 				507359691AD42FD5007228BA /* NewMatchView.m */,
+				5073596B1AD5B3FF007228BA /* PlayerCell.h */,
+				5073596C1AD5B3FF007228BA /* PlayerCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -394,6 +399,7 @@
 				50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */,
 				5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */,
 				50B8F21E1AD1FC45002D3D51 /* NewPlayerView.m in Sources */,
+				5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */,
 				50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

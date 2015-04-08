@@ -11,6 +11,10 @@
 
 @interface Set : NSObject
 
+@property(nonatomic,retain) NSNumber *teamOneScore;
+@property(nonatomic,retain) NSNumber *teamTwoScore;
 @property(nonatomic,retain) NSMutableArray *games;
+
+-(BOOL)hasWinner;
 
 @end

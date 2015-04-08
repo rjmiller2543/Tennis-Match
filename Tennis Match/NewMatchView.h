@@ -18,6 +18,8 @@
 @property(nonatomic,retain) UITableView *tableView;
 @property(nonatomic) BOOL isDoubles;
 
+@property(nonatomic,retain) id parentViewContoller;
+
 -(void)addNewSet;
 
 @end

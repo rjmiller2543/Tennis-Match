@@ -13,4 +13,6 @@
 @property(nonatomic,retain) NSNumber *teamOneScore;
 @property(nonatomic,retain) NSNumber *teamTwoScore;
 
+-(int)gameWinner;
+
 @end

@@ -94,6 +94,7 @@
     _matchView = [[NewMatchView alloc] init];
     [_matchView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
     _matchView.backgroundColor = [UIColor cloudsColor];
+    _matchView.parentViewContoller = self;
     [self.view addSubview:_matchView];
     
     _closeButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width / 3) - 15, self.view.frame.size.height - 60, 30, 30) buttonType:buttonCloseType buttonStyle:buttonRoundedStyle animateToInitialState:YES];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Team.h"
 
 
 @interface Match : NSManagedObject
@@ -17,5 +18,17 @@
 @property (nonatomic, retain) id sets;
 @property (nonatomic, retain) id teamOne;
 @property (nonatomic, retain) id teamTwo;
+
+@end
+
+@interface Sets : NSValueTransformer
+
+@end
+
+@interface TeamOne : NSValueTransformer
+
+@end
+
+@interface TeamTwo : NSValueTransformer
 
 @end
