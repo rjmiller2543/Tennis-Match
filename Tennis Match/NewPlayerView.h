@@ -9,6 +9,7 @@
 #import "FXBlurView.h"
 #import <CoreData/CoreData.h>
 #import "Player.h"
+#import <FlatUIKit/FlatUIKit.h>
 
 @class NewPlayerView;
 @protocol NewPlayerViewDelegate <NSObject>

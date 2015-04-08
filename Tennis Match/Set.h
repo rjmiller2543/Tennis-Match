@@ -11,9 +11,6 @@
 
 @interface Set : NSObject
 
-@property(nonatomic,retain) Team *teamOne;
-@property(nonatomic,retain) Team *teamTwo;
-
 @property(nonatomic,retain) NSMutableArray *games;
 
 @end

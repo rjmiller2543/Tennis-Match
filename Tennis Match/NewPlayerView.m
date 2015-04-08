@@ -58,6 +58,7 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+    cell.layer.cornerRadius = 6.0;
     
     if (indexPath.row == [[_fetchedResultsController fetchedObjects] count]) {
         UILabel *label = [[UILabel alloc] init];
