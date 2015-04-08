@@ -99,7 +99,7 @@
     
     _numSets += 1;
     
-    [_addMatchButton setCenter:CGPointMake(30*_numSets + 15, _setsScrollView.frame.size.height / 2 )];
+    [_addMatchButton setCenter:CGPointMake(30*_numSets + 20, _setsScrollView.frame.size.height / 2 )];
 }
 
 -(void)addNewGame {
@@ -111,6 +111,7 @@
     
     if (indexPath.row >= [_setsArray count]) {
         VBFPopFlatButton *newButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(cell.frame.size.width / 2 - 10, cell.frame.size.height / 2 - 10, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        [newButton setCenter:CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2)];
         newButton.roundBackgroundColor = [UIColor asbestosColor];
         newButton.tintColor = [UIColor turquoiseColor];
         [newButton addTarget:self action:@selector(addNewGame) forControlEvents:UIControlEventTouchUpInside];
