@@ -15,6 +15,8 @@
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
 
+@property(nonatomic) int numSets;
+
 @end
 
 @implementation NewMatchView
@@ -33,9 +35,19 @@
         _tableView.dataSource = self;
         [self addSubview:_tableView];
         
-        _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 90, self.frame.size.width / 2, 60)];
+        _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, 90, [UIScreen mainScreen].bounds.size.width / 2, 60)];
+        _setsScrollView.directionalLockEnabled = YES;
+        _setsScrollView.userInteractionEnabled = NO;
+        [self addSubview:_setsScrollView];
         
         _isDoubles = false;
+        _numSets = 0;
+        
+        _addMatchButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(30*_numSets + 15, _setsScrollView.frame.size.height / 2 - 5, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        [_addMatchButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
+        _addMatchButton.roundBackgroundColor = [UIColor asbestosColor];
+        _addMatchButton.tintColor = [UIColor turquoiseColor];
+        [_setsScrollView addSubview:_addMatchButton];
     }
     return self;
 }
@@ -45,7 +57,7 @@
 }
 
 -(void)setTeamOne:(Team *)teamOne {
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 5, 30)];
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 10, 30)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -59,7 +71,7 @@
 }
 
 -(void)setTeamTwo:(Team *)teamTwo {
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 120, self.frame.size.width / 2 - 5, 30)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 120, self.frame.size.width / 2 - 10, 30)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -72,8 +84,22 @@
     [self addSubview:teamTwoLabel];
 }
 
--(void)addNewMatch {
-    //UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)]
+-(void)addNewSet {
+    UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*_numSets, 0, 30, 30)];
+    textFieldOne.borderStyle = UITextBorderStyleLine;
+    textFieldOne.textAlignment = NSTextAlignmentCenter;
+    textFieldOne.text = @"0";
+    UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*_numSets, 30, 30, 30)];
+    textFieldTwo.borderStyle = UITextBorderStyleLine;
+    textFieldTwo.textAlignment = NSTextAlignmentCenter;
+    textFieldTwo.text = @"0";
+    
+    [_setsScrollView addSubview:textFieldOne];
+    [_setsScrollView addSubview:textFieldTwo];
+    
+    _numSets += 1;
+    
+    [_addMatchButton setCenter:CGPointMake(30*_numSets + 15, _setsScrollView.frame.size.height / 2 )];
 }
 
 -(void)addNewGame {

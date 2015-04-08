@@ -119,6 +119,7 @@
 -(void)showMatchView {
     [_matchView setTeamOne:_teamOne];
     [_matchView setTeamTwo:_teamTwo];
+    [_matchView addNewSet];
     
     [UIView animateWithDuration:1.0 animations:^{
         [_tennisView setFrame:CGRectMake(0, -self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];

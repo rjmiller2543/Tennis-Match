@@ -18,4 +18,6 @@
 @property(nonatomic,retain) UITableView *tableView;
 @property(nonatomic) BOOL isDoubles;
 
+-(void)addNewSet;
+
 @end
