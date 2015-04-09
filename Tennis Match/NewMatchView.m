@@ -11,7 +11,7 @@
 #import <FlatUIKit/FlatUIKit.h>
 #import "Game.h"
 
-@interface NewMatchView ()
+@interface NewMatchView () <UITextFieldDelegate>
 
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
@@ -19,6 +19,8 @@
 @property(nonatomic,retain) NSMutableArray *setGamesTextViews;
 
 @property(nonatomic) int numSets;
+@property(nonatomic) int numPlayerOneSets;
+@property(nonatomic) int numPlayerTwoSets;
 
 @end
 
@@ -32,8 +34,8 @@
     if (self) {
         //Configure the view
         //[self setFrame:[UIScreen mainScreen].bounds];
-        self.backgroundColor = [UIColor sunflowerColor];
         _setsArray = [[NSMutableArray alloc] init];
+        _setGamesTextViews = [[NSMutableArray alloc] init];
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 170, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 170)];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -100,11 +102,13 @@
     textFieldOne.textAlignment = NSTextAlignmentCenter;
     textFieldOne.text = @"0";
     textFieldOne.tag = PLAYERONE + _numSets;
+    textFieldOne.delegate = self;
     UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*_numSets, 30, 30, 30)];
     textFieldTwo.borderStyle = UITextBorderStyleLine;
     textFieldTwo.textAlignment = NSTextAlignmentCenter;
     textFieldTwo.text = @"0";
     textFieldTwo.tag = PLAYERTWO + _numSets;
+    textFieldTwo.delegate = self;
     
     NSDictionary *setTextView = @{ @"TextFieldOne" : textFieldOne, @"TextFieldTwo" : textFieldTwo, };
     [_setTextViews addObject:setTextView];
@@ -164,6 +168,20 @@
                 [tmp1 setText:[[tmp teamOneScore] stringValue]];
                 [tmp2 setText:[[tmp teamTwoScore] stringValue]];
                 
+                switch ([tmp hasWinner]) {
+                    case 1:
+                        tmp1.layer.borderWidth = 2.0;
+                        tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+                        break;
+                    case 2:
+                        tmp2.layer.borderWidth = 2.0;
+                        tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
                 [self addNewSetColumn];
                 
                 Set *newSet = [[Set alloc] init];
@@ -222,12 +240,14 @@
             int lastScore = [[setOneField text] intValue];
             lastScore += 1;
             [setOneField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
+            [tmp setTeamOneScore:[NSNumber numberWithInt:lastScore]];
             break;
         }
         case 2:{
             int lastScore = [[setTwoField text] intValue];
             lastScore += 1;
             [setTwoField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
+            [tmp setTeamTwoScore:[NSNumber numberWithInt:lastScore]];
             break;
         }
         case 0:{
@@ -252,48 +272,70 @@
             break;
     }
     
-    UIScrollView *scrollView = nil;
-    for (id tmp in [cell subviews]) {
-        if ([tmp class] == [UIScrollView class]) {
-            scrollView = (UIScrollView*)tmp;
-        }
+    if ([tmp hasWinner]) {
+        //if this set has a winner, don't add more games..
+        [self addNewSet];
     }
-    
-    UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 0, 30, 30)];
-    textFieldOne.borderStyle = UITextBorderStyleLine;
-    textFieldOne.textAlignment = NSTextAlignmentCenter;
-    textFieldOne.text = @"0";
-    UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 30, 30, 30)];
-    textFieldTwo.borderStyle = UITextBorderStyleLine;
-    textFieldTwo.textAlignment = NSTextAlignmentCenter;
-    textFieldTwo.text = @"0";
-    
-    [scrollView addSubview:textFieldOne];
-    [scrollView addSubview:textFieldTwo];
-    
-    Game *newGame = [[Game alloc] init];
-    
-    [[tmp games] addObject:newGame];
-    VBFPopFlatButton *tmpButton = nil;
-    for (id tmp in [scrollView subviews]) {
-        if ([tmp class] == [VBFPopFlatButton class]) {
-            tmpButton = (VBFPopFlatButton*)tmp;
+    else {
+        
+        UIScrollView *scrollView = nil;
+        for (id tmp in [cell subviews]) {
+            if ([tmp class] == [UIScrollView class]) {
+                scrollView = (UIScrollView*)tmp;
+            }
         }
-    }
-    //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
-    //addGameButton.tag = indexPath.row;
-    [tmpButton setCenter:CGPointMake(30*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
-    //[scrollView addSubview:addGameButton];
-    
-    if (tmpButton.center.x + 30 > (self.frame.size.width / 2)) {
-        [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*30, _setsScrollView.frame.size.height)];
-        [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*30, 0) animated:YES];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 0, 30, 30)];
+        label.text = [[NSNumber numberWithInteger:([[tmp games] count]+1)] stringValue];
+        label.textAlignment = NSTextAlignmentCenter;
+        [scrollView addSubview:label];
+        
+        UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 30, 30, 30)];
+        textFieldOne.borderStyle = UITextBorderStyleLine;
+        textFieldOne.textAlignment = NSTextAlignmentCenter;
+        textFieldOne.text = @"0";
+        UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 60, 30, 30)];
+        textFieldTwo.borderStyle = UITextBorderStyleLine;
+        textFieldTwo.textAlignment = NSTextAlignmentCenter;
+        textFieldTwo.text = @"0";
+        
+        [scrollView addSubview:textFieldOne];
+        [scrollView addSubview:textFieldTwo];
+        
+        NSDictionary *dict = @{ @"TextFieldOne" : textFieldOne, @"TextFieldTwo" : textFieldTwo, };
+        [gamesArray addObject:dict];
+        
+        Game *newGame = [[Game alloc] init];
+        
+        [[tmp games] addObject:newGame];
+        
+        VBFPopFlatButton *tmpButton = nil;
+        for (id tmp in [scrollView subviews]) {
+            if ([tmp class] == [VBFPopFlatButton class]) {
+                tmpButton = (VBFPopFlatButton*)tmp;
+            }
+        }
+        //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        //addGameButton.tag = indexPath.row;
+        [tmpButton setCenter:CGPointMake(30*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
+        //[scrollView addSubview:addGameButton];
+        
+        if (tmpButton.center.x + 30 > (self.frame.size.width / 2)) {
+            [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*30, _setsScrollView.frame.size.height)];
+            [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*30, 0) animated:YES];
+        }
     }
 }
 
 -(void)configureCell:(UITableViewCell *)cell withIndex:(NSIndexPath *)indexPath {
     //Add team one label to the cell
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2 - 10, 30)];
+    UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, 30)];
+    setLabel.text = @"Set ";
+    setLabel.text = [setLabel.text stringByAppendingString:[[NSNumber numberWithInteger:(indexPath.row + 1)] stringValue]];
+    setLabel.font = [UIFont boldFlatFontOfSize:22.0f];
+    [cell addSubview:setLabel];
+    
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 30, cell.frame.size.width / 2 - 10, 30)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -306,7 +348,7 @@
     [cell addSubview:teamOneLabel];
     
     //Add team two label to the cell
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 30, cell.frame.size.width / 2 - 10, 30)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 60, cell.frame.size.width / 2 - 10, 30)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -318,7 +360,7 @@
     }
     [cell addSubview:teamTwoLabel];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 0, cell.frame.size.width / 2, 60)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 0, cell.frame.size.width / 2, 90)];
     [cell addSubview:scrollView];
     
     Set *tmp = [_setsArray objectAtIndex:indexPath.row];
@@ -327,11 +369,16 @@
         for (int i = 0; i < [[tmp games] count]; i++) {
             Game *game = [[tmp games] objectAtIndex:i];
             
-            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 0, 30, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30*i, 0, 30, 30)];
+            label.text = [[NSNumber numberWithInt:(i+1)] stringValue];
+            label.textAlignment = NSTextAlignmentCenter;
+            [scrollView addSubview:label];
+            
+            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 30, 30, 30)];
             textFieldOne.borderStyle = UITextBorderStyleLine;
             textFieldOne.textAlignment = NSTextAlignmentCenter;
             textFieldOne.text = [[game teamOneScore] stringValue];
-            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 30, 30, 30)];
+            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 60, 30, 30)];
             textFieldTwo.borderStyle = UITextBorderStyleLine;
             textFieldTwo.textAlignment = NSTextAlignmentCenter;
             textFieldTwo.text = [[game teamTwoScore] stringValue];
@@ -353,22 +400,27 @@
                 addGameButton.roundBackgroundColor = [UIColor asbestosColor];
                 addGameButton.tintColor = [UIColor turquoiseColor];
                 addGameButton.tag = indexPath.row;
-                [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, scrollView.frame.size.height / 2 )];
+                [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, 60/*scrollView.frame.size.height / 2*/ )];
                 [scrollView addSubview:addGameButton];
                 
                 if (addGameButton.center.x + 15 > self.frame.size.width) {
-                    [scrollView setContentSize:CGSizeMake((_numSets+1)*30, _setsScrollView.frame.size.height)];
-                    [scrollView setContentOffset:CGPointMake((_numSets-4)*30, 0)];
+                    [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*30, 90)];
+                    [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*30, 0)];
                 }
             }
         }
     }
     else {
-        UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        label.text = [[NSNumber numberWithInt:1] stringValue];
+        label.textAlignment = NSTextAlignmentCenter;
+        [scrollView addSubview:label];
+        
+        UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(0, 30, 30, 30)];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
-        UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(0, 30, 30, 30)];
+        UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(0, 60, 30, 30)];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
         textFieldTwo.text = @"0";
@@ -388,7 +440,7 @@
         addGameButton.roundBackgroundColor = [UIColor asbestosColor];
         addGameButton.tintColor = [UIColor turquoiseColor];
         addGameButton.tag = indexPath.row;
-        [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, scrollView.frame.size.height / 2 )];
+        [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, 60 )];
         [scrollView addSubview:addGameButton];
         
         if (addGameButton.center.x + 15 > self.frame.size.width) {
@@ -425,7 +477,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    return 110;
 }
 
 /*

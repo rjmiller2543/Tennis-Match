@@ -36,19 +36,19 @@
     [aCoder encodeObject:_teamTwoScore forKey:@"teamTwoScore"];
 }
 
--(BOOL)hasWinner {
-    BOOL returnBool;
-    if (([_teamOneScore intValue] == 6) && ([_teamTwoScore intValue] != 6)) {
-        returnBool = true;
+-(int)hasWinner {
+    int winner;
+    if (([_teamOneScore intValue] == 6) && (([_teamTwoScore intValue] != 6) && ([_teamTwoScore intValue] != 7))) {
+        winner = 1;
     }
-    else if (([_teamTwoScore intValue] == 6) && ([_teamOneScore intValue] != 6)) {
-        returnBool = true;
+    else if (([_teamTwoScore intValue] == 6) && (([_teamOneScore intValue] != 6) && ([_teamOneScore intValue] != 7))) {
+        winner = 2;
     }
     else {
-        returnBool = false;
+        winner = 0;
     }
     
-    return returnBool;
+    return winner;
 }
 
 @end

@@ -15,6 +15,6 @@
 @property(nonatomic,retain) NSNumber *teamTwoScore;
 @property(nonatomic,retain) NSMutableArray *games;
 
--(BOOL)hasWinner;
+-(int)hasWinner;
 
 @end
