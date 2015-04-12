@@ -329,6 +329,13 @@
 
 -(void)configureCell:(UITableViewCell *)cell withIndex:(NSIndexPath *)indexPath {
     //Add team one label to the cell
+    //if (cell.frame.origin.y >= (self.frame.size.height + 110)) {
+    //    [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    //}
+    if (indexPath.row == ([_setsArray count]-1)) {
+        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
     UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, 30)];
     setLabel.text = @"Set ";
     setLabel.text = [setLabel.text stringByAppendingString:[[NSNumber numberWithInteger:(indexPath.row + 1)] stringValue]];
@@ -454,6 +461,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
     if (indexPath.row == 0) {
