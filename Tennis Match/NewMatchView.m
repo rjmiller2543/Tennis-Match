@@ -10,8 +10,9 @@
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import <FlatUIKit/FlatUIKit.h>
 #import "Game.h"
+#import <IQDropDownTextField/IQDropDownTextField.h>
 
-@interface NewMatchView () <UITextFieldDelegate>
+@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate>
 
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
@@ -68,7 +69,7 @@
 
 -(void)setTeamOne:(Team *)teamOne {
     _teamOne = teamOne;
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 10, 30)];
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 20, 30)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -83,7 +84,7 @@
 
 -(void)setTeamTwo:(Team *)teamTwo {
     _teamTwo = teamTwo;
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 120, self.frame.size.width / 2 - 10, 30)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 120, self.frame.size.width / 2 - 20, 30)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -97,13 +98,17 @@
 }
 
 -(void)addNewSetColumn {
-    UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*_numSets, 0, 30, 30)];
+    IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*_numSets, 0, 30, 30)];
+    textFieldOne.isOptionalDropDown = NO;
+    [textFieldOne setItemList:@[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7"]];
     textFieldOne.borderStyle = UITextBorderStyleLine;
     textFieldOne.textAlignment = NSTextAlignmentCenter;
     textFieldOne.text = @"0";
     textFieldOne.tag = PLAYERONE + _numSets;
     textFieldOne.delegate = self;
-    UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*_numSets, 30, 30, 30)];
+    IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*_numSets, 30, 30, 30)];
+    textFieldTwo.isOptionalDropDown = NO;
+    [textFieldTwo setItemList:@[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7"]];
     textFieldTwo.borderStyle = UITextBorderStyleLine;
     textFieldTwo.textAlignment = NSTextAlignmentCenter;
     textFieldTwo.text = @"0";
@@ -134,8 +139,32 @@
         Set *newSet = [[Set alloc] init];
         [_setsArray addObject:newSet];
         [_tableView reloadData];
+        
+        return;
     }
-    else if ([_setsArray objectAtIndex:(_numSets-1)] == nil) {
+    
+    Set *tmp = [_setsArray objectAtIndex:(_numSets-1)];
+    NSDictionary *dict = [_setTextViews objectAtIndex:_numSets - 1];
+    IQDropDownTextField *tmp1 = (IQDropDownTextField *)dict[@"TextFieldOne"];
+    IQDropDownTextField *tmp2 = (IQDropDownTextField *)dict[@"TextFieldTwo"];
+    [tmp setTeamOneScore:[NSNumber numberWithInt:[[tmp1 text] intValue]]];
+    [tmp setTeamTwoScore:[NSNumber numberWithInt:[[tmp2 text] intValue]]];
+    
+    switch ([tmp hasWinner]) {
+        case 1:
+            tmp1.layer.borderWidth = 2.0;
+            tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+            break;
+        case 2:
+            tmp2.layer.borderWidth = 2.0;
+            tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+            break;
+            
+        default:
+            break;
+    }
+    
+    if ([_setsArray objectAtIndex:(_numSets-1)] == nil) {
         [self addNewSetColumn];
         
         Set *newSet = [[Set alloc] init];
@@ -163,8 +192,8 @@
             
             if ([tmp hasWinner]) {
                 NSDictionary *dict = [_setTextViews objectAtIndex:_numSets - 1];
-                UITextField *tmp1 = (UITextField *)dict[@"TextFieldOne"];
-                UITextField *tmp2 = (UITextField *)dict[@"TextFieldTwo"];
+                IQDropDownTextField *tmp1 = (IQDropDownTextField *)dict[@"TextFieldOne"];
+                IQDropDownTextField *tmp2 = (IQDropDownTextField *)dict[@"TextFieldTwo"];
                 [tmp1 setText:[[tmp teamOneScore] stringValue]];
                 [tmp2 setText:[[tmp teamTwoScore] stringValue]];
                 
@@ -228,12 +257,24 @@
     Set *tmp = [_setsArray objectAtIndex:button.tag];
     Game *game = (Game*)[[tmp games] lastObject];
     
-    [game setTeamOneScore:[NSNumber numberWithInt:[[oldFieldOne text] intValue]]];
-    [game setTeamTwoScore:[NSNumber numberWithInt:[[oldFieldTwo text] intValue]]];
+    if ([[oldFieldOne text] isEqualToString:@"Ad."]) {
+        [game setTeamOneScore:[NSNumber numberWithInt:50]];
+    }
+    else {
+        [game setTeamOneScore:[NSNumber numberWithInt:[[oldFieldOne text] intValue]]];
+    }
+    if ([[oldFieldTwo text] isEqualToString:@"Ad."]) {
+        [game setTeamTwoScore:[NSNumber numberWithInt:50]];
+    }
+    else {
+        [game setTeamTwoScore:[NSNumber numberWithInt:[[oldFieldTwo text] intValue]]];
+    }
+    [oldFieldOne setEnabled:NO];
+    [oldFieldTwo setEnabled:NO];
     
     dict = [_setTextViews lastObject];
-    UITextField *setOneField = (UITextField*)dict[@"TextFieldOne"];
-    UITextField *setTwoField = (UITextField*)dict[@"TextFieldTwo"];
+    IQDropDownTextField *setOneField = (IQDropDownTextField*)dict[@"TextFieldOne"];
+    IQDropDownTextField *setTwoField = (IQDropDownTextField*)dict[@"TextFieldTwo"];
     
     switch ([game gameWinner]) {
         case 1:{
@@ -290,11 +331,15 @@
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 30, 30, 30)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 30, 30, 30)];
+        textFieldOne.isOptionalDropDown = NO;
+        [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
-        UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 60, 30, 30)];
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 60, 30, 30)];
+        textFieldTwo.isOptionalDropDown = NO;
+        [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
         textFieldTwo.text = @"0";
@@ -327,13 +372,18 @@
     }
 }
 
+-(void)textField:(IQDropDownTextField *)textField didSelectItem:(NSString *)item {
+    [textField resignFirstResponder];
+    NSLog(@"text field did select item");
+}
+
 -(void)configureCell:(UITableViewCell *)cell withIndex:(NSIndexPath *)indexPath {
     //Add team one label to the cell
     //if (cell.frame.origin.y >= (self.frame.size.height + 110)) {
     //    [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     //}
     if (indexPath.row == ([_setsArray count]-1)) {
-        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     
     UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, 30)];
@@ -384,11 +434,23 @@
             UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 30, 30, 30)];
             textFieldOne.borderStyle = UITextBorderStyleLine;
             textFieldOne.textAlignment = NSTextAlignmentCenter;
-            textFieldOne.text = [[game teamOneScore] stringValue];
+            [textFieldOne setEnabled:NO];
+            if ([[game teamOneScore] intValue] > 40) {
+                textFieldOne.text = @"Ad.";
+            }
+            else {
+                textFieldOne.text = [[game teamOneScore] stringValue];
+            }
             UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 60, 30, 30)];
             textFieldTwo.borderStyle = UITextBorderStyleLine;
             textFieldTwo.textAlignment = NSTextAlignmentCenter;
-            textFieldTwo.text = [[game teamTwoScore] stringValue];
+            [textFieldTwo setEnabled:NO];
+            if ([[game teamTwoScore] intValue] > 40) {
+                textFieldTwo.text = @"Ad.";
+            }
+            else {
+                textFieldTwo.text = [[game teamTwoScore] stringValue];
+            }
             
             [scrollView addSubview:textFieldOne];
             [scrollView addSubview:textFieldTwo];
@@ -423,13 +485,19 @@
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(0, 30, 30, 30)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 30, 30, 30)];
+        textFieldOne.isOptionalDropDown = NO;
+        [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
-        UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(0, 60, 30, 30)];
+        textFieldOne.delegate = self;
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 60, 30, 30)];
+        textFieldTwo.isOptionalDropDown = NO;
+        [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
+        textFieldTwo.delegate = self;
         textFieldTwo.text = @"0";
         
         [scrollView addSubview:textFieldOne];
@@ -473,7 +541,7 @@
         [cell addSubview:newButton];
     }
     else {
-        NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:indexPath.row - 1 inSection:0];
+        NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row) inSection:0];
         [self configureCell:cell withIndex:updatedPath];
     }
     
@@ -486,6 +554,11 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 110;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"will display cell");
+    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 /*

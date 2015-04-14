@@ -318,7 +318,7 @@
 
 -(void)addPlayerOne {
     [self addPlayerListWindow];
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [_playerList setFrame:self.view.frame];
     } completion:^(BOOL finished) {
         //up up
@@ -328,7 +328,7 @@
 
 -(void)addPlayerTwo {
     [self addPlayerListWindow];
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [_playerList setFrame:self.view.frame];
     } completion:^(BOOL finished) {
         //up up
@@ -338,7 +338,7 @@
 
 -(void)addPlayerThree {
     [self addPlayerListWindow];
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [_playerList setFrame:self.view.frame];
     } completion:^(BOOL finished) {
         //up up
@@ -348,7 +348,7 @@
 
 -(void)addPlayerFour {
     [self addPlayerListWindow];
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [_playerList setFrame:self.view.frame];
     } completion:^(BOOL finished) {
         //up up
@@ -357,7 +357,7 @@
 }
 
 -(void)closePlayerList {
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [_playerList setFrame:CGRectMake(0, self.view.frame.size.height+5, self.view.frame.size.width, self.view.frame.size.height)];
     } completion:^(BOOL finished) {
         //up up
