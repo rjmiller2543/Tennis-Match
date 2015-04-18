@@ -28,23 +28,27 @@
 #define PLAYERONE 0x10
 #define PLAYERTWO 0x20
 
+#define SCORESIZE   60
+
 @implementation NewMatchView
 
 -(instancetype)init {
     self = [super init];
     if (self) {
         //Configure the view
+        self.backgroundColor = [UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0];
         //[self setFrame:[UIScreen mainScreen].bounds];
         _setsArray = [[NSMutableArray alloc] init];
         _setGamesTextViews = [[NSMutableArray alloc] init];
         
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 170, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 170)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 170)];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.backgroundColor = [UIColor alizarinColor];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [self addSubview:_tableView];
         
-        _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, 90, [UIScreen mainScreen].bounds.size.width / 2, 60)];
+        _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, 90, [UIScreen mainScreen].bounds.size.width / 2, 120)];
         _setsScrollView.directionalLockEnabled = YES;
         _setsScrollView.scrollEnabled = NO;
         [self addSubview:_setsScrollView];
@@ -52,12 +56,12 @@
         _isDoubles = false;
         _numSets = 0;
         
-        _addMatchButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(30*_numSets + 15, _setsScrollView.frame.size.height / 2 - 5, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        _addMatchButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(SCORESIZE*_numSets + 15, _setsScrollView.frame.size.height / 2 - 5, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         [_addMatchButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
         _addMatchButton.roundBackgroundColor = [UIColor asbestosColor];
         _addMatchButton.tintColor = [UIColor turquoiseColor];
         [_setsScrollView addSubview:_addMatchButton];
-        
+    
         _setTextViews = [[NSMutableArray alloc] init];
     }
     return self;
@@ -69,7 +73,7 @@
 
 -(void)setTeamOne:(Team *)teamOne {
     _teamOne = teamOne;
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 20, 30)];
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 20, SCORESIZE)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -84,7 +88,7 @@
 
 -(void)setTeamTwo:(Team *)teamTwo {
     _teamTwo = teamTwo;
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 120, self.frame.size.width / 2 - 20, 30)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 150, self.frame.size.width / 2 - 20, SCORESIZE)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -98,7 +102,7 @@
 }
 
 -(void)addNewSetColumn {
-    IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*_numSets, 0, 30, 30)];
+    IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*_numSets, 0, SCORESIZE, SCORESIZE)];
     textFieldOne.isOptionalDropDown = NO;
     [textFieldOne setItemList:@[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7"]];
     textFieldOne.borderStyle = UITextBorderStyleLine;
@@ -106,7 +110,7 @@
     textFieldOne.text = @"0";
     textFieldOne.tag = PLAYERONE + _numSets;
     textFieldOne.delegate = self;
-    IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*_numSets, 30, 30, 30)];
+    IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*_numSets, SCORESIZE, SCORESIZE, SCORESIZE)];
     textFieldTwo.isOptionalDropDown = NO;
     [textFieldTwo setItemList:@[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7"]];
     textFieldTwo.borderStyle = UITextBorderStyleLine;
@@ -123,11 +127,11 @@
     
     _numSets += 1;
     
-    [_addMatchButton setCenter:CGPointMake(30*_numSets + 20, _setsScrollView.frame.size.height / 2 )];
+    [_addMatchButton setCenter:CGPointMake(SCORESIZE*_numSets + 20, _setsScrollView.frame.size.height / 2 )];
     
     if (_addMatchButton.center.x + 15 > self.frame.size.width) {
-        [_setsScrollView setContentSize:CGSizeMake((_numSets+1)*30, _setsScrollView.frame.size.height)];
-        [_setsScrollView setContentOffset:CGPointMake((_numSets-4)*30, 0)];
+        [_setsScrollView setContentSize:CGSizeMake((_numSets+1)*SCORESIZE, _setsScrollView.frame.size.height)];
+        [_setsScrollView setContentOffset:CGPointMake((_numSets-4)*SCORESIZE, 0)];
     }
 }
 
@@ -326,18 +330,18 @@
             }
         }
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 0, 30, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], 0, SCORESIZE, SCORESIZE)];
         label.text = [[NSNumber numberWithInteger:([[tmp games] count]+1)] stringValue];
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 30, 30, 30)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], SCORESIZE, SCORESIZE, SCORESIZE)];
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
-        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(30*[[tmp games] count], 60, 30, 30)];
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], SCORESIZE*2, SCORESIZE, SCORESIZE)];
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
@@ -362,12 +366,12 @@
         }
         //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         //addGameButton.tag = indexPath.row;
-        [tmpButton setCenter:CGPointMake(30*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
+        [tmpButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
         //[scrollView addSubview:addGameButton];
         
-        if (tmpButton.center.x + 30 > (self.frame.size.width / 2)) {
-            [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*30, _setsScrollView.frame.size.height)];
-            [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*30, 0) animated:YES];
+        if (tmpButton.center.x + SCORESIZE > (self.frame.size.width / 2)) {
+            [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*SCORESIZE, _setsScrollView.frame.size.height)];
+            [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*SCORESIZE, 0) animated:YES];
         }
     }
 }
@@ -382,17 +386,18 @@
     //if (cell.frame.origin.y >= (self.frame.size.height + 110)) {
     //    [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     //}
+    cell.backgroundColor = [UIColor emerlandColor];
     if (indexPath.row == ([_setsArray count]-1)) {
         [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     
-    UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, 30)];
+    UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, SCORESIZE)];
     setLabel.text = @"Set ";
     setLabel.text = [setLabel.text stringByAppendingString:[[NSNumber numberWithInteger:(indexPath.row + 1)] stringValue]];
     setLabel.font = [UIFont boldFlatFontOfSize:22.0f];
     [cell addSubview:setLabel];
     
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 30, cell.frame.size.width / 2 - 10, 30)];
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 30, cell.frame.size.width / 2 - 10, SCORESIZE)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -405,7 +410,7 @@
     [cell addSubview:teamOneLabel];
     
     //Add team two label to the cell
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 60, cell.frame.size.width / 2 - 10, 30)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, cell.frame.size.width / 2 - 10, SCORESIZE)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -426,12 +431,12 @@
         for (int i = 0; i < [[tmp games] count]; i++) {
             Game *game = [[tmp games] objectAtIndex:i];
             
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30*i, 0, 30, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCORESIZE*i, 0, SCORESIZE, SCORESIZE)];
             label.text = [[NSNumber numberWithInt:(i+1)] stringValue];
             label.textAlignment = NSTextAlignmentCenter;
             [scrollView addSubview:label];
             
-            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 30, 30, 30)];
+            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(SCORESIZE*i, SCORESIZE, SCORESIZE, SCORESIZE)];
             textFieldOne.borderStyle = UITextBorderStyleLine;
             textFieldOne.textAlignment = NSTextAlignmentCenter;
             [textFieldOne setEnabled:NO];
@@ -441,7 +446,7 @@
             else {
                 textFieldOne.text = [[game teamOneScore] stringValue];
             }
-            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(30*i, 60, 30, 30)];
+            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(SCORESIZE*i, 60, SCORESIZE, SCORESIZE)];
             textFieldTwo.borderStyle = UITextBorderStyleLine;
             textFieldTwo.textAlignment = NSTextAlignmentCenter;
             [textFieldTwo setEnabled:NO];
@@ -464,35 +469,35 @@
                 
                 [[tmp games] addObject:newGame];
                 
-                VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+                VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*SCORESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
                 [addGameButton addTarget:self action:@selector(addNewGame:) forControlEvents:UIControlEventTouchUpInside];
                 addGameButton.roundBackgroundColor = [UIColor asbestosColor];
                 addGameButton.tintColor = [UIColor turquoiseColor];
                 addGameButton.tag = indexPath.row;
-                [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, 60/*scrollView.frame.size.height / 2*/ )];
+                [addGameButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, 60/*scrollView.frame.size.height / 2*/ )];
                 [scrollView addSubview:addGameButton];
                 
                 if (addGameButton.center.x + 15 > self.frame.size.width) {
-                    [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*30, 90)];
-                    [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*30, 0)];
+                    [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*SCORESIZE, 90)];
+                    [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*SCORESIZE, 0)];
                 }
             }
         }
     }
     else {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCORESIZE, SCORESIZE)];
         label.text = [[NSNumber numberWithInt:1] stringValue];
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 30, 30, 30)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, SCORESIZE, SCORESIZE, SCORESIZE)];
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
         textFieldOne.delegate = self;
-        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 60, 30, 30)];
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 60, SCORESIZE, SCORESIZE)];
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
@@ -510,17 +515,17 @@
         
         [[tmp games] addObject:newGame];
         
-        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*SCORESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         [addGameButton addTarget:self action:@selector(addNewGame:) forControlEvents:UIControlEventTouchUpInside];
         addGameButton.roundBackgroundColor = [UIColor asbestosColor];
         addGameButton.tintColor = [UIColor turquoiseColor];
         addGameButton.tag = indexPath.row;
-        [addGameButton setCenter:CGPointMake(30*[[tmp games] count] + 20, 60 )];
+        [addGameButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, 60 )];
         [scrollView addSubview:addGameButton];
         
         if (addGameButton.center.x + 15 > self.frame.size.width) {
-            [scrollView setContentSize:CGSizeMake((_numSets+1)*30, _setsScrollView.frame.size.height)];
-            [scrollView setContentOffset:CGPointMake((_numSets-4)*30, 0)];
+            [scrollView setContentSize:CGSizeMake((_numSets+1)*SCORESIZE, _setsScrollView.frame.size.height)];
+            [scrollView setContentOffset:CGPointMake((_numSets-4)*SCORESIZE, 0)];
         }
     }
     
@@ -532,28 +537,28 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
-    if (indexPath.row == 0) {
-        VBFPopFlatButton *newButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(cell.frame.size.width / 2 - 10, cell.frame.size.height / 2 - 10, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
-        [newButton setCenter:CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2)];
-        newButton.roundBackgroundColor = [UIColor asbestosColor];
-        newButton.tintColor = [UIColor turquoiseColor];
-        [newButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:newButton];
-    }
-    else {
-        NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row) inSection:0];
+    //if (indexPath.row == 0) {
+    //    VBFPopFlatButton *newButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(cell.frame.size.width / 2 - 10, cell.frame.size.height / 2 - 10, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    //    [newButton setCenter:CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2)];
+    //    newButton.roundBackgroundColor = [UIColor asbestosColor];
+    //    newButton.tintColor = [UIColor turquoiseColor];
+    //    [newButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
+    //    [cell addSubview:newButton];
+    //}
+    //else {
+        NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row - 1) inSection:0];
         [self configureCell:cell withIndex:updatedPath];
-    }
+    //}
     
     return cell;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_setsArray count] + 1;
+    return [_setsArray count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 110;
+    return 180;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
