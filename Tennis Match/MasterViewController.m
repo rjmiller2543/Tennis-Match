@@ -32,6 +32,17 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.navigationController.navigationBar.bounds;
+    //gradient.startPoint = CGPointMake(0, 0);
+    //gradient.endPoint = CGPointMake(self.view.bounds.size.width, self.view.bounds.size.height/2);
+    NSArray *locations = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.5]];
+    gradient.locations = locations;
+    gradient.colors = @[(id)[[UIColor emerlandColor] CGColor], (id)[[UIColor carrotColor] CGColor]];
+    [self.navigationController.navigationBar.layer insertSublayer:gradient atIndex:0];
+    
+    [self.navigationController.navigationBar.layer insertSublayer:gradient atIndex:0];
+    
     _tableViewSource = MATCHSOURCE;
     
 }
