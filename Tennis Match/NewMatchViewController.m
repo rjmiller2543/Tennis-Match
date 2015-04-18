@@ -93,7 +93,7 @@
     
     _matchView = [[NewMatchView alloc] init];
     [_matchView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
-    _matchView.backgroundColor = [UIColor cloudsColor];
+    //_matchView.backgroundColor = [UIColor cloudsColor];
     _matchView.parentViewContoller = self;
     [self.view addSubview:_matchView];
     
