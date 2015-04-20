@@ -14,6 +14,8 @@
 		500EE65A1AE403C600478700 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE6591AE403C600478700 /* Player.m */; };
 		500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65C1AE425ED00478700 /* MatchDetailViewController.m */; };
 		500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65F1AE428F200478700 /* PlayerDetailViewController.m */; };
+		501DC37C1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m in Sources */ = {isa = PBXBuildFile; fileRef = 501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */; };
+		501DC3821AE5794700215EC4 /* InfoPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501DC3811AE5794700215EC4 /* InfoPageViewController.m */; };
 		5042B85E1AE2AD250053CC98 /* no-player-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 5042B85D1AE2AD250053CC98 /* no-player-image.png */; };
 		50549A651AE45A2300EDE4A1 /* add_user-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 50549A641AE45A2300EDE4A1 /* add_user-100.png */; };
 		50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */; };
@@ -64,6 +66,10 @@
 		500EE65C1AE425ED00478700 /* MatchDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchDetailViewController.m; sourceTree = "<group>"; };
 		500EE65E1AE428F200478700 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
 		500EE65F1AE428F200478700 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
+		501DC37A1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_MZFormDismissal.h"; sourceTree = "<group>"; };
+		501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_MZFormDismissal.m"; sourceTree = "<group>"; };
+		501DC3801AE5794700215EC4 /* InfoPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPageViewController.h; sourceTree = "<group>"; };
+		501DC3811AE5794700215EC4 /* InfoPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoPageViewController.m; sourceTree = "<group>"; };
 		5042B85D1AE2AD250053CC98 /* no-player-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no-player-image.png"; sourceTree = "<group>"; };
 		50549A641AE45A2300EDE4A1 /* add_user-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_user-100.png"; sourceTree = "<group>"; };
 		50549A691AE4600C00EDE4A1 /* NewPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPlayerViewController.h; sourceTree = "<group>"; };
@@ -219,6 +225,10 @@
 				500EE65F1AE428F200478700 /* PlayerDetailViewController.m */,
 				50549A691AE4600C00EDE4A1 /* NewPlayerViewController.h */,
 				50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */,
+				501DC37A1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.h */,
+				501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */,
+				501DC3801AE5794700215EC4 /* InfoPageViewController.h */,
+				501DC3811AE5794700215EC4 /* InfoPageViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -426,6 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				501DC3821AE5794700215EC4 /* InfoPageViewController.m in Sources */,
 				500EE65A1AE403C600478700 /* Player.m in Sources */,
 				50B8F2151AD1E6A7002D3D51 /* Set.m in Sources */,
 				50B8F1D71ACF5FFB002D3D51 /* DetailViewController.m in Sources */,
@@ -444,6 +455,7 @@
 				50B8F21E1AD1FC45002D3D51 /* NewPlayerView.m in Sources */,
 				5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */,
 				500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */,
+				501DC37C1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m in Sources */,
 				50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

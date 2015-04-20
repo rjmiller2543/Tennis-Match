@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "MasterViewController.h"
+#import "Player.h"
 
 @interface NewPlayerViewController : UIViewController
 
-@property(nonatomic) id myParentViewController;
+@property(nonatomic) id thisParentViewController;
+@property(nonatomic,retain) Player *editPlayer;
 
 @end

@@ -45,13 +45,14 @@
     
     /* setup the first team */
     UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, firstTeamPixelStart, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
     imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
     imageViewOne.layer.borderColor = [[UIColor grayColor] CGColor];
     imageViewOne.layer.borderWidth = 2.0;
     imageViewOne.layer.masksToBounds = YES;
     imageViewOne.image = [UIImage imageNamed:@"no-player-image.png"];
     if ([[teamOne playerOne] playerImage]) {
-        
+        imageViewOne.image = [UIImage imageWithData:[[teamOne playerOne] playerImage]];
     }
     [containerView addSubview:imageViewOne];
     
@@ -63,13 +64,14 @@
     teamOneLabel.text = [[teamOne playerOne] playerName];
     if ([[_detailMatch doubles] boolValue]) {
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, firstTeamPixelStart + SCORESIZE/3, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = (3*SCORESIZE/4)/2;
         imageViewTwo.layer.borderWidth = 2.0;
         imageViewTwo.layer.borderColor = [[UIColor grayColor] CGColor];
         imageViewTwo.layer.masksToBounds = YES;
         imageViewTwo.image = [UIImage imageNamed:@"no-player-image.png"];
         if ([[teamOne playerTwo] playerImage]) {
-            
+            imageViewTwo.image = [UIImage imageWithData:[[teamOne playerTwo] playerImage]];
         }
         [containerView addSubview:imageViewTwo];
         
@@ -79,14 +81,15 @@
     [containerView addSubview:teamOneLabel];
     
     /* setup team two stuff */
-    UIImageView *imageViewThree = [[UIImageView alloc] initWithFrame:CGRectMake(5, secondTeamPixelStart, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    UIImageView *imageViewThree = [[UIImageView alloc] initWithFrame:CGRectMake(5, secondTeamPixelStart, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+    imageViewThree.contentMode = UIViewContentModeScaleAspectFit;
     imageViewThree.layer.cornerRadius = 3*SCORESIZE/8;
     imageViewThree.layer.borderColor = [[UIColor grayColor] CGColor];
     imageViewThree.layer.borderWidth = 2.0;
     imageViewThree.layer.masksToBounds = YES;
     imageViewThree.image = [UIImage imageNamed:@"no-player-image.png"];
     if ([[teamTwo playerOne] playerImage]) {
-        
+        imageViewThree.image = [UIImage imageWithData:[[teamTwo playerOne] playerImage]];
     }
     [containerView addSubview:imageViewThree];
     
@@ -98,13 +101,14 @@
     teamTwoLabel.text = [[teamTwo playerOne] playerName];
     if ([[_detailMatch doubles] boolValue]) {
         UIImageView *imageViewFour = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, SCORESIZE/3 + secondTeamPixelStart, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewFour.contentMode = UIViewContentModeScaleAspectFit;
         imageViewFour.layer.cornerRadius = 3*SCORESIZE/8;
         imageViewFour.layer.borderWidth = 2.0;
         imageViewFour.layer.borderColor = [[UIColor grayColor] CGColor];
         imageViewFour.layer.masksToBounds = YES;
         imageViewFour.image = [UIImage imageNamed:@"no-player-image.png"];
         if ([[teamTwo playerTwo] playerImage]) {
-            
+            imageViewFour.image = [UIImage imageWithData:[[teamTwo playerTwo] playerImage]];
         }
         [containerView addSubview:imageViewFour];
         

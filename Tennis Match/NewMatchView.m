@@ -94,14 +94,15 @@
     [_teamOne setScore:[NSNumber numberWithInt:0]];
     [_match setTeamOne:_teamOne];
     
-    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 90, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 90, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+    imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
     imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
     imageViewOne.layer.borderColor = [[UIColor grayColor] CGColor];
     imageViewOne.layer.borderWidth = 2.0;
     imageViewOne.layer.masksToBounds = YES;
     imageViewOne.image = [UIImage imageNamed:@"no-player-image.png"];
     if ([[teamOne playerOne] playerImage]) {
-        
+        imageViewOne.image = [UIImage imageWithData:[[teamOne playerOne] playerImage]];
     }
     [self addSubview:imageViewOne];
     
@@ -113,13 +114,14 @@
     teamOneLabel.text = [[teamOne playerOne] playerName];
     if (_isDoubles) {
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, 90 + SCORESIZE/3, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = (3*SCORESIZE/4)/2;
         imageViewTwo.layer.borderWidth = 2.0;
         imageViewTwo.layer.borderColor = [[UIColor grayColor] CGColor];
         imageViewTwo.layer.masksToBounds = YES;
         imageViewTwo.image = [UIImage imageNamed:@"no-player-image.png"];
         if ([[teamOne playerTwo] playerImage]) {
-            
+            imageViewTwo.image = [UIImage imageWithData:[[teamOne playerTwo] playerImage]];
         }
         [self addSubview:imageViewTwo];
         
@@ -134,14 +136,15 @@
     [_teamTwo setScore:[NSNumber numberWithInt:0]];
     [_match setTeamTwo:_teamTwo];
     
-    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+    imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
     imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
     imageViewOne.layer.borderColor = [[UIColor grayColor] CGColor];
     imageViewOne.layer.borderWidth = 2.0;
     imageViewOne.layer.masksToBounds = YES;
     imageViewOne.image = [UIImage imageNamed:@"no-player-image.png"];
     if ([[teamTwo playerOne] playerImage]) {
-        
+        imageViewOne.image = [UIImage imageWithData:[[teamTwo playerOne] playerImage]];
     }
     [self addSubview:imageViewOne];
     
@@ -153,13 +156,14 @@
     teamTwoLabel.text = [[teamTwo playerOne] playerName];
     if (_isDoubles) {
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, SCORESIZE/3 + 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = 3*SCORESIZE/8;
         imageViewTwo.layer.borderWidth = 2.0;
         imageViewTwo.layer.borderColor = [[UIColor grayColor] CGColor];
         imageViewOne.layer.masksToBounds = YES;
         imageViewTwo.image = [UIImage imageNamed:@"no-player-image.png"];
         if ([[teamTwo playerTwo] playerImage]) {
-            
+            imageViewTwo.image = [UIImage imageWithData:[[teamTwo playerTwo] playerImage]];
         }
         [self addSubview:imageViewTwo];
         
@@ -447,8 +451,8 @@
         
         int gamesTeamTwoPlayerOnePlayed = [[[_teamTwo playerOne] playerGamesPlayed] intValue];
         int gamesTeamTwoPlayerOneWon = [[[_teamTwo playerOne] playerGamesWon] intValue];
-        [[_teamTwo playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerOnePlayed)]];
-        [[_teamTwo playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamOnePlayerOneWon)]];
+        [[_teamTwo playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerOnePlayed)]];
+        [[_teamTwo playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerOneWon)]];
         if (_isDoubles) {
             int gamesTeamTwoPlayerTwoPlayed = [[[_teamTwo playerTwo] playerGamesPlayed] intValue];
             int gamesTeamTwoPlayerTwoWon = [[[_teamTwo playerTwo] playerGamesWon] intValue];

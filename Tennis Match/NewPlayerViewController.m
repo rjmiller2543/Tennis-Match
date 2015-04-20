@@ -11,7 +11,8 @@
 #import <JVFloatLabeledTextField.h>
 #import <VBFPopFlatButton.h>
 #import "AppDelegate.h"
-#import "Player.h"
+#include "UIViewController+UIViewController_MZFormDismissal.h"
+#include "PlayerDetailViewController.h"
 
 @interface NewPlayerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -32,6 +33,7 @@
     
     _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add_user-100.png"]];
     [_imageView setFrame:CGRectMake(10, 10, 100, 100)];
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
     _imageView.layer.masksToBounds = YES;
     _imageView.layer.cornerRadius = 50;
     _imageView.layer.borderColor = [UIColor asbestosColor].CGColor;
@@ -61,30 +63,71 @@
     _matchViewButton.lineThickness = 2.0;
     _matchViewButton.tintColor = [UIColor turquoiseColor];
     [self.view addSubview:_matchViewButton];
+    
+    if (_editPlayer) {
+        
+        if ([_editPlayer playerImage]) {
+            _imageView.image = [UIImage imageWithData:[_editPlayer playerImage]];
+        }
+        
+        _firstNameField.text = [_editPlayer playerName];
+        _lastNameField.text = [_editPlayer playerLastName];
+    }
 }
 
 -(void)savePlayer {
     
-    NSManagedObjectContext *context = [[AppDelegate sharedInstance] managedObjectContext];
-    Player *newPlayer = (Player*)[NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:context];
-    
-    [newPlayer setPlayerName:[_firstNameField text]];
-    [newPlayer setPlayerLastName:[_lastNameField text]];
-    [newPlayer setPlayerImage:UIImageJPEGRepresentation(_imageView.image, 0.5)];
-    
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"error saving new player with error: %@", error);
+    if (_editPlayer == nil) {
+        NSManagedObjectContext *context = [[AppDelegate sharedInstance] managedObjectContext];
+        Player *newPlayer = (Player*)[NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:context];
+        
+        [newPlayer setPlayerName:[_firstNameField text]];
+        [newPlayer setPlayerLastName:[_lastNameField text]];
+        [newPlayer setPlayerImage:UIImageJPEGRepresentation(_imageView.image, 0.5)];
+        
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"error saving new player with error: %@", error);
+        }
+        
+        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+            //up up
+        }];
     }
     
-    MasterViewController *mv = (MasterViewController*)_myParentViewController;
-    [mv dismissNewPlayer];
+    if (_thisParentViewController != nil) {
+        
+        NSManagedObjectContext *context = [[AppDelegate sharedInstance] managedObjectContext];
+        
+        [_editPlayer setPlayerName:[_firstNameField text]];
+        [_editPlayer setPlayerLastName:[_lastNameField text]];
+        [_editPlayer setPlayerImage:UIImageJPEGRepresentation(_imageView.image, 0.5)];
+        
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"error saving new player with error: %@", error);
+        }
+        
+        PlayerDetailViewController *detail = (PlayerDetailViewController*)_thisParentViewController;
+        detail.detailPlayer = _editPlayer;
+        [detail savedPlayer];
+        
+        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+            //up up
+        }];
+    }
+    else {
+        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+            //up up
+        }];
+    }
     
 }
 
 -(void)cancelView {
-    MasterViewController *mv = (MasterViewController*)_myParentViewController;
-    [mv dismissNewPlayer];
+    [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+        //up up
+    }];
 }
 
 -(void)addPhoto {

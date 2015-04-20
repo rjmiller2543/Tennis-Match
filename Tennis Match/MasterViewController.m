@@ -19,8 +19,9 @@
 #import "PlayerDetailViewController.h"
 #import "NewPlayerViewController.h"
 #import <MZFormSheetController/MZFormSheetController.h>
+#import "InfoPageViewController.h"
 
-@interface MasterViewController ()
+@interface MasterViewController () <FUIAlertViewDelegate>
 
 @property(nonatomic,retain) NSString *tableViewSource;
 @property(nonatomic,retain) REMenu *menu;
@@ -33,8 +34,20 @@
     [super awakeFromNib];
 }
 
--(void)viewDidAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated {
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    //[self.navigationController setNavigationBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     [self.tableView reloadData];
+    
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)viewDidLoad {
@@ -47,8 +60,6 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor asbestosColor];
     
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     
@@ -125,6 +136,13 @@
     }];
     REMenuItem *info = [[REMenuItem alloc] initWithTitle:@"Information Page" image:[UIImage imageNamed:@"info-50.png"] highlightedImage:[UIImage imageNamed:@"info-50.png"] action:^(REMenuItem *item) {
         //show info page
+        InfoPageViewController *infoPage = [[InfoPageViewController alloc] init];
+        
+        [self mz_presentFormSheetWithViewController:infoPage animated:YES completionHandler:^(MZFormSheetController *formSheetController) {
+            formSheetController.shouldDismissOnBackgroundViewTap = YES;
+            [infoPage.view setFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width - formSheetController.presentedFormSheetSize.width)/2, formSheetController.portraitTopInset, formSheetController.presentedFormSheetSize.width, formSheetController.presentedFormSheetSize.height)];
+            [infoPage configureView];
+        }];
     }];
     
     _menu = [[REMenu alloc] initWithItems:@[home, players, info]];
@@ -145,6 +163,31 @@
     
     _tableViewSource = MATCHSOURCE;
     
+    //set the predicate and reload the data
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Match"];
+    
+    [fetchRequest setFetchBatchSize:10];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithValue:true];
+    
+    [fetchRequest setPredicate:predicate];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    _fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    [self.tableView reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -153,7 +196,12 @@
 }
 
 -(void)showMenu {
-    [_menu showFromNavigationController:self.navigationController];
+    if ([_menu isOpen]) {
+        [_menu close];
+    }
+    else {
+        [_menu showFromNavigationController:self.navigationController];
+    }
 }
 
 - (void)insertNewObject:(id)sender {
@@ -197,7 +245,6 @@
          */
         
         NewPlayerViewController *newPlayer = [[NewPlayerViewController alloc] init];
-        newPlayer.myParentViewController = self;
         
         [self mz_presentFormSheetWithViewController:newPlayer animated:YES completionHandler:^(MZFormSheetController *formSheetController) {
             //up up

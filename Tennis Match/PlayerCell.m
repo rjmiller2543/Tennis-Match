@@ -24,6 +24,7 @@
     [self addSubview:containerView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 45, 45)];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.layer.masksToBounds = YES;
     imageView.layer.cornerRadius = 45/2;
     imageView.layer.borderWidth = 2;
@@ -41,7 +42,7 @@
     [label sizeToFit];
     [containerView addSubview:label];
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.frame.size.width - 80, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:[[_cellPlayer playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:([[_cellPlayer playerMatchesPlayed] floatValue] - [[_cellPlayer playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Losses"]]];
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 110, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:[[_cellPlayer playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:([[_cellPlayer playerMatchesPlayed] floatValue] - [[_cellPlayer playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Losses"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];

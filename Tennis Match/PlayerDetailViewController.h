@@ -13,4 +13,6 @@
 
 @property(nonatomic,retain) Player *detailPlayer;
 
+-(void)savedPlayer;
+
 @end
