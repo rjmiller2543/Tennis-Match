@@ -83,11 +83,22 @@
         NSManagedObject *object = [_fetchedResultsController objectAtIndexPath:indexPath];
         Player *player = (Player*)object;
         
-        UILabel *label = [[UILabel alloc] init];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 90, 90)];
+        imageView.layer.cornerRadius = 45;
+        imageView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        imageView.layer.borderWidth = 2.0;
+        if ([player playerImage]) {
+            imageView.image = [UIImage imageWithData:[player playerImage]];
+        }
+        else {
+            imageView.image = [UIImage imageNamed:@"no-player-image.png"];
+        }
+        [cell addSubview:imageView];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 100, 100, 15)];
         label.text = [player playerName];
-        [label sizeToFit];
-        label.center = CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2);
-        cell.backgroundColor = [UIColor blueColor];
+        label.textAlignment = NSTextAlignmentRight;
+        cell.backgroundColor = [UIColor asbestosColor];
         
         [cell addSubview:label];
     }
@@ -100,7 +111,7 @@
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(30, 30, 30, 30);
+    return UIEdgeInsetsMake(60, 60, 60, 60);
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -126,6 +137,7 @@
     }
     
     else {
+        /*
         NSManagedObject *object = [_fetchedResultsController objectAtIndexPath:indexPath];
         Player *player = (Player*)object;
         
@@ -136,6 +148,8 @@
         size = label.frame.size;
         size.height = size.height + 10;
         size.width = size.width + 10;
+         */
+        size = CGSizeMake(120, 120);
     }
     
     return size;
@@ -144,9 +158,10 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == [[_fetchedResultsController fetchedObjects] count]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Add New Player" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Add New Player" message:@"Add a temporary player with just a name.. The player can be edited later.." preferredStyle:UIAlertControllerStyleAlert];
         [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = @"Player Name";
+            textField.placeholder = @"Player's First Name";
+            textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
         }];
         [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             //Do Nothing...

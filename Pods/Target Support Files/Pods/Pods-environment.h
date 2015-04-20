@@ -90,6 +90,18 @@
 #define COCOAPODS_VERSION_MINOR_FlatUIKit 6
 #define COCOAPODS_VERSION_PATCH_FlatUIKit 0
 
+// FrameAccessor
+#define COCOAPODS_POD_AVAILABLE_FrameAccessor
+#define COCOAPODS_VERSION_MAJOR_FrameAccessor 1
+#define COCOAPODS_VERSION_MINOR_FrameAccessor 3
+#define COCOAPODS_VERSION_PATCH_FrameAccessor 2
+
+// GraphKit
+#define COCOAPODS_POD_AVAILABLE_GraphKit
+#define COCOAPODS_VERSION_MAJOR_GraphKit 1
+#define COCOAPODS_VERSION_MINOR_GraphKit 1
+#define COCOAPODS_VERSION_PATCH_GraphKit 1
+
 // IQDropDownTextField
 #define COCOAPODS_POD_AVAILABLE_IQDropDownTextField
 // This library does not follow semantic-versioning,
@@ -115,11 +127,47 @@
 #define COCOAPODS_VERSION_MINOR_JVFloatingDrawer 1
 #define COCOAPODS_VERSION_PATCH_JVFloatingDrawer 0
 
+// MKFoundationKit/NSArray
+#define COCOAPODS_POD_AVAILABLE_MKFoundationKit_NSArray
+#define COCOAPODS_VERSION_MAJOR_MKFoundationKit_NSArray 1
+#define COCOAPODS_VERSION_MINOR_MKFoundationKit_NSArray 2
+#define COCOAPODS_VERSION_PATCH_MKFoundationKit_NSArray 3
+
 // MMProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MMProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MMProgressHUD 0
 #define COCOAPODS_VERSION_MINOR_MMProgressHUD 3
 #define COCOAPODS_VERSION_PATCH_MMProgressHUD 0
+
+// MZAppearance
+#define COCOAPODS_POD_AVAILABLE_MZAppearance
+#define COCOAPODS_VERSION_MAJOR_MZAppearance 1
+#define COCOAPODS_VERSION_MINOR_MZAppearance 1
+#define COCOAPODS_VERSION_PATCH_MZAppearance 3
+
+// MZFormSheetController
+#define COCOAPODS_POD_AVAILABLE_MZFormSheetController
+#define COCOAPODS_VERSION_MAJOR_MZFormSheetController 3
+#define COCOAPODS_VERSION_MINOR_MZFormSheetController 0
+#define COCOAPODS_VERSION_PATCH_MZFormSheetController 2
+
+// MZFormSheetController/Core
+#define COCOAPODS_POD_AVAILABLE_MZFormSheetController_Core
+#define COCOAPODS_VERSION_MAJOR_MZFormSheetController_Core 3
+#define COCOAPODS_VERSION_MINOR_MZFormSheetController_Core 0
+#define COCOAPODS_VERSION_PATCH_MZFormSheetController_Core 2
+
+// PNChart
+#define COCOAPODS_POD_AVAILABLE_PNChart
+#define COCOAPODS_VERSION_MAJOR_PNChart 0
+#define COCOAPODS_VERSION_MINOR_PNChart 8
+#define COCOAPODS_VERSION_PATCH_PNChart 2
+
+// REMenu
+#define COCOAPODS_POD_AVAILABLE_REMenu
+#define COCOAPODS_VERSION_MAJOR_REMenu 1
+#define COCOAPODS_VERSION_MINOR_REMenu 10
+#define COCOAPODS_VERSION_PATCH_REMenu 0
 
 // RNFrostedSidebar
 #define COCOAPODS_POD_AVAILABLE_RNFrostedSidebar
@@ -162,6 +210,18 @@
 #define COCOAPODS_VERSION_MAJOR_SWTableViewCell 0
 #define COCOAPODS_VERSION_MINOR_SWTableViewCell 3
 #define COCOAPODS_VERSION_PATCH_SWTableViewCell 7
+
+// TOMSMorphingLabel
+#define COCOAPODS_POD_AVAILABLE_TOMSMorphingLabel
+#define COCOAPODS_VERSION_MAJOR_TOMSMorphingLabel 0
+#define COCOAPODS_VERSION_MINOR_TOMSMorphingLabel 5
+#define COCOAPODS_VERSION_PATCH_TOMSMorphingLabel 1
+
+// UICountingLabel
+#define COCOAPODS_POD_AVAILABLE_UICountingLabel
+#define COCOAPODS_VERSION_MAJOR_UICountingLabel 1
+#define COCOAPODS_VERSION_MINOR_UICountingLabel 0
+#define COCOAPODS_VERSION_PATCH_UICountingLabel 0
 
 // UIFloatLabelTextView
 #define COCOAPODS_POD_AVAILABLE_UIFloatLabelTextView

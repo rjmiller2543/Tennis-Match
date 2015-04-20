@@ -17,3 +17,7 @@
 
 @end
 
+@interface MasterViewController (DismissNewPlayer)
+-(void)dismissNewPlayer;
+@end
+

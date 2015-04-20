@@ -19,6 +19,8 @@
 @property (nonatomic, retain) id teamOne;
 @property (nonatomic, retain) id teamTwo;
 
+-(int)matchWinner;
+
 @end
 
 @interface Sets : NSValueTransformer

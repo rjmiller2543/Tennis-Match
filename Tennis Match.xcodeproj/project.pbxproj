@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		500702951AE2FFA2003A66DC /* down-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 500702941AE2FFA2003A66DC /* down-arrow.png */; };
+		500EE6501AE303E100478700 /* menu-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 500EE64F1AE303E100478700 /* menu-50.png */; };
+		500EE6551AE31A0C00478700 /* TeamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE6541AE31A0C00478700 /* TeamPlayer.m */; };
+		500EE6571AE3FBD600478700 /* menu-25.png in Resources */ = {isa = PBXBuildFile; fileRef = 500EE6561AE3FBD600478700 /* menu-25.png */; };
+		500EE65A1AE403C600478700 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE6591AE403C600478700 /* Player.m */; };
+		500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65C1AE425ED00478700 /* MatchDetailViewController.m */; };
+		500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65F1AE428F200478700 /* PlayerDetailViewController.m */; };
+		5042B85E1AE2AD250053CC98 /* no-player-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 5042B85D1AE2AD250053CC98 /* no-player-image.png */; };
+		50549A651AE45A2300EDE4A1 /* add_user-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 50549A641AE45A2300EDE4A1 /* add_user-100.png */; };
+		50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */; };
 		5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 507359691AD42FD5007228BA /* NewMatchView.m */; };
 		5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5073596C1AD5B3FF007228BA /* PlayerCell.m */; };
 		50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CA1ACF5FFA002D3D51 /* main.m */; };
@@ -19,7 +29,6 @@
 		50B8F1DF1ACF5FFB002D3D51 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F1DD1ACF5FFB002D3D51 /* LaunchScreen.xib */; };
 		50B8F1EB1ACF5FFB002D3D51 /* Tennis_MatchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1EA1ACF5FFB002D3D51 /* Tennis_MatchTests.m */; };
 		50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1F71ACF63FE002D3D51 /* MatchCell.m */; };
-		50B8F1FF1ACF6B58002D3D51 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1FE1ACF6B58002D3D51 /* Player.m */; };
 		50B8F2041ACF7119002D3D51 /* NewMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */; };
 		50B8F2091AD1E4E6002D3D51 /* tennis-court.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F2081AD1E4E6002D3D51 /* tennis-court.png */; };
 		50B8F20B1AD1E537002D3D51 /* stadium-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50B8F20A1AD1E537002D3D51 /* stadium-50.png */; };
@@ -44,6 +53,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		500702941AE2FFA2003A66DC /* down-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-arrow.png"; sourceTree = "<group>"; };
+		500EE64F1AE303E100478700 /* menu-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-50.png"; sourceTree = "<group>"; };
+		500EE6531AE31A0C00478700 /* TeamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamPlayer.h; sourceTree = "<group>"; };
+		500EE6541AE31A0C00478700 /* TeamPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamPlayer.m; sourceTree = "<group>"; };
+		500EE6561AE3FBD600478700 /* menu-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-25.png"; sourceTree = "<group>"; };
+		500EE6581AE403C600478700 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		500EE6591AE403C600478700 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		500EE65B1AE425ED00478700 /* MatchDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchDetailViewController.h; sourceTree = "<group>"; };
+		500EE65C1AE425ED00478700 /* MatchDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchDetailViewController.m; sourceTree = "<group>"; };
+		500EE65E1AE428F200478700 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
+		500EE65F1AE428F200478700 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
+		5042B85D1AE2AD250053CC98 /* no-player-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no-player-image.png"; sourceTree = "<group>"; };
+		50549A641AE45A2300EDE4A1 /* add_user-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_user-100.png"; sourceTree = "<group>"; };
+		50549A691AE4600C00EDE4A1 /* NewPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPlayerViewController.h; sourceTree = "<group>"; };
+		50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPlayerViewController.m; sourceTree = "<group>"; };
 		507359681AD42FD5007228BA /* NewMatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchView.h; sourceTree = "<group>"; };
 		507359691AD42FD5007228BA /* NewMatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchView.m; sourceTree = "<group>"; };
 		5073596B1AD5B3FF007228BA /* PlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerCell.h; sourceTree = "<group>"; };
@@ -66,8 +90,6 @@
 		50B8F1EA1ACF5FFB002D3D51 /* Tennis_MatchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tennis_MatchTests.m; sourceTree = "<group>"; };
 		50B8F1F61ACF63FE002D3D51 /* MatchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchCell.h; sourceTree = "<group>"; };
 		50B8F1F71ACF63FE002D3D51 /* MatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchCell.m; sourceTree = "<group>"; };
-		50B8F1FD1ACF6B58002D3D51 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		50B8F1FE1ACF6B58002D3D51 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		50B8F2011ACF6D25002D3D51 /* TennisMatchHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TennisMatchHelper.h; sourceTree = "<group>"; };
 		50B8F2021ACF7119002D3D51 /* NewMatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchViewController.h; sourceTree = "<group>"; };
 		50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchViewController.m; sourceTree = "<group>"; };
@@ -150,6 +172,11 @@
 		50B8F1C81ACF5FFA002D3D51 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				50549A641AE45A2300EDE4A1 /* add_user-100.png */,
+				500EE64F1AE303E100478700 /* menu-50.png */,
+				500EE6561AE3FBD600478700 /* menu-25.png */,
+				500702941AE2FFA2003A66DC /* down-arrow.png */,
+				5042B85D1AE2AD250053CC98 /* no-player-image.png */,
 				50B8F20E1AD1E569002D3D51 /* info-50.png */,
 				50B8F20C1AD1E549002D3D51 /* group-50.png */,
 				50B8F20A1AD1E537002D3D51 /* stadium-50.png */,
@@ -186,6 +213,12 @@
 				50B8F1D61ACF5FFB002D3D51 /* DetailViewController.m */,
 				50B8F2021ACF7119002D3D51 /* NewMatchViewController.h */,
 				50B8F2031ACF7119002D3D51 /* NewMatchViewController.m */,
+				500EE65B1AE425ED00478700 /* MatchDetailViewController.h */,
+				500EE65C1AE425ED00478700 /* MatchDetailViewController.m */,
+				500EE65E1AE428F200478700 /* PlayerDetailViewController.h */,
+				500EE65F1AE428F200478700 /* PlayerDetailViewController.m */,
+				50549A691AE4600C00EDE4A1 /* NewPlayerViewController.h */,
+				50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -208,8 +241,10 @@
 		50B8F1F91ACF6B2E002D3D51 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				50B8F1FD1ACF6B58002D3D51 /* Player.h */,
-				50B8F1FE1ACF6B58002D3D51 /* Player.m */,
+				500EE6581AE403C600478700 /* Player.h */,
+				500EE6591AE403C600478700 /* Player.m */,
+				500EE6531AE31A0C00478700 /* TeamPlayer.h */,
+				500EE6541AE31A0C00478700 /* TeamPlayer.m */,
 				50B8F2101AD1E69A002D3D51 /* Game.h */,
 				50B8F2111AD1E69A002D3D51 /* Game.m */,
 				50B8F2131AD1E6A7002D3D51 /* Set.h */,
@@ -330,10 +365,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				50B8F20F1AD1E569002D3D51 /* info-50.png in Resources */,
+				500702951AE2FFA2003A66DC /* down-arrow.png in Resources */,
 				50B8F1DA1ACF5FFB002D3D51 /* Main.storyboard in Resources */,
 				50B8F1DF1ACF5FFB002D3D51 /* LaunchScreen.xib in Resources */,
+				50549A651AE45A2300EDE4A1 /* add_user-100.png in Resources */,
+				500EE6501AE303E100478700 /* menu-50.png in Resources */,
 				50B8F20B1AD1E537002D3D51 /* stadium-50.png in Resources */,
+				5042B85E1AE2AD250053CC98 /* no-player-image.png in Resources */,
 				50B8F2091AD1E4E6002D3D51 /* tennis-court.png in Resources */,
+				500EE6571AE3FBD600478700 /* menu-25.png in Resources */,
 				50B8F20D1AD1E549002D3D51 /* group-50.png in Resources */,
 				50B8F1DC1ACF5FFB002D3D51 /* Images.xcassets in Resources */,
 			);
@@ -386,20 +426,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				500EE65A1AE403C600478700 /* Player.m in Sources */,
 				50B8F2151AD1E6A7002D3D51 /* Set.m in Sources */,
-				50B8F1FF1ACF6B58002D3D51 /* Player.m in Sources */,
 				50B8F1D71ACF5FFB002D3D51 /* DetailViewController.m in Sources */,
 				50B8F21B1AD1E8F3002D3D51 /* Match.m in Sources */,
 				50B8F2041ACF7119002D3D51 /* NewMatchViewController.m in Sources */,
 				50B8F2181AD1E6B6002D3D51 /* Team.m in Sources */,
+				50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */,
 				50B8F1D41ACF5FFB002D3D51 /* MasterViewController.m in Sources */,
 				50B8F2121AD1E69A002D3D51 /* Game.m in Sources */,
 				50B8F1CE1ACF5FFA002D3D51 /* AppDelegate.m in Sources */,
 				50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */,
 				50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */,
+				500EE6551AE31A0C00478700 /* TeamPlayer.m in Sources */,
+				500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */,
 				5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */,
 				50B8F21E1AD1FC45002D3D51 /* NewPlayerView.m in Sources */,
 				5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */,
+				500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */,
 				50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

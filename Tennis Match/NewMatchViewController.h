@@ -11,4 +11,6 @@
 
 @interface NewMatchViewController : UIViewController
 
+-(void)canSave;
+
 @end

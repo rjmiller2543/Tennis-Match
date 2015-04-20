@@ -11,8 +11,10 @@
 #import <FlatUIKit/FlatUIKit.h>
 #import "Game.h"
 #import <IQDropDownTextField/IQDropDownTextField.h>
+#import "AppDelegate.h"
+#import "NewMatchViewController.h"
 
-@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate>
+@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate, FUIAlertViewDelegate>
 
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
@@ -29,6 +31,8 @@
 #define PLAYERTWO 0x20
 
 #define SCORESIZE   60
+#define GAMESIZE    30
+#define CELLHEIGHT  120
 
 @implementation NewMatchView
 
@@ -36,17 +40,31 @@
     self = [super init];
     if (self) {
         //Configure the view
-        self.backgroundColor = [UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0];
+        //self.backgroundColor = [UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0];
         //[self setFrame:[UIScreen mainScreen].bounds];
+        _match = [NSEntityDescription insertNewObjectForEntityForName:@"Match" inManagedObjectContext:[[AppDelegate sharedInstance] managedObjectContext]];
+        
         _setsArray = [[NSMutableArray alloc] init];
         _setGamesTextViews = [[NSMutableArray alloc] init];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 220);
+        gradient.locations = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:1.0]];
+        gradient.colors = @[(id)[[UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0] CGColor], (id)[[UIColor cloudsColor] CGColor]];
+        [self.layer addSublayer:gradient];
         
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 170)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 220)];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.backgroundColor = [UIColor alizarinColor];
+        //_tableView.backgroundColor = [UIColor alizarinColor];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [self addSubview:_tableView];
+        
+        CAGradientLayer *tableViewLayer = [CAGradientLayer layer];
+        tableViewLayer.frame = _tableView.frame;
+        NSArray *locations = @[[NSNumber numberWithFloat:0], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.6], [NSNumber numberWithFloat:0.75], [NSNumber numberWithFloat:1.0]];
+        tableViewLayer.locations = locations;
+        tableViewLayer.colors = @[(id)[[UIColor whiteColor] CGColor], (id)[[UIColor cloudsColor] CGColor], (id)[[UIColor alizarinColor] CGColor]];
+        [_tableView.layer insertSublayer:tableViewLayer atIndex:0];
         
         _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, 90, [UIScreen mainScreen].bounds.size.width / 2, 120)];
         _setsScrollView.directionalLockEnabled = YES;
@@ -73,13 +91,38 @@
 
 -(void)setTeamOne:(Team *)teamOne {
     _teamOne = teamOne;
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, self.frame.size.width / 2 - 20, SCORESIZE)];
+    [_teamOne setScore:[NSNumber numberWithInt:0]];
+    [_match setTeamOne:_teamOne];
+    
+    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 90, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
+    imageViewOne.layer.borderColor = [[UIColor grayColor] CGColor];
+    imageViewOne.layer.borderWidth = 2.0;
+    imageViewOne.layer.masksToBounds = YES;
+    imageViewOne.image = [UIImage imageNamed:@"no-player-image.png"];
+    if ([[teamOne playerOne] playerImage]) {
+        
+    }
+    [self addSubview:imageViewOne];
+    
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(3*SCORESIZE/4 + 25, 90, self.frame.size.width / 2 - 15 - SCORESIZE, SCORESIZE)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
     teamOneLabel.numberOfLines = 0;
     teamOneLabel.text = [[teamOne playerOne] playerName];
     if (_isDoubles) {
+        UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, 90 + SCORESIZE/3, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewTwo.layer.cornerRadius = (3*SCORESIZE/4)/2;
+        imageViewTwo.layer.borderWidth = 2.0;
+        imageViewTwo.layer.borderColor = [[UIColor grayColor] CGColor];
+        imageViewTwo.layer.masksToBounds = YES;
+        imageViewTwo.image = [UIImage imageNamed:@"no-player-image.png"];
+        if ([[teamOne playerTwo] playerImage]) {
+            
+        }
+        [self addSubview:imageViewTwo];
+        
         teamOneLabel.text = [teamOneLabel.text stringByAppendingString:@" & "];
         teamOneLabel.text = [teamOneLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
     }
@@ -88,13 +131,38 @@
 
 -(void)setTeamTwo:(Team *)teamTwo {
     _teamTwo = teamTwo;
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 150, self.frame.size.width / 2 - 20, SCORESIZE)];
+    [_teamTwo setScore:[NSNumber numberWithInt:0]];
+    [_match setTeamTwo:_teamTwo];
+    
+    UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];;
+    imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
+    imageViewOne.layer.borderColor = [[UIColor grayColor] CGColor];
+    imageViewOne.layer.borderWidth = 2.0;
+    imageViewOne.layer.masksToBounds = YES;
+    imageViewOne.image = [UIImage imageNamed:@"no-player-image.png"];
+    if ([[teamTwo playerOne] playerImage]) {
+        
+    }
+    [self addSubview:imageViewOne];
+    
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(3*SCORESIZE/4 + 25, 150, self.frame.size.width / 2 - 15  - SCORESIZE, SCORESIZE)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:20.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
     teamTwoLabel.numberOfLines = 0;
     teamTwoLabel.text = [[teamTwo playerOne] playerName];
     if (_isDoubles) {
+        UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, SCORESIZE/3 + 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
+        imageViewTwo.layer.cornerRadius = 3*SCORESIZE/8;
+        imageViewTwo.layer.borderWidth = 2.0;
+        imageViewTwo.layer.borderColor = [[UIColor grayColor] CGColor];
+        imageViewOne.layer.masksToBounds = YES;
+        imageViewTwo.image = [UIImage imageNamed:@"no-player-image.png"];
+        if ([[teamTwo playerTwo] playerImage]) {
+            
+        }
+        [self addSubview:imageViewTwo];
+        
         teamTwoLabel.text = [teamTwoLabel.text stringByAppendingString:@" & "];
         teamTwoLabel.text = [teamTwoLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
     }
@@ -129,9 +197,9 @@
     
     [_addMatchButton setCenter:CGPointMake(SCORESIZE*_numSets + 20, _setsScrollView.frame.size.height / 2 )];
     
-    if (_addMatchButton.center.x + 15 > self.frame.size.width) {
+    if (_addMatchButton.center.x + 15 > self.frame.size.width/2) {
         [_setsScrollView setContentSize:CGSizeMake((_numSets+1)*SCORESIZE, _setsScrollView.frame.size.height)];
-        [_setsScrollView setContentOffset:CGPointMake((_numSets-4)*SCORESIZE, 0)];
+        [_setsScrollView setContentOffset:CGPointMake((_numSets-2)*SCORESIZE, 0)];
     }
 }
 
@@ -154,19 +222,27 @@
     [tmp setTeamOneScore:[NSNumber numberWithInt:[[tmp1 text] intValue]]];
     [tmp setTeamTwoScore:[NSNumber numberWithInt:[[tmp2 text] intValue]]];
     
+    /*
     switch ([tmp hasWinner]) {
-        case 1:
+        case 1: {
             tmp1.layer.borderWidth = 2.0;
             tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+            int oldScore = [[_teamOne score] intValue];
+            [_teamOne setScore:[NSNumber numberWithInt:oldScore+1]];
             break;
-        case 2:
+        }
+        case 2: {
             tmp2.layer.borderWidth = 2.0;
             tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+            int oldScore = [[_teamTwo score] intValue];
+            [_teamTwo setScore:[NSNumber numberWithInt:oldScore+1]];
             break;
+        }
             
         default:
             break;
     }
+     */
     
     if ([_setsArray objectAtIndex:(_numSets-1)] == nil) {
         [self addNewSetColumn];
@@ -176,6 +252,7 @@
         [_tableView reloadData];
     }
     else if (![[_setsArray objectAtIndex:(_numSets-1)] hasWinner]) {
+        /*
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"What was the score?" message:@"It seems there's no winner.." preferredStyle:UIAlertControllerStyleAlert];
         [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.placeholder = @"Team One Score";
@@ -201,21 +278,127 @@
                 [tmp1 setText:[[tmp teamOneScore] stringValue]];
                 [tmp2 setText:[[tmp teamTwoScore] stringValue]];
                 
+                int oldGamesPlayed = [[[_teamOne playerOne] playerSetsPlayed] intValue];
+                oldGamesPlayed += 1;
+                [[_teamOne playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                oldGamesPlayed = [[[_teamTwo playerOne] playerSetsPlayed] intValue];
+                oldGamesPlayed += 1;
+                [[_teamTwo playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                
+                if (_isDoubles) {
+                    oldGamesPlayed = [[[_teamOne playerTwo] playerSetsPlayed] intValue];
+                    oldGamesPlayed += 1;
+                    [[_teamOne playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                    
+                    oldGamesPlayed = [[[_teamTwo playerTwo] playerSetsPlayed] intValue];
+                    oldGamesPlayed += 1;
+                    [[_teamTwo playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                }
+                
                 switch ([tmp hasWinner]) {
-                    case 1:
+                    case 1: {
                         tmp1.layer.borderWidth = 2.0;
                         tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+                        int oldScore = [[_teamOne score] intValue];
+                        [_teamOne setScore:[NSNumber numberWithInt:oldScore+1]];
+                        
+                        oldScore = [[[_teamOne playerOne] playerSetsWon] intValue];
+                        oldScore += 1;
+                        [[_teamOne playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                        if (_isDoubles) {
+                            oldScore = [[[_teamOne playerTwo] playerSetsWon] intValue];
+                            oldScore += 1;
+                            [[_teamOne playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                        }
                         break;
-                    case 2:
+                    }
+                    case 2: {
                         tmp2.layer.borderWidth = 2.0;
                         tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+                        int oldScore = [[_teamTwo score] intValue];
+                        [_teamTwo setScore:[NSNumber numberWithInt:oldScore+1]];
+                        
+                        oldScore = [[[_teamTwo playerOne] playerSetsWon] intValue];
+                        oldScore += 1;
+                        [[_teamTwo playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                        if (_isDoubles) {
+                            oldScore = [[[_teamTwo playerTwo] playerSetsWon] intValue];
+                            oldScore += 1;
+                            [[_teamTwo playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                        }
                         break;
+                    }
                         
                     default:
                         break;
                 }
                 
-                [self addNewSetColumn];
+                if ([_match matchWinner]) {
+                    FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"We Have a Winner!" message:@"Save data so we you can check out your matches later.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                    winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                    winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                    winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                    winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                    winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                    winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                    winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                    winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                    winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                    [winnerAlert show];
+                    
+                    NewMatchViewController *vc = (NewMatchViewController*)_parentViewContoller;
+                    [vc canSave];
+                    [_addMatchButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+                    
+                    int oldGamesPlayed = [[[_teamOne playerOne] playerMatchesPlayed] intValue];
+                    oldGamesPlayed += 1;
+                    [[_teamOne playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                    oldGamesPlayed = [[[_teamTwo playerOne] playerMatchesPlayed] intValue];
+                    oldGamesPlayed += 1;
+                    [[_teamTwo playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                    
+                    if (_isDoubles) {
+                        oldGamesPlayed = [[[_teamOne playerTwo] playerMatchesPlayed] intValue];
+                        oldGamesPlayed += 1;
+                        [[_teamOne playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                        
+                        oldGamesPlayed = [[[_teamTwo playerTwo] playerMatchesPlayed] intValue];
+                        oldGamesPlayed += 1;
+                        [[_teamTwo playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                    }
+                    
+                    switch ([_match matchWinner]) {
+                        case 1:{
+                            int oldScore = [[[_teamOne playerOne] playerMatchesWon] intValue];
+                            oldScore += 1;
+                            [[_teamOne playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                            if (_isDoubles) {
+                                oldScore = [[[_teamOne playerTwo] playerMatchesWon] intValue];
+                                oldScore += 1;
+                                [[_teamOne playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                            }
+                            break;
+                        }
+                        case 2:{
+                            int oldScore = [[[_teamTwo playerOne] playerMatchesWon] intValue];
+                            oldScore += 1;
+                            [[_teamTwo playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                            if (_isDoubles) {
+                                oldScore = [[[_teamTwo playerTwo] playerMatchesWon] intValue];
+                                oldScore += 1;
+                                [[_teamTwo playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                            }
+                            break;
+                        }
+                            
+                        default:
+                            break;
+                    }
+                }
+                else {
+                    [self addNewSetColumn];
+                }
                 
                 Set *newSet = [[Set alloc] init];
                 [_setsArray addObject:newSet];
@@ -229,18 +412,185 @@
         [_parentViewContoller presentViewController:alert animated:YES completion:^{
             //up up
         }];
+        */
+        
+        FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"What was the score??" message:@"It appears we don't have a clear winner.. Enter the score in the score board and try to add a set again.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+        winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+        winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+        winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+        winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+        winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+        winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+        winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+        winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+        winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+        [winnerAlert show];
+        
     }
     else {
-        [self addNewSetColumn];
         
-        Set *newSet = [[Set alloc] init];
-        [_setsArray addObject:newSet];
-        [_tableView reloadData];
+        int gamesPlayed = [[tmp1 text] intValue] + [[tmp2 text] intValue];
+        int gamesTeamOneWon = [[tmp1 text] intValue];
+        int gamesTeamTwoWon = [[tmp2 text] intValue];
+        
+        int gamesTeamOnePlayerOnePlayed = [[[_teamOne playerOne] playerGamesPlayed] intValue];
+        int gamesTeamOnePlayerOneWon = [[[_teamOne playerOne] playerGamesWon] intValue];
+        [[_teamOne playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerOnePlayed)]];
+        [[_teamOne playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerOneWon)]];
+        if (_isDoubles) {
+            int gamesTeamOnePlayerTwoPlayed = [[[_teamOne playerTwo] playerGamesPlayed] intValue];
+            int gamesTeamOnePlayerTwoWon = [[[_teamOne playerTwo] playerGamesWon] intValue];
+            [[_teamOne playerTwo] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerTwoPlayed)]];
+            [[_teamOne playerTwo] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerTwoWon)]];
+        }
+        
+        int gamesTeamTwoPlayerOnePlayed = [[[_teamTwo playerOne] playerGamesPlayed] intValue];
+        int gamesTeamTwoPlayerOneWon = [[[_teamTwo playerOne] playerGamesWon] intValue];
+        [[_teamTwo playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerOnePlayed)]];
+        [[_teamTwo playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamOnePlayerOneWon)]];
+        if (_isDoubles) {
+            int gamesTeamTwoPlayerTwoPlayed = [[[_teamTwo playerTwo] playerGamesPlayed] intValue];
+            int gamesTeamTwoPlayerTwoWon = [[[_teamTwo playerTwo] playerGamesWon] intValue];
+            [[_teamTwo playerTwo] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerTwoPlayed)]];
+            [[_teamTwo playerTwo] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerTwoWon)]];
+        }
+        
+        int oldSetsPlayed = [[[_teamOne playerOne] playerSetsPlayed] intValue];
+        oldSetsPlayed += 1;
+        [[_teamOne playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        oldSetsPlayed = [[[_teamTwo playerOne] playerSetsPlayed] intValue];
+        oldSetsPlayed += 1;
+        [[_teamTwo playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        
+        if (_isDoubles) {
+            oldSetsPlayed = [[[_teamOne playerTwo] playerSetsPlayed] intValue];
+            oldSetsPlayed += 1;
+            [[_teamOne playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+            
+            oldSetsPlayed = [[[_teamTwo playerTwo] playerSetsPlayed] intValue];
+            oldSetsPlayed += 1;
+            [[_teamTwo playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        }
+        
+        switch ([tmp hasWinner]) {
+            case 1: {
+                tmp1.layer.borderWidth = 2.0;
+                tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+                int oldScore = [[_teamOne score] intValue];
+                [_teamOne setScore:[NSNumber numberWithInt:oldScore+1]];
+                
+                oldScore = [[[_teamOne playerOne] playerSetsWon] intValue];
+                oldScore += 1;
+                [[_teamOne playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                if (_isDoubles) {
+                    oldScore = [[[_teamOne playerTwo] playerSetsWon] intValue];
+                    oldScore += 1;
+                    [[_teamOne playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                }
+                break;
+            }
+            case 2: {
+                tmp2.layer.borderWidth = 2.0;
+                tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+                int oldScore = [[_teamTwo score] intValue];
+                [_teamTwo setScore:[NSNumber numberWithInt:oldScore+1]];
+                
+                oldScore = [[[_teamTwo playerOne] playerSetsWon] intValue];
+                oldScore += 1;
+                [[_teamTwo playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                if (_isDoubles) {
+                    oldScore = [[[_teamTwo playerTwo] playerSetsWon] intValue];
+                    oldScore += 1;
+                    [[_teamTwo playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                }
+                break;
+            }
+                
+            default:
+                break;
+        }
+        
+        if ([_match matchWinner]) {
+            FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"We Have a Winner!" message:@"Save data so we you can check out your matches later.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+            winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+            winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+            winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+            winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+            winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+            winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+            winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+            winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+            winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+            [winnerAlert show];
+            
+            NewMatchViewController *vc = (NewMatchViewController*)_parentViewContoller;
+            [vc canSave];
+            [_addMatchButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+            
+            int oldGamesPlayed = [[[_teamOne playerOne] playerMatchesPlayed] intValue];
+            oldGamesPlayed += 1;
+            [[_teamOne playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+            oldGamesPlayed = [[[_teamTwo playerOne] playerMatchesPlayed] intValue];
+            oldGamesPlayed += 1;
+            [[_teamTwo playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+            
+            if (_isDoubles) {
+                oldGamesPlayed = [[[_teamOne playerTwo] playerMatchesPlayed] intValue];
+                oldGamesPlayed += 1;
+                [[_teamOne playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                
+                oldGamesPlayed = [[[_teamTwo playerTwo] playerMatchesPlayed] intValue];
+                oldGamesPlayed += 1;
+                [[_teamTwo playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+            }
+            
+            switch ([_match matchWinner]) {
+                case 1:{
+                    int oldScore = [[[_teamOne playerOne] playerMatchesWon] intValue];
+                    oldScore += 1;
+                    [[_teamOne playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    if (_isDoubles) {
+                        oldScore = [[[_teamOne playerTwo] playerMatchesWon] intValue];
+                        oldScore += 1;
+                        [[_teamOne playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    }
+                    break;
+                }
+                case 2:{
+                    int oldScore = [[[_teamTwo playerOne] playerMatchesWon] intValue];
+                    oldScore += 1;
+                    [[_teamTwo playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    if (_isDoubles) {
+                        oldScore = [[[_teamTwo playerTwo] playerMatchesWon] intValue];
+                        oldScore += 1;
+                        [[_teamTwo playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    }
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+        }
+        else {
+            [self addNewSetColumn];
+            
+            Set *newSet = [[Set alloc] init];
+            [_setsArray addObject:newSet];
+            [_tableView reloadData];
+        }
+        //[self addNewSetColumn];
+        
+        //Set *newSet = [[Set alloc] init];
+        //[_setsArray addObject:newSet];
+        //[_tableView reloadData];
     }
     
-    if (_numSets >= 5) {
-        [_addMatchButton animateToType:buttonSquareType];
-        [_addMatchButton addTarget:self action:@selector(matchCancelButton) forControlEvents:UIControlEventTouchUpInside];
+    if (_numSets >= 3) {
+        [_addMatchButton animateToType:buttonOkType];
+        //[_addMatchButton addTarget:self action:@selector(matchCancelButton) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -249,8 +599,9 @@
 }
 
 -(void)addNewGame:(id)sender {
+    
     VBFPopFlatButton *button = (VBFPopFlatButton*)sender;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:button.tag+1 inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(_numSets - button.tag - 1) inSection:0];
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     
     NSMutableArray *gamesArray = [_setGamesTextViews objectAtIndex:button.tag];
@@ -330,18 +681,18 @@
             }
         }
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], 0, SCORESIZE, SCORESIZE)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], 0, GAMESIZE, GAMESIZE)];
         label.text = [[NSNumber numberWithInteger:([[tmp games] count]+1)] stringValue];
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], SCORESIZE, SCORESIZE, SCORESIZE)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE, GAMESIZE, GAMESIZE)];
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
-        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(SCORESIZE*[[tmp games] count], SCORESIZE*2, SCORESIZE, SCORESIZE)];
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE*2, GAMESIZE, GAMESIZE)];
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
@@ -366,12 +717,12 @@
         }
         //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         //addGameButton.tag = indexPath.row;
-        [tmpButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
+        [tmpButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, cell.frame.size.height / 2 )];
         //[scrollView addSubview:addGameButton];
         
-        if (tmpButton.center.x + SCORESIZE > (self.frame.size.width / 2)) {
-            [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*SCORESIZE, _setsScrollView.frame.size.height)];
-            [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*SCORESIZE, 0) animated:YES];
+        if (tmpButton.center.x + GAMESIZE > (self.frame.size.width / 2)) {
+            [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*GAMESIZE, _setsScrollView.frame.size.height)];
+            [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*GAMESIZE, 0) animated:YES];
         }
     }
 }
@@ -383,21 +734,31 @@
 
 -(void)configureCell:(UITableViewCell *)cell withIndex:(NSIndexPath *)indexPath {
     //Add team one label to the cell
-    //if (cell.frame.origin.y >= (self.frame.size.height + 110)) {
-    //    [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    //}
-    cell.backgroundColor = [UIColor emerlandColor];
-    if (indexPath.row == ([_setsArray count]-1)) {
-        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+    cell.backgroundColor = [UIColor cloudsColor];
     
-    UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, SCORESIZE)];
+    //draw a vertical line bc it looks pretty
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(GAMESIZE/2 + 5, 0, 2, CELLHEIGHT)];
+    line.backgroundColor = [UIColor grayColor];
+    [cell addSubview:line];
+    
+    UILabel *setLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, cell.frame.size.width / 2, GAMESIZE)];
     setLabel.text = @"Set ";
     setLabel.text = [setLabel.text stringByAppendingString:[[NSNumber numberWithInteger:(indexPath.row + 1)] stringValue]];
     setLabel.font = [UIFont boldFlatFontOfSize:22.0f];
+    setLabel.backgroundColor = [UIColor cloudsColor];
     [cell addSubview:setLabel];
     
-    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 30, cell.frame.size.width / 2 - 10, SCORESIZE)];
+/*    UIImageView *playerOneImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, SCORESIZE, 2*SCORESIZE/3, 2*SCORESIZE/3)];
+    playerOneImageView.image = [UIImage imageNamed:@"no-player-image.png"];
+    playerOneImageView.layer.cornerRadius = (2*SCORESIZE/3)/2;
+    playerOneImageView.layer.masksToBounds = YES;
+    playerOneImageView.layer.borderWidth = 1.0;
+    playerOneImageView.layer.borderColor = [[UIColor grayColor] CGColor];
+    playerOneImageView.backgroundColor = [UIColor lightGrayColor];
+    [cell addSubview:playerOneImageView];
+ */
+    
+    UILabel *teamOneLabel = [[UILabel alloc] initWithFrame:CGRectMake(GAMESIZE, GAMESIZE, cell.frame.size.width / 2 - 10 - GAMESIZE, GAMESIZE)];
     teamOneLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamOneLabel.textAlignment = NSTextAlignmentRight;
     teamOneLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -409,8 +770,18 @@
     }
     [cell addSubview:teamOneLabel];
     
+/*    UIImageView *playerTwoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, SCORESIZE*2, 2*SCORESIZE/3, 2*SCORESIZE/3)];
+    playerTwoImageView.image = [UIImage imageNamed:@"no-player-image.png"];
+    playerTwoImageView.layer.cornerRadius = (2*SCORESIZE/3)/2;
+    playerTwoImageView.layer.masksToBounds = YES;
+    playerTwoImageView.layer.borderWidth = 1.0;
+    playerTwoImageView.layer.borderColor = [[UIColor grayColor] CGColor];
+    playerTwoImageView.backgroundColor = [UIColor lightGrayColor];
+    [cell addSubview:playerTwoImageView];
+ */
+    
     //Add team two label to the cell
-    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, cell.frame.size.width / 2 - 10, SCORESIZE)];
+    UILabel *teamTwoLabel = [[UILabel alloc] initWithFrame:CGRectMake(GAMESIZE, GAMESIZE*2, cell.frame.size.width / 2 - 10 - GAMESIZE, GAMESIZE)];
     teamTwoLabel.font = [UIFont boldFlatFontOfSize:16.0f];
     teamTwoLabel.textAlignment = NSTextAlignmentRight;
     teamTwoLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -422,7 +793,7 @@
     }
     [cell addSubview:teamTwoLabel];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 0, cell.frame.size.width / 2, 90)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.frame.size.width / 2, 0, cell.frame.size.width / 2, GAMESIZE*3)];
     [cell addSubview:scrollView];
     
     Set *tmp = [_setsArray objectAtIndex:indexPath.row];
@@ -431,12 +802,12 @@
         for (int i = 0; i < [[tmp games] count]; i++) {
             Game *game = [[tmp games] objectAtIndex:i];
             
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCORESIZE*i, 0, SCORESIZE, SCORESIZE)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(GAMESIZE*i, 0, GAMESIZE, GAMESIZE)];
             label.text = [[NSNumber numberWithInt:(i+1)] stringValue];
             label.textAlignment = NSTextAlignmentCenter;
             [scrollView addSubview:label];
             
-            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(SCORESIZE*i, SCORESIZE, SCORESIZE, SCORESIZE)];
+            UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(GAMESIZE*i, GAMESIZE, GAMESIZE, GAMESIZE)];
             textFieldOne.borderStyle = UITextBorderStyleLine;
             textFieldOne.textAlignment = NSTextAlignmentCenter;
             [textFieldOne setEnabled:NO];
@@ -446,7 +817,7 @@
             else {
                 textFieldOne.text = [[game teamOneScore] stringValue];
             }
-            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(SCORESIZE*i, 60, SCORESIZE, SCORESIZE)];
+            UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(GAMESIZE*i, GAMESIZE*2, GAMESIZE, GAMESIZE)];
             textFieldTwo.borderStyle = UITextBorderStyleLine;
             textFieldTwo.textAlignment = NSTextAlignmentCenter;
             [textFieldTwo setEnabled:NO];
@@ -469,35 +840,36 @@
                 
                 [[tmp games] addObject:newGame];
                 
-                VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*SCORESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+                VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*GAMESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
                 [addGameButton addTarget:self action:@selector(addNewGame:) forControlEvents:UIControlEventTouchUpInside];
                 addGameButton.roundBackgroundColor = [UIColor asbestosColor];
                 addGameButton.tintColor = [UIColor turquoiseColor];
                 addGameButton.tag = indexPath.row;
-                [addGameButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, 60/*scrollView.frame.size.height / 2*/ )];
+                [addGameButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, 60/*scrollView.frame.size.height / 2*/ )];
                 [scrollView addSubview:addGameButton];
                 
                 if (addGameButton.center.x + 15 > self.frame.size.width) {
-                    [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*SCORESIZE, 90)];
-                    [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*SCORESIZE, 0)];
+                    [scrollView setContentSize:CGSizeMake(([[tmp games] count]+1)*GAMESIZE, 90)];
+                    [scrollView setContentOffset:CGPointMake(([[tmp games] count]-4)*GAMESIZE, 0)];
                 }
             }
         }
     }
     else {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCORESIZE, SCORESIZE)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, GAMESIZE, GAMESIZE)];
         label.text = [[NSNumber numberWithInt:1] stringValue];
         label.textAlignment = NSTextAlignmentCenter;
         [scrollView addSubview:label];
         
-        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, SCORESIZE, SCORESIZE, SCORESIZE)];
+        IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, GAMESIZE, GAMESIZE, GAMESIZE)];
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
         textFieldOne.delegate = self;
-        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, 60, SCORESIZE, SCORESIZE)];
+        
+        IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, GAMESIZE*2, GAMESIZE, GAMESIZE)];
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
@@ -515,17 +887,17 @@
         
         [[tmp games] addObject:newGame];
         
-        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*SCORESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*GAMESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         [addGameButton addTarget:self action:@selector(addNewGame:) forControlEvents:UIControlEventTouchUpInside];
         addGameButton.roundBackgroundColor = [UIColor asbestosColor];
         addGameButton.tintColor = [UIColor turquoiseColor];
         addGameButton.tag = indexPath.row;
-        [addGameButton setCenter:CGPointMake(SCORESIZE*[[tmp games] count] + 20, 60 )];
+        [addGameButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, 60 )];
         [scrollView addSubview:addGameButton];
         
         if (addGameButton.center.x + 15 > self.frame.size.width) {
-            [scrollView setContentSize:CGSizeMake((_numSets+1)*SCORESIZE, _setsScrollView.frame.size.height)];
-            [scrollView setContentOffset:CGPointMake((_numSets-4)*SCORESIZE, 0)];
+            [scrollView setContentSize:CGSizeMake((_numSets+1)*GAMESIZE, _setsScrollView.frame.size.height)];
+            [scrollView setContentOffset:CGPointMake((_numSets-4)*GAMESIZE, 0)];
         }
     }
     
@@ -537,18 +909,8 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
-    //if (indexPath.row == 0) {
-    //    VBFPopFlatButton *newButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(cell.frame.size.width / 2 - 10, cell.frame.size.height / 2 - 10, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
-    //    [newButton setCenter:CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2)];
-    //    newButton.roundBackgroundColor = [UIColor asbestosColor];
-    //    newButton.tintColor = [UIColor turquoiseColor];
-    //    [newButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
-    //    [cell addSubview:newButton];
-    //}
-    //else {
-        NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row - 1) inSection:0];
-        [self configureCell:cell withIndex:updatedPath];
-    //}
+    NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row - 1) inSection:0];
+    [self configureCell:cell withIndex:updatedPath];
     
     return cell;
 }
@@ -558,7 +920,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 180;
+    return CELLHEIGHT;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

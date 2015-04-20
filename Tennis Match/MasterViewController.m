@@ -10,11 +10,20 @@
 #import "DetailViewController.h"
 #import "TennisMatchHelper.h"
 #import "NewMatchViewController.h"
-#import <AwesomeMenu/AwesomeMenu.h>
+#import <REMenu/REMenu.h>
+#import "AppDelegate.h"
+#import "MatchCell.h"
+#import "PlayerCell.h"
+#import <PNChart/PNChart.h>
+#import "MatchDetailViewController.h"
+#import "PlayerDetailViewController.h"
+#import "NewPlayerViewController.h"
+#import <MZFormSheetController/MZFormSheetController.h>
 
 @interface MasterViewController ()
 
 @property(nonatomic,retain) NSString *tableViewSource;
+@property(nonatomic,retain) REMenu *menu;
 
 @end
 
@@ -24,24 +33,115 @@
     [super awakeFromNib];
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [self.tableView registerClass:[MatchCell class] forCellReuseIdentifier:@"MatchCell"];
+    [self.tableView registerClass:[PlayerCell class] forCellReuseIdentifier:@"PlayerCell"];
+    
+    self.title = @"Matches";
+    
+    self.navigationController.navigationBar.tintColor = [UIColor asbestosColor];
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     
+    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu-25.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = menuButton;
+    
+    CAGradientLayer *tableViewLayer = [CAGradientLayer layer];
+    tableViewLayer.frame = self.tableView.frame;
+    NSArray *locations = @[[NSNumber numberWithFloat:0], [NSNumber numberWithFloat:0.3], [NSNumber numberWithFloat:0.8], [NSNumber numberWithFloat:0.9], [NSNumber numberWithFloat:1.0]];
+    tableViewLayer.locations = locations;
+    tableViewLayer.colors = @[(id)[[UIColor whiteColor] CGColor], (id)[[UIColor cloudsColor] CGColor], (id)[[UIColor lightGrayColor] CGColor]];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    [self.tableView.layer insertSublayer:tableViewLayer atIndex:0];
+    [self.view.layer insertSublayer:tableViewLayer atIndex:0];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    REMenuItem *home = [[REMenuItem alloc] initWithTitle:@"Matches" image:[UIImage imageNamed:@"stadium-50.png"] highlightedImage:[UIImage imageNamed:@"stadium-50.png"] action:^(REMenuItem *item) {
+        _tableViewSource = MATCHSOURCE;
+        self.title = @"Matches";
+        
+        //set the predicate and reload the data
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Match"];
+        
+        [fetchRequest setFetchBatchSize:10];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithValue:true];
+        
+        [fetchRequest setPredicate:predicate];
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+        NSArray *sortDescriptors = @[sortDescriptor];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        _fetchedResultsController.delegate = self;
+        
+        NSError *error = nil;
+        if (![self.fetchedResultsController performFetch:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+        
+        [self.tableView reloadData];
+    }];
+    REMenuItem *players = [[REMenuItem alloc] initWithTitle:@"Player" image:[UIImage imageNamed:@"group-50.png"] highlightedImage:[UIImage imageNamed:@"group-50.png"] action:^(REMenuItem *item) {
+        _tableViewSource = PLAYERSOURCE;
+        self.title = @"Players";
+        
+        //set the predicate and reload the data
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Player"];
+        
+        [fetchRequest setFetchBatchSize:10];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithValue:true];
+        
+        [fetchRequest setPredicate:predicate];
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+        NSArray *sortDescriptors = @[sortDescriptor];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        _fetchedResultsController.delegate = self;
+        
+        NSError *error = nil;
+        if (![self.fetchedResultsController performFetch:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+        
+        [self.tableView reloadData];
+    }];
+    REMenuItem *info = [[REMenuItem alloc] initWithTitle:@"Information Page" image:[UIImage imageNamed:@"info-50.png"] highlightedImage:[UIImage imageNamed:@"info-50.png"] action:^(REMenuItem *item) {
+        //show info page
+    }];
+    
+    _menu = [[REMenu alloc] initWithItems:@[home, players, info]];
+    
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.navigationController.navigationBar.bounds;
     //gradient.startPoint = CGPointMake(0, 0);
     //gradient.endPoint = CGPointMake(self.view.bounds.size.width, self.view.bounds.size.height/2);
-    NSArray *locations = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.5]];
-    gradient.locations = locations;
-    gradient.colors = @[(id)[[UIColor emerlandColor] CGColor], (id)[[UIColor carrotColor] CGColor]];
+    NSArray *gradientLocations = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.5]];
+    gradient.locations = gradientLocations;
+    gradient.colors = @[(id)[TENNISBALLCOLOR CGColor], (id)[[UIColor emerlandColor] CGColor]];
     [self.navigationController.navigationBar.layer insertSublayer:gradient atIndex:0];
     
     [self.navigationController.navigationBar.layer insertSublayer:gradient atIndex:0];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     
     _tableViewSource = MATCHSOURCE;
     
@@ -52,9 +152,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)showMenu {
+    [_menu showFromNavigationController:self.navigationController];
+}
+
 - (void)insertNewObject:(id)sender {
     
     if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
+        /*
         UIAlertController *newPlayer = [UIAlertController alertControllerWithTitle:@"Add a new player" message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         [newPlayer addTextFieldWithConfigurationHandler:^(UITextField *textField) {
@@ -89,6 +194,14 @@
         [self presentViewController:newPlayer animated:YES completion:^{
             //UP up
         }];
+         */
+        
+        NewPlayerViewController *newPlayer = [[NewPlayerViewController alloc] init];
+        newPlayer.myParentViewController = self;
+        
+        [self mz_presentFormSheetWithViewController:newPlayer animated:YES completionHandler:^(MZFormSheetController *formSheetController) {
+            //up up
+        }];
     }
     
     else if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
@@ -99,13 +212,19 @@
     }
 }
 
+-(void)dismissNewPlayer {
+    [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController *formSheetController) {
+        //up up
+    }];
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
+        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        //NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        //[[segue destinationViewController] setDetailItem:object];
     }
 }
 
@@ -121,8 +240,22 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    [self configureCell:cell atIndexPath:indexPath];
+    
+    if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
+        MatchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MatchCell"];
+        [self configureMatchCell:cell atIndexPath:indexPath];
+        
+        return cell;
+    }
+    else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
+        PlayerCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PlayerCell"];
+        [self configurePlayerCell:cell atIndexPath:indexPath];
+        
+        return cell;
+    }
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    
     return cell;
 }
 
@@ -147,8 +280,49 @@
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+    //Match *object = (Match*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    //Player *player = [[object teamOne] playerOneFromTeam];
+    //NSLog(@"player name: %@", [player playerName]);
+    //cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+    if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
+        [self configureMatchCell:cell atIndexPath:indexPath];
+    }
+    else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
+        [self configurePlayerCell:cell atIndexPath:indexPath];
+    }
+}
+
+//#define SCORESIZE   45
+
+-(void)configureMatchCell:(MatchCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    
+    Match *match = (Match*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.cellMatch = match;
+    [cell configureCell];
+    
+}
+         
+-(void)configurePlayerCell:(PlayerCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    
+    Player *player = (Player*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.cellPlayer = player;
+    [cell configureCell];
+     
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
+        Match *match = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        MatchDetailViewController *vc = [[MatchDetailViewController alloc] init];
+        vc.detailMatch = match;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
+        Player *player = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        PlayerDetailViewController *vc = [[PlayerDetailViewController alloc] init];
+        vc.detailPlayer = player;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -156,10 +330,10 @@
     CGFloat height = 25;
     
     if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
-        height = 45;
+        height = 140;
     }
     else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
-        height = 30;
+        height = 90;
     }
     
     return height;

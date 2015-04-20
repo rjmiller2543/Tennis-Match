@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Player.h"
 
 @interface PlayerCell : UITableViewCell
+
+@property(nonatomic,retain) Player *cellPlayer;
+
+-(void)configureCell;
 
 @end

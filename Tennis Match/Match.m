@@ -17,6 +17,19 @@
 @dynamic teamOne;
 @dynamic teamTwo;
 
+-(int)matchWinner {
+    int winner = 0;
+    Team *one = (Team*)self.teamOne;
+    Team *two = (Team*)self.teamTwo;
+    if ([[one score] intValue] >= 2) {
+        winner = 1;
+    }
+    else if ([[two score] intValue] >= 2) {
+        winner = 2;
+    }
+    return winner;
+}
+
 @end
 
 @implementation Sets

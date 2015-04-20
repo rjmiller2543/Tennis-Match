@@ -2,7 +2,7 @@
 //  Player.m
 //  Tennis Match
 //
-//  Created by Robert Miller on 4/3/15.
+//  Created by Robert Miller on 4/19/15.
 //  Copyright (c) 2015 Robert Miller. All rights reserved.
 //
 
@@ -11,9 +11,15 @@
 
 @implementation Player
 
-@dynamic timeStamp;
+@dynamic playerGamesPlayed;
+@dynamic playerImage;
 @dynamic playerName;
-@dynamic playerWins;
-@dynamic playerGames;
+@dynamic playerLastName;
+@dynamic playerGamesWon;
+@dynamic timeStamp;
+@dynamic playerMatchesPlayed;
+@dynamic playerMatchesWon;
+@dynamic playerSetsPlayed;
+@dynamic playerSetsWon;
 
 @end

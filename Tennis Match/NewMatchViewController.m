@@ -13,6 +13,7 @@
 #import "Team.h"
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import "NewMatchView.h"
+#import "AppDelegate.h"
 
 @interface NewMatchViewController () <NewPlayerViewDelegate>
 
@@ -113,24 +114,67 @@
     
 }
 
+-(void)cancelView {
+    [self dismissViewControllerAnimated:YES completion:^{
+        //up up
+        if (_matchView.match) {
+            [[[AppDelegate sharedInstance] managedObjectContext] deleteObject:_matchView.match];
+        }
+    }];
+}
+
+-(void)canSave {
+    _matchViewButton.roundBackgroundColor = [UIColor asbestosColor];
+    _matchViewButton.tintColor = [UIColor turquoiseColor];
+    [_matchViewButton addTarget:self action:@selector(saveMatch) forControlEvents:UIControlEventTouchUpInside];
+}
+
 -(void)saveMatch {
+    NSLog(@"save match");
     
+    [_matchView.match setTimeStamp:[NSDate date]];
+    [_matchView.match setDoubles:[NSNumber numberWithBool:!_isSingles]];
+    [_matchView.match setSets:_matchView.setsArray];
+   // NSLog(@"team one: %@ team two: %@", [[[_matchView.match teamOne] playerOneFromTeam] playerName], [[[_matchView.match teamTwo] playerOneFromTeam] playerName]);
+    
+    NSError *error = nil;
+    if ([[[AppDelegate sharedInstance] managedObjectContext] save:&error]) {
+        NSLog(@"error saving match with error: %@", error);
+    }
+    
+    [UIView animateWithDuration:0.8 animations:^{
+        [_tennisView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [_matchView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+        [_closeButton setFrame:CGRectMake((self.view.frame.size.width / 3) - 15, self.view.frame.size.height - 60, 30, 30)];
+        [_matchViewButton setFrame:CGRectMake((2 * self.view.frame.size.width / 3) - 15, self.view.frame.size.height - 60, 30, 30)];
+        [_matchViewButton animateToType:buttonOkType];
+    } completion:^(BOOL finished) {
+        //up up
+        [self dismissViewControllerAnimated:YES completion:^{
+            //up up
+        }];
+    }];
 }
 
 -(void)showMatchView {
+    [_matchView setIsDoubles:!_isSingles];
     [_matchView setTeamOne:_teamOne];
     [_matchView setTeamTwo:_teamTwo];
     [_matchView addNewSet];
     
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.8 animations:^{
         [_tennisView setFrame:CGRectMake(0, -self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
         [_matchView setFrame:self.view.frame];
         [_closeButton setFrame:CGRectMake(self.view.frame.size.width /3 - 15, 30, 30, 30)];
         [_matchViewButton setFrame:CGRectMake(2 * self.view.frame.size.width / 3 - 15, 30, 30, 30)];
+        _matchViewButton.roundBackgroundColor = [UIColor darkGrayColor];
+        _matchViewButton.tintColor = [UIColor lightGrayColor];
         [_matchViewButton animateToType:buttonOkType];
     } completion:^(BOOL finished) {
         //up up
-        [_matchViewButton addTarget:self action:@selector(saveMatch) forControlEvents:UIControlEventTouchUpInside];
+        NSLog(@"completed animations");
+        [_matchViewButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+        
     }];
 }
 
@@ -198,7 +242,7 @@
     [_tennisView addSubview:_playerOneButton];
     
     _playerTwoButton = [[FUIButton alloc] init];
-    [_playerTwoButton addTarget:self action:@selector(addPlayerOne) forControlEvents:UIControlEventTouchUpInside];
+    [_playerTwoButton addTarget:self action:@selector(addPlayerTwo) forControlEvents:UIControlEventTouchUpInside];
     _playerTwoButton.buttonColor = [UIColor nephritisColor];
     _playerTwoButton.shadowColor = [UIColor turquoiseColor];
     _playerTwoButton.shadowHeight = 3.0f;
@@ -217,7 +261,7 @@
     [_tennisView addSubview:_playerTwoButton];
     
     _playerThreeButton = [[FUIButton alloc] init];
-    [_playerThreeButton addTarget:self action:@selector(addPlayerTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_playerThreeButton addTarget:self action:@selector(addPlayerThree) forControlEvents:UIControlEventTouchUpInside];
     _playerThreeButton.buttonColor = [UIColor nephritisColor];
     _playerThreeButton.shadowColor = [UIColor turquoiseColor];
     _playerThreeButton.shadowHeight = 3.0f;
@@ -236,7 +280,7 @@
     [_tennisView addSubview:_playerThreeButton];
     
     _playerFourButton = [[FUIButton alloc] init];
-    [_playerFourButton addTarget:self action:@selector(addPlayerTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_playerFourButton addTarget:self action:@selector(addPlayerFour) forControlEvents:UIControlEventTouchUpInside];
     _playerFourButton.buttonColor = [UIColor nephritisColor];
     _playerFourButton.shadowColor = [UIColor turquoiseColor];
     _playerFourButton.shadowHeight = 3.0f;
@@ -298,12 +342,6 @@
         [button setFrame:dBFrame];
         _isSingles = true;
     }
-}
-
--(void)cancelView {
-    [self dismissViewControllerAnimated:YES completion:^{
-        //up up
-    }];
 }
 
 -(void)addPlayerListWindow {

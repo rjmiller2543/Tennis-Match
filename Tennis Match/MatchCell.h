@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Match.h"
 
 @interface MatchCell : UITableViewCell
+
+@property(nonatomic,retain) Match *cellMatch;
+
+-(void)configureCell;
 
 @end

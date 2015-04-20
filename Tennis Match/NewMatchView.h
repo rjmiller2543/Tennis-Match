@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Team.h"
 #import "Set.h"
+#import "Match.h"
 
 @interface NewMatchView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic,retain) NSMutableArray *setsArray;
 @property(nonatomic,retain) Team *teamOne;
 @property(nonatomic,retain) Team *teamTwo;
+@property(nonatomic,retain) Match *match;
 @property(nonatomic,retain) UITableView *tableView;
 @property(nonatomic) BOOL isDoubles;
 

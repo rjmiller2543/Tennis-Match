@@ -7,12 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TeamPlayer.h"
 #import "Player.h"
 
 @interface Team : NSObject
 
 @property(nonatomic) BOOL doubles;
+@property(nonatomic,retain) NSNumber *score;
+@property(nonatomic,retain) TeamPlayer *teamPlayerOne;
+@property(nonatomic,retain) TeamPlayer *teamPlayerTwo;
 @property(nonatomic,retain) Player *playerOne;
 @property(nonatomic,retain) Player *playerTwo;
+
+-(Player*)playerOneFromTeam;
+-(Player*)playerTwoFromTeam;
+-(void)setTeams;
 
 @end
