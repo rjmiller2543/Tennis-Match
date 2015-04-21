@@ -19,6 +19,7 @@
 		5042B85E1AE2AD250053CC98 /* no-player-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 5042B85D1AE2AD250053CC98 /* no-player-image.png */; };
 		50549A651AE45A2300EDE4A1 /* add_user-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 50549A641AE45A2300EDE4A1 /* add_user-100.png */; };
 		50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */; };
+		50549A711AE5BD9500EDE4A1 /* grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 50549A701AE5BD9500EDE4A1 /* grad.png */; };
 		5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 507359691AD42FD5007228BA /* NewMatchView.m */; };
 		5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5073596C1AD5B3FF007228BA /* PlayerCell.m */; };
 		50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B8F1CA1ACF5FFA002D3D51 /* main.m */; };
@@ -74,6 +75,7 @@
 		50549A641AE45A2300EDE4A1 /* add_user-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_user-100.png"; sourceTree = "<group>"; };
 		50549A691AE4600C00EDE4A1 /* NewPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPlayerViewController.h; sourceTree = "<group>"; };
 		50549A6A1AE4600C00EDE4A1 /* NewPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPlayerViewController.m; sourceTree = "<group>"; };
+		50549A701AE5BD9500EDE4A1 /* grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grad.png; sourceTree = "<group>"; };
 		507359681AD42FD5007228BA /* NewMatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchView.h; sourceTree = "<group>"; };
 		507359691AD42FD5007228BA /* NewMatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchView.m; sourceTree = "<group>"; };
 		5073596B1AD5B3FF007228BA /* PlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerCell.h; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		50B8F1C81ACF5FFA002D3D51 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				50549A701AE5BD9500EDE4A1 /* grad.png */,
 				50549A641AE45A2300EDE4A1 /* add_user-100.png */,
 				500EE64F1AE303E100478700 /* menu-50.png */,
 				500EE6561AE3FBD600478700 /* menu-25.png */,
@@ -343,6 +346,7 @@
 				TargetAttributes = {
 					50B8F1C41ACF5FFA002D3D51 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = G98XDUC443;
 					};
 					50B8F1E31ACF5FFB002D3D51 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -374,6 +378,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50549A711AE5BD9500EDE4A1 /* grad.png in Resources */,
 				50B8F20F1AD1E569002D3D51 /* info-50.png in Resources */,
 				500702951AE2FFA2003A66DC /* down-arrow.png in Resources */,
 				50B8F1DA1ACF5FFB002D3D51 /* Main.storyboard in Resources */,
@@ -579,6 +584,7 @@
 			baseConfigurationReference = B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Tennis Match/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -590,6 +596,7 @@
 			baseConfigurationReference = CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Tennis Match/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

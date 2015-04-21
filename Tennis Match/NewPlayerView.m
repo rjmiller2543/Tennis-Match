@@ -84,6 +84,7 @@
         Player *player = (Player*)object;
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 90, 90)];
+        imageView.layer.masksToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.layer.cornerRadius = 45;
         imageView.layer.borderColor = [[UIColor lightGrayColor] CGColor];

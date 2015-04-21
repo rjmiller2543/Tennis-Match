@@ -651,20 +651,20 @@
             break;
         }
         case 0:{
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Who won?" message:@"There doesn't appear to be a clear winner.." preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Team One" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                int lastScore = [[setOneField text] intValue];
-                lastScore += 1;
-                [setOneField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Team Two" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                int lastScore = [[setTwoField text] intValue];
-                lastScore += 1;
-                [setTwoField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
-            }]];
-            [_parentViewContoller presentViewController:alert animated:YES completion:^{
-                //up up
-            }];
+            
+            FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"What was the score??" message:@"It appears we don't have a clear winner.. Enter the score in the score board and try to add a game again.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+            winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+            winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+            winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+            winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+            winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+            winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+            winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+            winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+            winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+            [winnerAlert show];
+            
             break;
         }
             
