@@ -20,7 +20,7 @@
 -(void)configureCell {
     
     self.backgroundColor = [UIColor clearColor];
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 10, 130)];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 10, 150)];
     containerView.backgroundColor = [UIColor cloudsColor];
     containerView.layer.cornerRadius = 10;
     [self addSubview:containerView];

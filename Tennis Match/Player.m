@@ -21,5 +21,11 @@
 @dynamic playerMatchesWon;
 @dynamic playerSetsPlayed;
 @dynamic playerSetsWon;
+@dynamic aces;
+@dynamic doubleFaults;
+@dynamic faults;
+@dynamic firstServesWon;
+@dynamic secondServesWon;
+@dynamic servesMade;
 
 @end

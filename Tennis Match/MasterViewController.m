@@ -377,7 +377,7 @@
     CGFloat height = 25;
     
     if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
-        height = 140;
+        height = 160;
     }
     else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
         height = 90;

@@ -22,5 +22,11 @@
 @property (nonatomic, retain) NSNumber * playerMatchesWon;
 @property (nonatomic, retain) NSNumber * playerSetsPlayed;
 @property (nonatomic, retain) NSNumber * playerSetsWon;
+@property (nonatomic, retain) NSNumber * aces;
+@property (nonatomic, retain) NSNumber * doubleFaults;
+@property (nonatomic, retain) NSNumber * faults;
+@property (nonatomic, retain) NSNumber * firstServesWon;
+@property (nonatomic, retain) NSNumber * secondServesWon;
+@property (nonatomic, retain) NSNumber * servesMade;
 
 @end

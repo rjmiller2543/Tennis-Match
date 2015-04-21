@@ -92,6 +92,16 @@
     [doubleButton setCenter:self.view.center];
     [_tennisView addSubview:doubleButton];
     
+    UILabel *serveLabel = [[UILabel alloc] init];
+    serveLabel.text = @"First Serve";
+    [serveLabel sizeToFit];
+    CGRect lFrame = serveLabel.frame;
+    lFrame.size.width = lFrame.size.width + 12;
+    lFrame.size.height = lFrame.size.height + 12;
+    [serveLabel setFrame:lFrame];
+    [serveLabel setCenter:CGPointMake(self.view.center.x, self.view.center.y - 36)];
+    [_tennisView addSubview:serveLabel];
+    
     _matchView = [[NewMatchView alloc] init];
     [_matchView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
     //_matchView.backgroundColor = [UIColor cloudsColor];

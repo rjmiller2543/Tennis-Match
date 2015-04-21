@@ -21,6 +21,19 @@
 @property(nonatomic,retain) NSMutableArray *setTextViews;
 @property(nonatomic,retain) NSMutableArray *setGamesTextViews;
 
+@property(nonatomic,retain) UIScrollView *bottomScrollView;
+
+@property(nonatomic,retain) VBFPopFlatButton *teamOnePointUp;
+@property(nonatomic,retain) VBFPopFlatButton *teamOnePointDown;
+@property(nonatomic,retain) VBFPopFlatButton *teamTwoPointUp;
+@property(nonatomic,retain) VBFPopFlatButton *teamTwoPointDown;
+
+@property(nonatomic,retain) FUIButton *aceButton;
+@property(nonatomic,retain) FUIButton *faultButton;
+@property(nonatomic,retain) FUIButton *doubleFaultButton;
+
+@property(nonatomic,retain) UIImageView *ballImage;
+
 @property(nonatomic) int numSets;
 @property(nonatomic) int numPlayerOneSets;
 @property(nonatomic) int numPlayerTwoSets;
@@ -52,37 +65,148 @@
         gradient.colors = @[(id)[[UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0] CGColor], (id)[[UIColor cloudsColor] CGColor]];
         [self.layer addSublayer:gradient];
         
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 220)];
+        //_tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 220)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, 125)];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.scrollEnabled = NO;
         //_tableView.backgroundColor = [UIColor alizarinColor];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [self addSubview:_tableView];
         
+        _tableView.backgroundColor = [UIColor cloudsColor];
+        
+        
         CAGradientLayer *tableViewLayer = [CAGradientLayer layer];
-        tableViewLayer.frame = _tableView.frame;
+        tableViewLayer.frame = CGRectMake(0, 340, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 100);
         NSArray *locations = @[[NSNumber numberWithFloat:0], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.6], [NSNumber numberWithFloat:0.75], [NSNumber numberWithFloat:1.0]];
         tableViewLayer.locations = locations;
         tableViewLayer.colors = @[(id)[[UIColor whiteColor] CGColor], (id)[[UIColor cloudsColor] CGColor], (id)[[UIColor alizarinColor] CGColor]];
-        [_tableView.layer insertSublayer:tableViewLayer atIndex:0];
+        [self.layer insertSublayer:tableViewLayer atIndex:0];
+         
         
         _setsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, 90, [UIScreen mainScreen].bounds.size.width / 2, 120)];
         _setsScrollView.directionalLockEnabled = YES;
-        _setsScrollView.scrollEnabled = NO;
+        //_setsScrollView.scrollEnabled = NO;
         [self addSubview:_setsScrollView];
         
         _isDoubles = false;
         _numSets = 0;
         
-        _addMatchButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(SCORESIZE*_numSets + 15, _setsScrollView.frame.size.height / 2 - 5, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        _addMatchButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(SCORESIZE*_numSets + 25, _setsScrollView.frame.size.height / 2 - 5, 25, 25) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         [_addMatchButton addTarget:self action:@selector(addNewSet) forControlEvents:UIControlEventTouchUpInside];
         _addMatchButton.roundBackgroundColor = [UIColor asbestosColor];
         _addMatchButton.tintColor = [UIColor turquoiseColor];
         [_setsScrollView addSubview:_addMatchButton];
     
         _setTextViews = [[NSMutableArray alloc] init];
+        
+        if ([UIScreen mainScreen].bounds.size.height == 480) {
+            [self setupSmallScreen];
+        }
+        
+        else {
+            [self setupScreen];
+        }
+        
+        _ballImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 355, 20, 20)];
+        _ballImage.backgroundColor = [UIColor yellowColor];
+        _ballImage.layer.cornerRadius = 10;
+        [self addSubview:_ballImage];
     }
     return self;
+}
+
+-(void)setupScreen {
+    
+}
+
+-(void)setupSmallScreen {
+    _teamOnePointUp = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20) buttonType:buttonUpBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamOnePointUp addTarget:self action:@selector(addPointToTeamOne) forControlEvents:UIControlEventTouchUpInside];
+    [_teamOnePointUp setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/4, 410)];
+    _teamOnePointUp.roundBackgroundColor = [UIColor asbestosColor];
+    _teamOnePointUp.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamOnePointUp];
+    
+    _teamOnePointDown = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20) buttonType:buttonDownBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamOnePointDown addTarget:self action:@selector(subtractPointFromTeamOne) forControlEvents:UIControlEventTouchUpInside];
+    [_teamOnePointDown setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/4, 460)];
+    _teamOnePointDown.roundBackgroundColor = [UIColor asbestosColor];
+    _teamOnePointDown.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamOnePointDown];
+    
+    _teamTwoPointUp = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20) buttonType:buttonUpBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamTwoPointUp addTarget:self action:@selector(addPointToTeamTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_teamTwoPointUp setCenter:CGPointMake(3*[UIScreen mainScreen].bounds.size.width/4, 410)];
+    _teamTwoPointUp.roundBackgroundColor = [UIColor asbestosColor];
+    _teamTwoPointUp.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamTwoPointUp];
+    
+    _teamTwoPointDown = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20) buttonType:buttonDownBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamTwoPointDown addTarget:self action:@selector(subtractPointFromTeamTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_teamTwoPointDown setCenter:CGPointMake(3*[UIScreen mainScreen].bounds.size.width/4, 460)];
+    _teamTwoPointDown.roundBackgroundColor = [UIColor asbestosColor];
+    _teamTwoPointDown.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamTwoPointDown];
+    
+    _aceButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [_aceButton setTitle:@"Ace" forState:UIControlStateNormal];
+    _aceButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
+    _aceButton.cornerRadius = 20;
+    _aceButton.buttonColor = [UIColor asbestosColor];
+    [_aceButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_aceButton addTarget:self action:@selector(addAceStat) forControlEvents:UIControlEventTouchUpInside];
+    [_aceButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 390)];
+    [self addSubview:_aceButton];
+    
+    _faultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [_faultButton setTitle:@"Fault" forState:UIControlStateNormal];
+    _faultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
+    _faultButton.cornerRadius = 20;
+    _faultButton.buttonColor = [UIColor asbestosColor];
+    [_faultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_faultButton addTarget:self action:@selector(addFaultStat) forControlEvents:UIControlEventTouchUpInside];
+    [_faultButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 430)];
+    [self addSubview:_faultButton];
+    
+    _doubleFaultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [_doubleFaultButton setTitle:@"DF" forState:UIControlStateNormal];
+    _doubleFaultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
+    _doubleFaultButton.cornerRadius = 20;
+    _doubleFaultButton.buttonColor = [UIColor asbestosColor];
+    [_doubleFaultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_doubleFaultButton addTarget:self action:@selector(addDoubleFaultStat) forControlEvents:UIControlEventTouchUpInside];
+    [_doubleFaultButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 470)];
+    [self addSubview:_doubleFaultButton];
+}
+
+-(void)addAceStat {
+    
+}
+
+-(void)addFaultStat {
+    
+}
+
+-(void)addDoubleFaultStat {
+    
+}
+
+-(void)addPointToTeamOne {
+    
+}
+
+-(void)subtractPointFromTeamOne {
+    
+}
+
+-(void)addPointToTeamTwo {
+    
+}
+
+-(void)subtractPointFromTeamTwo {
+    
 }
 
 -(void)setIsDoubles:(BOOL)isDoubles {
@@ -129,6 +253,19 @@
         teamOneLabel.text = [teamOneLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
     }
     [self addSubview:teamOneLabel];
+    
+    UILabel *teamOneBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+    teamOneBottomLabel.backgroundColor = [UIColor clearColor];
+    teamOneBottomLabel.textAlignment = NSTextAlignmentCenter;
+    teamOneBottomLabel.font = [UIFont flatFontOfSize:14.0f];
+    teamOneBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    teamOneBottomLabel.numberOfLines = 0;
+    teamOneBottomLabel.text = [[teamOne playerOne] playerName];
+    if (_isDoubles) {
+        teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:@" &\n"];
+        teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
+    }
+    [self addSubview:teamOneBottomLabel];
 }
 
 -(void)setTeamTwo:(Team *)teamTwo {
@@ -171,6 +308,19 @@
         teamTwoLabel.text = [teamTwoLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
     }
     [self addSubview:teamTwoLabel];
+    
+    UILabel *teamTwoBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+    teamTwoBottomLabel.backgroundColor = [UIColor clearColor];
+    teamTwoBottomLabel.textAlignment = NSTextAlignmentCenter;
+    teamTwoBottomLabel.font = [UIFont flatFontOfSize:14.0f];
+    teamTwoBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    teamTwoBottomLabel.numberOfLines = 0;
+    teamTwoBottomLabel.text = [[teamTwo playerOne] playerName];
+    if (_isDoubles) {
+        teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:@" &\n"];
+        teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
+    }
+    [self addSubview:teamTwoBottomLabel];
 }
 
 -(void)addNewSetColumn {
@@ -199,7 +349,7 @@
     
     _numSets += 1;
     
-    [_addMatchButton setCenter:CGPointMake(SCORESIZE*_numSets + 20, _setsScrollView.frame.size.height / 2 )];
+    [_addMatchButton setCenter:CGPointMake(SCORESIZE*_numSets + 25, _setsScrollView.frame.size.height / 2 )];
     
     if (_addMatchButton.center.x + 15 > self.frame.size.width/2) {
         [_setsScrollView setContentSize:CGSizeMake((_numSets+1)*SCORESIZE, _setsScrollView.frame.size.height)];
@@ -693,12 +843,14 @@
         IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE, GAMESIZE, GAMESIZE)];
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
+        textFieldOne.delegate = self;
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
         IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE*2, GAMESIZE, GAMESIZE)];
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
+        textFieldTwo.delegate = self;
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
         textFieldTwo.text = @"0";
@@ -891,7 +1043,7 @@
         
         [[tmp games] addObject:newGame];
         
-        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*GAMESIZE, scrollView.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+        VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*GAMESIZE, scrollView.frame.size.height / 2 - 10, 20, 20) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         [addGameButton addTarget:self action:@selector(addNewGame:) forControlEvents:UIControlEventTouchUpInside];
         addGameButton.roundBackgroundColor = [UIColor asbestosColor];
         addGameButton.tintColor = [UIColor turquoiseColor];
@@ -899,7 +1051,7 @@
         [addGameButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, 60 )];
         [scrollView addSubview:addGameButton];
         
-        if (addGameButton.center.x + 15 > self.frame.size.width) {
+        if (addGameButton.center.x + 20 > self.frame.size.width/2) {
             [scrollView setContentSize:CGSizeMake((_numSets+1)*GAMESIZE, _setsScrollView.frame.size.height)];
             [scrollView setContentOffset:CGPointMake((_numSets-4)*GAMESIZE, 0)];
         }
@@ -913,8 +1065,8 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
-    NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row - 1) inSection:0];
-    [self configureCell:cell withIndex:updatedPath];
+    //NSIndexPath *updatedPath = [NSIndexPath indexPathForItem:(_numSets - indexPath.row - 1) inSection:0];
+    [self configureCell:cell withIndex:indexPath];
     
     return cell;
 }
