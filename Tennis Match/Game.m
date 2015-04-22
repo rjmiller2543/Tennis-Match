@@ -34,11 +34,21 @@
 
 -(int)gameWinner {
     int winner = 0;
-    if ([_teamOneScore intValue] > [_teamTwoScore intValue]) {
-        winner = 1;
+    if (([_teamOneScore intValue] > [_teamTwoScore intValue]) && ([_teamOneScore intValue] > 40)) {
+        if ([_teamOneScore intValue] >= 60) {
+            winner = 1;
+        }
+        else if ([_teamTwoScore intValue] < 40) {
+            winner = 1;
+        }
     }
-    else if ([_teamTwoScore intValue] > [_teamOneScore intValue]) {
-        winner = 2;
+    else if (([_teamTwoScore intValue] > [_teamOneScore intValue]) && ([_teamTwoScore intValue] > 40)) {
+        if ([_teamTwoScore intValue] >= 60) {
+            winner = 2;
+        }
+        else if ([_teamOneScore intValue] < 40) {
+            winner = 2;
+        }
     }
     return winner;
 }

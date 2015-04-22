@@ -94,6 +94,8 @@
     
     UILabel *serveLabel = [[UILabel alloc] init];
     serveLabel.text = @"First Serve";
+    serveLabel.font = [UIFont flatFontOfSize:16.0f];
+    serveLabel.tintColor = [UIColor turquoiseColor];
     [serveLabel sizeToFit];
     CGRect lFrame = serveLabel.frame;
     lFrame.size.width = lFrame.size.width + 12;

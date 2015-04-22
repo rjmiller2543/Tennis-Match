@@ -37,6 +37,7 @@
 @property(nonatomic) int numSets;
 @property(nonatomic) int numPlayerOneSets;
 @property(nonatomic) int numPlayerTwoSets;
+@property(nonatomic) int servingPlayer;
 
 @end
 
@@ -109,7 +110,7 @@
             [self setupScreen];
         }
         
-        _ballImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 355, 20, 20)];
+        _ballImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, 355, 20, 20)];
         _ballImage.backgroundColor = [UIColor yellowColor];
         _ballImage.layer.cornerRadius = 10;
         [self addSubview:_ballImage];
@@ -118,7 +119,63 @@
 }
 
 -(void)setupScreen {
+    _teamOnePointUp = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30) buttonType:buttonUpBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamOnePointUp addTarget:self action:@selector(addPointToTeamOne) forControlEvents:UIControlEventTouchUpInside];
+    [_teamOnePointUp setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/4, 430)];
+    _teamOnePointUp.roundBackgroundColor = [UIColor asbestosColor];
+    _teamOnePointUp.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamOnePointUp];
     
+    _teamOnePointDown = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30) buttonType:buttonDownBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamOnePointDown addTarget:self action:@selector(subtractPointFromTeamOne) forControlEvents:UIControlEventTouchUpInside];
+    [_teamOnePointDown setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/4, 520)];
+    _teamOnePointDown.roundBackgroundColor = [UIColor asbestosColor];
+    _teamOnePointDown.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamOnePointDown];
+    
+    _teamTwoPointUp = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30) buttonType:buttonUpBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamTwoPointUp addTarget:self action:@selector(addPointToTeamTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_teamTwoPointUp setCenter:CGPointMake(3*[UIScreen mainScreen].bounds.size.width/4, 430)];
+    _teamTwoPointUp.roundBackgroundColor = [UIColor asbestosColor];
+    _teamTwoPointUp.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamTwoPointUp];
+    
+    _teamTwoPointDown = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30) buttonType:buttonDownBasicType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
+    [_teamTwoPointDown addTarget:self action:@selector(subtractPointFromTeamTwo) forControlEvents:UIControlEventTouchUpInside];
+    [_teamTwoPointDown setCenter:CGPointMake(3*[UIScreen mainScreen].bounds.size.width/4, 520)];
+    _teamTwoPointDown.roundBackgroundColor = [UIColor asbestosColor];
+    _teamTwoPointDown.tintColor = [UIColor turquoiseColor];
+    [self addSubview:_teamTwoPointDown];
+    
+    _aceButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [_aceButton setTitle:@"Ace" forState:UIControlStateNormal];
+    _aceButton.titleLabel.font = [UIFont flatFontOfSize:14.0f];
+    _aceButton.cornerRadius = 20;
+    _aceButton.buttonColor = [UIColor asbestosColor];
+    [_aceButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_aceButton addTarget:self action:@selector(addAceStat) forControlEvents:UIControlEventTouchUpInside];
+    [_aceButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 400)];
+    [self addSubview:_aceButton];
+    
+    _faultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [_faultButton setTitle:@"Fault" forState:UIControlStateNormal];
+    _faultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
+    _faultButton.cornerRadius = 20;
+    _faultButton.buttonColor = [UIColor asbestosColor];
+    [_faultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_faultButton addTarget:self action:@selector(addFaultStat) forControlEvents:UIControlEventTouchUpInside];
+    [_faultButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 475)];
+    [self addSubview:_faultButton];
+    
+    _doubleFaultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [_doubleFaultButton setTitle:@"DF" forState:UIControlStateNormal];
+    _doubleFaultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
+    _doubleFaultButton.cornerRadius = 20;
+    _doubleFaultButton.buttonColor = [UIColor asbestosColor];
+    [_doubleFaultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
+    [_doubleFaultButton addTarget:self action:@selector(addDoubleFaultStat) forControlEvents:UIControlEventTouchUpInside];
+    [_doubleFaultButton setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 550)];
+    [self addSubview:_doubleFaultButton];
 }
 
 -(void)setupSmallScreen {
@@ -153,7 +210,7 @@
     _aceButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [_aceButton setTitle:@"Ace" forState:UIControlStateNormal];
     _aceButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
-    _aceButton.cornerRadius = 20;
+    _aceButton.cornerRadius = 15;
     _aceButton.buttonColor = [UIColor asbestosColor];
     [_aceButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
     [_aceButton addTarget:self action:@selector(addAceStat) forControlEvents:UIControlEventTouchUpInside];
@@ -163,7 +220,7 @@
     _faultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [_faultButton setTitle:@"Fault" forState:UIControlStateNormal];
     _faultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
-    _faultButton.cornerRadius = 20;
+    _faultButton.cornerRadius = 15;
     _faultButton.buttonColor = [UIColor asbestosColor];
     [_faultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
     [_faultButton addTarget:self action:@selector(addFaultStat) forControlEvents:UIControlEventTouchUpInside];
@@ -173,7 +230,7 @@
     _doubleFaultButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [_doubleFaultButton setTitle:@"DF" forState:UIControlStateNormal];
     _doubleFaultButton.titleLabel.font = [UIFont flatFontOfSize:12.0f];
-    _doubleFaultButton.cornerRadius = 20;
+    _doubleFaultButton.cornerRadius = 15;
     _doubleFaultButton.buttonColor = [UIColor asbestosColor];
     [_doubleFaultButton setTitleColor:[UIColor turquoiseColor] forState:UIControlStateNormal];
     [_doubleFaultButton addTarget:self action:@selector(addDoubleFaultStat) forControlEvents:UIControlEventTouchUpInside];
@@ -194,19 +251,87 @@
 }
 
 -(void)addPointToTeamOne {
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
+    NSDictionary *dict = [gamesArray lastObject];
+    UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
     
+    int score = 0;
+    if ([oldFieldOne.text isEqualToString:@"Ad."]) {
+        score = 50;
+    }
+    else {
+        score = [oldFieldOne.text intValue];
+    }
+    
+    switch (score) {
+        case 0:
+            oldFieldOne.text = @"15";
+            break;
+        case 15:
+            oldFieldOne.text = @"30";
+            break;
+        case 30:
+            oldFieldOne.text = @"40";
+            break;
+        case 40:
+            oldFieldOne.text = @"\u2713";
+            [self addNewGame:nil];
+            break;
+        case 50:
+            oldFieldOne.text = @"\u2714";
+            [self addNewGame:nil];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)subtractPointFromTeamOne {
-    
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
+    NSDictionary *dict = [gamesArray lastObject];
+    UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
 }
 
 -(void)addPointToTeamTwo {
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
+    NSDictionary *dict = [gamesArray lastObject];
+    UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
     
+    int score = 0;
+    if ([oldFieldTwo.text isEqualToString:@"Ad."]) {
+        score = 50;
+    }
+    else {
+        score = [oldFieldTwo.text intValue];
+    }
+    
+    switch (score) {
+        case 0:
+            oldFieldTwo.text = @"15";
+            break;
+        case 15:
+            oldFieldTwo.text = @"30";
+            break;
+        case 30:
+            oldFieldTwo.text = @"40";
+            break;
+        case 40:
+            oldFieldTwo.text = @"\u2713";
+            [self addNewGame:nil];
+            break;
+        case 50:
+            oldFieldTwo.text = @"\u2714";
+            [self addNewGame:nil];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)subtractPointFromTeamTwo {
-    
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
+    NSDictionary *dict = [gamesArray lastObject];
+    UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
 }
 
 -(void)setIsDoubles:(BOOL)isDoubles {
@@ -254,18 +379,35 @@
     }
     [self addSubview:teamOneLabel];
     
-    UILabel *teamOneBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
-    teamOneBottomLabel.backgroundColor = [UIColor clearColor];
-    teamOneBottomLabel.textAlignment = NSTextAlignmentCenter;
-    teamOneBottomLabel.font = [UIFont flatFontOfSize:14.0f];
-    teamOneBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    teamOneBottomLabel.numberOfLines = 0;
-    teamOneBottomLabel.text = [[teamOne playerOne] playerName];
-    if (_isDoubles) {
-        teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:@" &\n"];
-        teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
+    if ([UIScreen mainScreen].bounds.size.height == 480) {
+        UILabel *teamOneBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+        teamOneBottomLabel.backgroundColor = [UIColor clearColor];
+        teamOneBottomLabel.textAlignment = NSTextAlignmentCenter;
+        teamOneBottomLabel.font = [UIFont flatFontOfSize:14.0f];
+        teamOneBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        teamOneBottomLabel.numberOfLines = 0;
+        teamOneBottomLabel.text = [[teamOne playerOne] playerName];
+        if (_isDoubles) {
+            teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:@" &\n"];
+            teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
+        }
+        [self addSubview:teamOneBottomLabel];
     }
-    [self addSubview:teamOneBottomLabel];
+    else {
+        UILabel *teamOneBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+        teamOneBottomLabel.backgroundColor = [UIColor clearColor];
+        teamOneBottomLabel.textAlignment = NSTextAlignmentCenter;
+        teamOneBottomLabel.font = [UIFont flatFontOfSize:16.0f];
+        teamOneBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        teamOneBottomLabel.numberOfLines = 0;
+        teamOneBottomLabel.text = [[teamOne playerOne] playerName];
+        if (_isDoubles) {
+            teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:@" &\n"];
+            teamOneBottomLabel.text = [teamOneBottomLabel.text stringByAppendingString:[[teamOne playerTwo] playerName]];
+        }
+        [self addSubview:teamOneBottomLabel];
+    }
+    
 }
 
 -(void)setTeamTwo:(Team *)teamTwo {
@@ -309,18 +451,34 @@
     }
     [self addSubview:teamTwoLabel];
     
-    UILabel *teamTwoBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
-    teamTwoBottomLabel.backgroundColor = [UIColor clearColor];
-    teamTwoBottomLabel.textAlignment = NSTextAlignmentCenter;
-    teamTwoBottomLabel.font = [UIFont flatFontOfSize:14.0f];
-    teamTwoBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    teamTwoBottomLabel.numberOfLines = 0;
-    teamTwoBottomLabel.text = [[teamTwo playerOne] playerName];
-    if (_isDoubles) {
-        teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:@" &\n"];
-        teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
+    if ([UIScreen mainScreen].bounds.size.height == 480) {
+        UILabel *teamTwoBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+        teamTwoBottomLabel.backgroundColor = [UIColor clearColor];
+        teamTwoBottomLabel.textAlignment = NSTextAlignmentCenter;
+        teamTwoBottomLabel.font = [UIFont flatFontOfSize:14.0f];
+        teamTwoBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        teamTwoBottomLabel.numberOfLines = 0;
+        teamTwoBottomLabel.text = [[teamTwo playerOne] playerName];
+        if (_isDoubles) {
+            teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:@" &\n"];
+            teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
+        }
+        [self addSubview:teamTwoBottomLabel];
     }
-    [self addSubview:teamTwoBottomLabel];
+    else {
+        UILabel *teamTwoBottomLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2, 340, [UIScreen mainScreen].bounds.size.width/2, 60)];
+        teamTwoBottomLabel.backgroundColor = [UIColor clearColor];
+        teamTwoBottomLabel.textAlignment = NSTextAlignmentCenter;
+        teamTwoBottomLabel.font = [UIFont flatFontOfSize:16.0f];
+        teamTwoBottomLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        teamTwoBottomLabel.numberOfLines = 0;
+        teamTwoBottomLabel.text = [[teamTwo playerOne] playerName];
+        if (_isDoubles) {
+            teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:@" &\n"];
+            teamTwoBottomLabel.text = [teamTwoBottomLabel.text stringByAppendingString:[[teamTwo playerTwo] playerName]];
+        }
+        [self addSubview:teamTwoBottomLabel];
+    }
 }
 
 -(void)addNewSetColumn {
@@ -754,32 +912,40 @@
 
 -(void)addNewGame:(id)sender {
     
-    VBFPopFlatButton *button = (VBFPopFlatButton*)sender;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(_numSets - button.tag - 1) inSection:0];
+    //VBFPopFlatButton *button = (VBFPopFlatButton*)sender;
+    //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(_numSets - button.tag - 1) inSection:0];
+    NSInteger totalRow = [_tableView numberOfRowsInSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:totalRow - 1 inSection:0];
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     
-    NSMutableArray *gamesArray = [_setGamesTextViews objectAtIndex:button.tag];
+    //NSMutableArray *gamesArray = [_setGamesTextViews objectAtIndex:button.tag];
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
     UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
     
-    Set *tmp = [_setsArray objectAtIndex:button.tag];
+    //Set *tmp = [_setsArray objectAtIndex:button.tag];
+    Set *tmp = [_setsArray lastObject];
     Game *game = (Game*)[[tmp games] lastObject];
     
-    if ([[oldFieldOne text] isEqualToString:@"Ad."]) {
+    if ([[oldFieldOne text] isEqualToString:@"Ad."] || [[oldFieldOne text] isEqualToString:@"\u2713"]) {
         [game setTeamOneScore:[NSNumber numberWithInt:50]];
+    }
+    else if ([[oldFieldOne text] isEqualToString:@"\u2714"]) {
+        [game setTeamOneScore:[NSNumber numberWithInt:60]];
     }
     else {
         [game setTeamOneScore:[NSNumber numberWithInt:[[oldFieldOne text] intValue]]];
     }
-    if ([[oldFieldTwo text] isEqualToString:@"Ad."]) {
+    if ([[oldFieldTwo text] isEqualToString:@"Ad."] || [[oldFieldTwo text] isEqualToString:@"\u2713"]) {
         [game setTeamTwoScore:[NSNumber numberWithInt:50]];
+    }
+    else if ([[oldFieldTwo text] isEqualToString:@"\u2714"]) {
+        [game setTeamOneScore:[NSNumber numberWithInt:60]];
     }
     else {
         [game setTeamTwoScore:[NSNumber numberWithInt:[[oldFieldTwo text] intValue]]];
     }
-    [oldFieldOne setEnabled:NO];
-    [oldFieldTwo setEnabled:NO];
     
     dict = [_setTextViews lastObject];
     IQDropDownTextField *setOneField = (IQDropDownTextField*)dict[@"TextFieldOne"];
@@ -791,6 +957,8 @@
             lastScore += 1;
             [setOneField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
             [tmp setTeamOneScore:[NSNumber numberWithInt:lastScore]];
+            [oldFieldOne setEnabled:NO];
+            [oldFieldTwo setEnabled:NO];
             break;
         }
         case 2:{
@@ -798,22 +966,35 @@
             lastScore += 1;
             [setTwoField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
             [tmp setTeamTwoScore:[NSNumber numberWithInt:lastScore]];
+            [oldFieldOne setEnabled:NO];
+            [oldFieldTwo setEnabled:NO];
             break;
         }
         case 0:{
-            
-            FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"What was the score??" message:@"It appears we don't have a clear winner.. Enter the score in the score board and try to add a game again.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
-            winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
-            winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
-            winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
-            winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
-            winnerAlert.defaultButtonColor = [UIColor asbestosColor];
-            winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
-            winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
-            winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
-            winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
-            [winnerAlert show];
+            if (([[game teamOneScore] intValue] == 50) && ([[game teamTwoScore] intValue] == 50)) {
+                oldFieldOne.text = @"40";
+                oldFieldTwo.text = @"40";
+            }
+            else if ([[game teamOneScore] intValue] == 50) {
+                oldFieldOne.text = @"Ad.";
+            }
+            else if ([[game teamTwoScore] intValue] == 50) {
+                oldFieldTwo.text = @"Ad.";
+            }
+            else {
+                FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"What was the score??" message:@"It appears we don't have a clear winner.. Enter the score in the score board and try to add a game again.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                [winnerAlert show];
+            }
             
             break;
         }
@@ -822,7 +1003,18 @@
             break;
     }
     
-    if ([tmp hasWinner]) {
+    if (![game gameWinner]) {
+        //Do nothing and wait for a valid score
+        if ([[tmp teamOneScore] intValue] == 50) {
+            [tmp setTeamOneScore:[NSNumber numberWithInt:40]];
+            oldFieldOne.text = @"Ad.";
+        }
+        else if ([[tmp teamTwoScore] intValue] == 50) {
+            [tmp setTeamTwoScore:[NSNumber numberWithInt:40]];
+            oldFieldTwo.text = @"Ad.";
+        }
+    }
+    else if ([tmp hasWinner]) {
         //if this set has a winner, don't add more games..
         [self addNewSet];
     }
@@ -841,6 +1033,7 @@
         [scrollView addSubview:label];
         
         IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE, GAMESIZE, GAMESIZE)];
+        textFieldOne.adjustsFontSizeToFitWidth = YES;
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.delegate = self;
@@ -848,6 +1041,7 @@
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = @"0";
         IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE*2, GAMESIZE, GAMESIZE)];
+        textFieldTwo.adjustsFontSizeToFitWidth = YES;
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.delegate = self;
@@ -1018,6 +1212,7 @@
         [scrollView addSubview:label];
         
         IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, GAMESIZE, GAMESIZE, GAMESIZE)];
+        textFieldOne.adjustsFontSizeToFitWidth = YES;
         textFieldOne.isOptionalDropDown = NO;
         [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldOne.borderStyle = UITextBorderStyleLine;
@@ -1026,6 +1221,7 @@
         textFieldOne.delegate = self;
         
         IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(0, GAMESIZE*2, GAMESIZE, GAMESIZE)];
+        textFieldTwo.adjustsFontSizeToFitWidth = YES;
         textFieldTwo.isOptionalDropDown = NO;
         [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
         textFieldTwo.borderStyle = UITextBorderStyleLine;

@@ -76,7 +76,7 @@
     [self.view.layer insertSublayer:tableViewLayer atIndex:0];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    REMenuItem *home = [[REMenuItem alloc] initWithTitle:@"Matches" image:[UIImage imageNamed:@"stadium-50.png"] highlightedImage:[UIImage imageNamed:@"stadium-50.png"] action:^(REMenuItem *item) {
+    REMenuItem *home = [[REMenuItem alloc] initWithTitle:@"Matches" image:[UIImage imageNamed:@"tennis-court-50.png"] highlightedImage:[UIImage imageNamed:@"stadium-50.png"] action:^(REMenuItem *item) {
         _tableViewSource = MATCHSOURCE;
         self.title = @"Matches";
         
@@ -105,7 +105,7 @@
         
         [self.tableView reloadData];
     }];
-    REMenuItem *players = [[REMenuItem alloc] initWithTitle:@"Player" image:[UIImage imageNamed:@"group-50.png"] highlightedImage:[UIImage imageNamed:@"group-50.png"] action:^(REMenuItem *item) {
+    REMenuItem *players = [[REMenuItem alloc] initWithTitle:@"Players" image:[UIImage imageNamed:@"group-50.png"] highlightedImage:[UIImage imageNamed:@"group-50.png"] action:^(REMenuItem *item) {
         _tableViewSource = PLAYERSOURCE;
         self.title = @"Players";
         
@@ -134,7 +134,7 @@
         
         [self.tableView reloadData];
     }];
-    REMenuItem *info = [[REMenuItem alloc] initWithTitle:@"Information Page" image:[UIImage imageNamed:@"info-50.png"] highlightedImage:[UIImage imageNamed:@"info-50.png"] action:^(REMenuItem *item) {
+    REMenuItem *info = [[REMenuItem alloc] initWithTitle:@"About" image:[UIImage imageNamed:@"info-50.png"] highlightedImage:[UIImage imageNamed:@"info-50.png"] action:^(REMenuItem *item) {
         //show info page
         InfoPageViewController *infoPage = [[InfoPageViewController alloc] init];
         
