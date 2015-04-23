@@ -8,6 +8,7 @@
 
 #import "PlayerCell.h"
 #import <FlatUIKit.h>
+#import "Stats.h"
 #import <PNChart/PNChart.h>
 
 @implementation PlayerCell
@@ -42,7 +43,7 @@
     [label sizeToFit];
     [containerView addSubview:label];
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 110, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:[[_cellPlayer playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:([[_cellPlayer playerMatchesPlayed] floatValue] - [[_cellPlayer playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Losses"]]];
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 110, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:[[[_cellPlayer playerStats] playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:([[[_cellPlayer playerStats] playerMatchesPlayed] floatValue] - [[[_cellPlayer playerStats] playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Losses"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];

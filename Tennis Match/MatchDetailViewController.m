@@ -260,7 +260,7 @@
             textFieldOne.textAlignment = NSTextAlignmentCenter;
             [textFieldOne setEnabled:NO];
             if ([[game teamOneScore] intValue] > 40) {
-                textFieldOne.text = @"Ad.";
+                textFieldOne.text = @"\u2713";
             }
             else {
                 textFieldOne.text = [[game teamOneScore] stringValue];
@@ -270,7 +270,7 @@
             textFieldTwo.textAlignment = NSTextAlignmentCenter;
             [textFieldTwo setEnabled:NO];
             if ([[game teamTwoScore] intValue] > 40) {
-                textFieldTwo.text = @"Ad.";
+                textFieldTwo.text = @"\u2713";
             }
             else {
                 textFieldTwo.text = [[game teamTwoScore] stringValue];

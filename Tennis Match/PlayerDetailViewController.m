@@ -12,6 +12,7 @@
 #import <TOMSMorphingLabel/TOMSMorphingLabel.h>
 #import "NewPlayerViewController.h"
 #import <MZFormSheetController/MZFormSheetController.h>
+#import "Stats.h"
 
 @interface PlayerDetailViewController ()
 
@@ -92,7 +93,7 @@
     [_scrollView addSubview:playedLabel];
     playedLabel.textColor = [UIColor asbestosColor];
     NSString *playedLabelString = @"Played: ";
-    playedLabelString = [playedLabelString stringByAppendingString:[[_detailPlayer playerGamesPlayed] stringValue]];
+    playedLabelString = [playedLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerGamesPlayed] stringValue]];
     playedLabel.text = playedLabelString;
     //playedLabel.text = [playedLabel.text stringByAppendingString:[[_detailPlayer playerSetsPlayed] stringValue]];
     
@@ -100,10 +101,10 @@
     [_scrollView addSubview:wonLabel];
     wonLabel.textColor = [UIColor asbestosColor];
     NSString *wonLabelString = @"Won: ";
-    wonLabelString = [wonLabelString stringByAppendingString:[[_detailPlayer playerGamesWon] stringValue]];
+    wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerGamesWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 375, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[_detailPlayer playerGamesWon] floatValue] color:[UIColor greenSeaColor] description:@"Games Won"], [PNPieChartDataItem dataItemWithValue:([[_detailPlayer playerGamesPlayed] floatValue] - [[_detailPlayer playerGamesWon] floatValue]) color:[UIColor alizarinColor] description:@"Games Lost"]]];
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 375, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerGamesWon] floatValue] color:[UIColor greenSeaColor] description:@"Games Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerGamesPlayed] floatValue] - [[[_detailPlayer playerStats] playerGamesWon] floatValue]) color:[UIColor alizarinColor] description:@"Games Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];
@@ -123,7 +124,7 @@
     [_scrollView addSubview:playedLabel];
     playedLabel.textColor = [UIColor asbestosColor];
     NSString *playedLabelString = @"Played: ";
-    playedLabelString = [playedLabelString stringByAppendingString:[[_detailPlayer playerSetsPlayed] stringValue]];
+    playedLabelString = [playedLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerSetsPlayed] stringValue]];
     playedLabel.text = playedLabelString;
     //playedLabel.text = [playedLabel.text stringByAppendingString:[[_detailPlayer playerSetsPlayed] stringValue]];
     
@@ -131,10 +132,10 @@
     [_scrollView addSubview:wonLabel];
     wonLabel.textColor = [UIColor asbestosColor];
     NSString *wonLabelString = @"Won: ";
-    wonLabelString = [wonLabelString stringByAppendingString:[[_detailPlayer playerSetsWon] stringValue]];
+    wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerSetsWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 260, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[_detailPlayer playerSetsWon] floatValue] color:[UIColor greenSeaColor] description:@"Sets Won"], [PNPieChartDataItem dataItemWithValue:([[_detailPlayer playerSetsPlayed] floatValue] - [[_detailPlayer playerSetsWon] floatValue]) color:[UIColor alizarinColor] description:@"Sets Lost"]]];
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 260, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerSetsWon] floatValue] color:[UIColor greenSeaColor] description:@"Sets Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerSetsPlayed] floatValue] - [[[_detailPlayer playerStats] playerSetsWon] floatValue]) color:[UIColor alizarinColor] description:@"Sets Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];
@@ -154,7 +155,7 @@
     [_scrollView addSubview:playedLabel];
     playedLabel.textColor = [UIColor asbestosColor];
     NSString *playedLabelString = @"Played: ";
-    playedLabelString = [playedLabelString stringByAppendingString:[[_detailPlayer playerMatchesPlayed] stringValue]];
+    playedLabelString = [playedLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerMatchesPlayed] stringValue]];
     playedLabel.text = playedLabelString;
     //playedLabel.text = [playedLabel.text stringByAppendingString:[[_detailPlayer playerSetsPlayed] stringValue]];
     
@@ -162,10 +163,10 @@
     [_scrollView addSubview:wonLabel];
     wonLabel.textColor = [UIColor asbestosColor];
     NSString *wonLabelString = @"Won: ";
-    wonLabelString = [wonLabelString stringByAppendingString:[[_detailPlayer playerMatchesWon] stringValue]];
+    wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerMatchesWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 145, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[_detailPlayer playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Mathes Won"], [PNPieChartDataItem dataItemWithValue:([[_detailPlayer playerMatchesPlayed] floatValue] - [[_detailPlayer playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Matches Lost"]]];
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 145, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Mathes Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerMatchesPlayed] floatValue] - [[[_detailPlayer playerStats] playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Matches Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];

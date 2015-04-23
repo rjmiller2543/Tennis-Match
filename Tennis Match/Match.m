@@ -16,6 +16,8 @@
 @dynamic sets;
 @dynamic teamOne;
 @dynamic teamTwo;
+@dynamic teamOneMatchStats;
+@dynamic teamTwoMatchStats;
 
 -(int)matchWinner {
     int winner = 0;
@@ -85,6 +87,54 @@
 + (Class)transformedValueClass
 {
     return [Team class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation TeamOneMatchStats
+
++ (Class)transformedValueClass
+{
+    return [Stats class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation TeamTwoMatchStats
+
++ (Class)transformedValueClass
+{
+    return [Stats class];
 }
 
 + (BOOL)allowsReverseTransformation

@@ -28,16 +28,18 @@
 @property(nonatomic,retain) VBFPopFlatButton *teamTwoPointUp;
 @property(nonatomic,retain) VBFPopFlatButton *teamTwoPointDown;
 
+@property(nonatomic,retain) Stats *servingPlayerStats;
 @property(nonatomic,retain) FUIButton *aceButton;
 @property(nonatomic,retain) FUIButton *faultButton;
 @property(nonatomic,retain) FUIButton *doubleFaultButton;
 
 @property(nonatomic,retain) UIImageView *ballImage;
+@property(nonatomic) int servingPlayerSelector;     //For keeping track of where the tennis ball icon goes
 
 @property(nonatomic) int numSets;
 @property(nonatomic) int numPlayerOneSets;
 @property(nonatomic) int numPlayerTwoSets;
-@property(nonatomic) int servingPlayer;
+@property(nonatomic) BOOL isFault;
 
 @end
 
@@ -110,10 +112,13 @@
             [self setupScreen];
         }
         
+        _servingPlayerSelector = 1;
         _ballImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, 355, 20, 20)];
+        _ballImage.center = CGPointMake(15, 365);
         _ballImage.backgroundColor = [UIColor yellowColor];
         _ballImage.layer.cornerRadius = 10;
         [self addSubview:_ballImage];
+        
     }
     return self;
 }
@@ -238,19 +243,99 @@
     [self addSubview:_doubleFaultButton];
 }
 
--(void)addAceStat {
+-(void)updateServingPlayer {
+
+    _servingPlayerSelector += 1;
+    if (!_isDoubles) {
+        if (_servingPlayerSelector >= 3) {
+            _servingPlayerSelector = 1;
+        }
+    }
+    else if (_servingPlayerSelector >= 5) {
+        _servingPlayerSelector = 1;
+    }
+    switch (_servingPlayerSelector) {
+        case 1:
+            _ballImage.center = CGPointMake(15, 365);
+            _servingPlayerStats = _teamOnePlayerOneStats;
+            break;
+        case 2:
+            _ballImage.center = CGPointMake([UIScreen mainScreen].bounds.size.width - 15, 365);
+            _servingPlayerStats = _teamTwoPlayerOneStats;
+            break;
+        case 3:
+            _ballImage.center = CGPointMake(15, 395);
+            _servingPlayerStats = _teamOnePlayerTwoStats;
+            break;
+        case 4:
+            _ballImage.center = CGPointMake([UIScreen mainScreen].bounds.size.width - 15, 395);
+            _servingPlayerStats = _teamTwoPlayerTwoStats;
+            
+        default:
+            break;
+    }
     
+}
+
+-(void)addAceStat {
+    int oldAce = [[_servingPlayerStats aces] intValue];
+    [_servingPlayerStats setAces:[NSNumber numberWithInt:oldAce+1]];
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int oldTeamAce = [[_teamOneStats aces] intValue];
+        [_teamOneStats setAces:[NSNumber numberWithInt:oldTeamAce+1]];
+        [self addPointToTeamOne];
+    }
+    else {
+        int oldTeamAce = [[_teamTwoStats aces] intValue];
+        [_teamTwoStats setAces:[NSNumber numberWithInt:oldTeamAce+1]];
+        [self addPointToTeamTwo];
+    }
 }
 
 -(void)addFaultStat {
-    
+    int oldFault = [[_servingPlayerStats faults] intValue];
+    [_servingPlayerStats setFaults:[NSNumber numberWithInt:oldFault+1]];
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int oldFaults = [[_teamOneStats faults] intValue];
+        [_teamOneStats setFaults:[NSNumber numberWithInt:oldFaults+1]];
+    }
+    else {
+        int oldFaults = [[_teamTwoStats faults] intValue];
+        [_teamTwoStats setFaults:[NSNumber numberWithInt:oldFaults+1]];
+    }
+    _isFault = true;
 }
 
 -(void)addDoubleFaultStat {
-    
+    int oldDoubleFault = [[_servingPlayerStats doubleFaults] intValue];
+    [_servingPlayerStats setDoubleFaults:[NSNumber numberWithInt:oldDoubleFault+1]];
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int oldDF = [[_teamOneStats doubleFaults] intValue];
+        [_teamOneStats setDoubleFaults:[NSNumber numberWithInt:oldDF+1]];
+        [self addPointToTeamTwo];
+    }
+    else {
+        int oldDF = [[_teamTwoStats doubleFaults] intValue];
+        [_teamTwoStats setDoubleFaults:[NSNumber numberWithInt:oldDF+1]];
+        [self addPointToTeamOne];
+    }
 }
 
 -(void)addPointToTeamOne {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
+    
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int teamServes = [[_teamOneStats servesMade] intValue];
+        [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
+    }
+    else {
+        int teamServes = [[_teamTwoStats servesMade] intValue];
+        [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
+    }
+    
+    _isFault = false;
+    
     NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
@@ -287,12 +372,70 @@
 }
 
 -(void)subtractPointFromTeamOne {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes-1]];
+    
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int teamServes = [[_teamOneStats servesMade] intValue];
+        [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes-1]];
+    }
+    else {
+        int teamServes = [[_teamTwoStats servesMade] intValue];
+        [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes-1]];
+    }
+    
+    _isFault = false;
+    
     NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
+    
+    int score = 0;
+    if ([oldFieldOne.text isEqualToString:@"Ad."]) {
+        score = 50;
+    }
+    else {
+        score = [oldFieldOne.text intValue];
+    }
+    
+    switch (score) {
+        case 0:
+            oldFieldOne.text = @"0";
+            break;
+        case 15:
+            oldFieldOne.text = @"0";
+            break;
+        case 30:
+            oldFieldOne.text = @"15";
+            break;
+        case 40:
+            oldFieldOne.text = @"30";
+            [self addNewGame:nil];
+            break;
+        case 50:
+            oldFieldOne.text = @"40";
+            [self addNewGame:nil];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)addPointToTeamTwo {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
+    
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int teamServes = [[_teamOneStats servesMade] intValue];
+        [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
+    }
+    else {
+        int teamServes = [[_teamTwoStats servesMade] intValue];
+        [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
+    }
+    
+    _isFault = false;
+    
     NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
@@ -329,9 +472,52 @@
 }
 
 -(void)subtractPointFromTeamTwo {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes-1]];
+    
+    if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        int teamServes = [[_teamOneStats servesMade] intValue];
+        [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes-1]];
+    }
+    else {
+        int teamServes = [[_teamTwoStats servesMade] intValue];
+        [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes-1]];
+    }
+    
+    _isFault = false;
+    
     NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
+    
+    int score = 0;
+    if ([oldFieldTwo.text isEqualToString:@"Ad."]) {
+        score = 50;
+    }
+    else {
+        score = [oldFieldTwo.text intValue];
+    }
+    
+    switch (score) {
+        case 0:
+            oldFieldTwo.text = @"0";
+            break;
+        case 15:
+            oldFieldTwo.text = @"0";
+            break;
+        case 30:
+            oldFieldTwo.text = @"15";
+            break;
+        case 40:
+            oldFieldTwo.text = @"30";
+            break;
+        case 50:
+            oldFieldTwo.text = @"40";
+            [self addNewGame:nil];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)setIsDoubles:(BOOL)isDoubles {
@@ -342,6 +528,11 @@
     _teamOne = teamOne;
     [_teamOne setScore:[NSNumber numberWithInt:0]];
     [_match setTeamOne:_teamOne];
+    
+    _teamOneStats = [[Stats alloc] init];
+    _teamOnePlayerOneStats = [[Stats alloc] init];
+    
+    _servingPlayerStats = _teamOnePlayerOneStats;
     
     UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 90, 3*SCORESIZE/4, 3*SCORESIZE/4)];
     imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
@@ -362,6 +553,8 @@
     teamOneLabel.numberOfLines = 0;
     teamOneLabel.text = [[teamOne playerOne] playerName];
     if (_isDoubles) {
+        _teamTwoPlayerTwoStats = [[Stats alloc] init];
+        
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, 90 + SCORESIZE/3, 3*SCORESIZE/4, 3*SCORESIZE/4)];
         imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = (3*SCORESIZE/4)/2;
@@ -415,6 +608,9 @@
     [_teamTwo setScore:[NSNumber numberWithInt:0]];
     [_match setTeamTwo:_teamTwo];
     
+    _teamTwoStats = [[teamTwo playerOne] playerStats];
+    _teamTwoPlayerOneStats = [[Stats alloc] init];
+    
     UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
     imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
     imageViewOne.layer.cornerRadius = 3*SCORESIZE/8;
@@ -434,6 +630,7 @@
     teamTwoLabel.numberOfLines = 0;
     teamTwoLabel.text = [[teamTwo playerOne] playerName];
     if (_isDoubles) {
+        _teamTwoPlayerTwoStats = [[Stats alloc] init];
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, SCORESIZE/3 + 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
         imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = 3*SCORESIZE/8;
@@ -746,75 +943,98 @@
         int gamesTeamOneWon = [[tmp1 text] intValue];
         int gamesTeamTwoWon = [[tmp2 text] intValue];
         
-        int gamesTeamOnePlayerOnePlayed = [[[_teamOne playerOne] playerGamesPlayed] intValue];
-        int gamesTeamOnePlayerOneWon = [[[_teamOne playerOne] playerGamesWon] intValue];
-        [[_teamOne playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerOnePlayed)]];
-        [[_teamOne playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerOneWon)]];
+        int gamesTeamOnePlayed = [[_teamOneStats playerGamesPlayed] intValue];
+        int gamesTeamOneWonBefore = [[_teamOneStats playerGamesWon] intValue];
+        int gamesTeamTwoPlayed = [[_teamTwoStats playerGamesPlayed] intValue];
+        int gamesTeamTwoWonBefore = [[_teamTwoStats playerGamesWon] intValue];
+        
+        [_teamOneStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesTeamOnePlayed + gamesPlayed)]];
+        [_teamOneStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOneWonBefore)]];
+        [_teamTwoStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesTeamTwoPlayed + gamesPlayed)]];
+        [_teamTwoStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoWonBefore)]];
+        
+        int gamesTeamOnePlayerOnePlayed = [[_teamOnePlayerOneStats playerGamesPlayed] intValue];
+        //int gamesTeamOnePlayerOnePlayed = [[[_teamOne playerOne] playerGamesPlayed] intValue];
+        int gamesTeamOnePlayerOneWon = [[_teamOnePlayerOneStats playerGamesWon] intValue];
+        //int gamesTeamOnePlayerOneWon = [[[_teamOne playerOne] playerGamesWon] intValue];
+        [_teamOnePlayerOneStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerOnePlayed)]];
+        [_teamOnePlayerOneStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerOneWon)]];
         if (_isDoubles) {
-            int gamesTeamOnePlayerTwoPlayed = [[[_teamOne playerTwo] playerGamesPlayed] intValue];
-            int gamesTeamOnePlayerTwoWon = [[[_teamOne playerTwo] playerGamesWon] intValue];
-            [[_teamOne playerTwo] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerTwoPlayed)]];
-            [[_teamOne playerTwo] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerTwoWon)]];
+            int gamesTeamOnePlayerTwoPlayed = [[_teamOnePlayerTwoStats playerGamesPlayed] intValue];
+            int gamesTeamOnePlayerTwoWon = [[_teamOnePlayerTwoStats playerGamesWon] intValue];
+            [_teamOnePlayerTwoStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamOnePlayerTwoPlayed)]];
+            [_teamOnePlayerTwoStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamOneWon + gamesTeamOnePlayerTwoWon)]];
         }
         
-        int gamesTeamTwoPlayerOnePlayed = [[[_teamTwo playerOne] playerGamesPlayed] intValue];
-        int gamesTeamTwoPlayerOneWon = [[[_teamTwo playerOne] playerGamesWon] intValue];
-        [[_teamTwo playerOne] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerOnePlayed)]];
-        [[_teamTwo playerOne] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerOneWon)]];
+        int gamesTeamTwoPlayerOnePlayed = [[_teamTwoPlayerOneStats playerGamesPlayed] intValue];
+        int gamesTeamTwoPlayerOneWon = [[_teamTwoPlayerOneStats playerGamesWon] intValue];
+        [_teamTwoPlayerOneStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerOnePlayed)]];
+        [_teamTwoPlayerOneStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerOneWon)]];
         if (_isDoubles) {
-            int gamesTeamTwoPlayerTwoPlayed = [[[_teamTwo playerTwo] playerGamesPlayed] intValue];
-            int gamesTeamTwoPlayerTwoWon = [[[_teamTwo playerTwo] playerGamesWon] intValue];
-            [[_teamTwo playerTwo] setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerTwoPlayed)]];
-            [[_teamTwo playerTwo] setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerTwoWon)]];
+            int gamesTeamTwoPlayerTwoPlayed = [[_teamTwoPlayerTwoStats playerGamesPlayed] intValue];
+            int gamesTeamTwoPlayerTwoWon = [[_teamTwoPlayerTwoStats playerGamesWon] intValue];
+            [_teamTwoPlayerTwoStats setPlayerGamesPlayed:[NSNumber numberWithInt:(gamesPlayed + gamesTeamTwoPlayerTwoPlayed)]];
+            [_teamTwoPlayerTwoStats setPlayerGamesWon:[NSNumber numberWithInt:(gamesTeamTwoWon + gamesTeamTwoPlayerTwoWon)]];
         }
         
-        int oldSetsPlayed = [[[_teamOne playerOne] playerSetsPlayed] intValue];
+        int oldSetsPlayed = [[_teamOnePlayerOneStats playerSetsPlayed] intValue];
         oldSetsPlayed += 1;
-        [[_teamOne playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
-        oldSetsPlayed = [[[_teamTwo playerOne] playerSetsPlayed] intValue];
+        [_teamOnePlayerOneStats setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        oldSetsPlayed = [[_teamTwoPlayerOneStats playerSetsPlayed] intValue];
         oldSetsPlayed += 1;
-        [[_teamTwo playerOne] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        [_teamTwoPlayerOneStats setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+        
+        int setsTeamOnePlayed = [[_teamOneStats playerSetsPlayed] intValue];
+        int setsTeamTwoPlayed = [[_teamTwoStats playerSetsPlayed] intValue];
+        [_teamOneStats setPlayerSetsPlayed:[NSNumber numberWithInt:(setsTeamOnePlayed+1)]];
+        [_teamTwoStats setPlayerSetsPlayed:[NSNumber numberWithInt:(setsTeamTwoPlayed+1)]];
         
         if (_isDoubles) {
-            oldSetsPlayed = [[[_teamOne playerTwo] playerSetsPlayed] intValue];
+            oldSetsPlayed = [[_teamOnePlayerTwoStats playerSetsPlayed] intValue];
             oldSetsPlayed += 1;
-            [[_teamOne playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+            [_teamOnePlayerTwoStats setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
             
-            oldSetsPlayed = [[[_teamTwo playerTwo] playerSetsPlayed] intValue];
+            oldSetsPlayed = [[_teamTwoPlayerTwoStats playerSetsPlayed] intValue];
             oldSetsPlayed += 1;
-            [[_teamTwo playerTwo] setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
+            [_teamTwoPlayerTwoStats setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
         }
         
         switch ([tmp hasWinner]) {
             case 1: {
+                int setsTeamOneWon = [[_teamOneStats playerSetsWon] intValue];
+                [_teamOneStats setPlayerSetsWon:[NSNumber numberWithInt:(setsTeamOneWon+1)]];
+                
                 tmp1.layer.borderWidth = 2.0;
                 tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
                 int oldScore = [[_teamOne score] intValue];
                 [_teamOne setScore:[NSNumber numberWithInt:oldScore+1]];
                 
-                oldScore = [[[_teamOne playerOne] playerSetsWon] intValue];
+                oldScore = [[_teamOnePlayerOneStats playerSetsWon] intValue];
                 oldScore += 1;
-                [[_teamOne playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                [_teamOnePlayerOneStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
                 if (_isDoubles) {
-                    oldScore = [[[_teamOne playerTwo] playerSetsWon] intValue];
+                    oldScore = [[_teamOnePlayerTwoStats playerSetsWon] intValue];
                     oldScore += 1;
-                    [[_teamOne playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                    [_teamOnePlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
                 }
                 break;
             }
             case 2: {
+                int setsTeamTwoWon = [[_teamTwoStats playerSetsWon] intValue];
+                [_teamTwoStats setPlayerSetsWon:[NSNumber numberWithInt:(setsTeamTwoWon+1)]];
+                
                 tmp2.layer.borderWidth = 2.0;
                 tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
                 int oldScore = [[_teamTwo score] intValue];
                 [_teamTwo setScore:[NSNumber numberWithInt:oldScore+1]];
                 
-                oldScore = [[[_teamTwo playerOne] playerSetsWon] intValue];
+                oldScore = [[_teamTwoPlayerOneStats playerSetsWon] intValue];
                 oldScore += 1;
-                [[_teamTwo playerOne] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                [_teamTwoPlayerOneStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
                 if (_isDoubles) {
-                    oldScore = [[[_teamTwo playerTwo] playerSetsWon] intValue];
+                    oldScore = [[_teamTwoPlayerTwoStats playerSetsWon] intValue];
                     oldScore += 1;
-                    [[_teamTwo playerTwo] setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                    [_teamTwoPlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
                 }
                 break;
             }
@@ -841,43 +1061,49 @@
             [vc canSave];
             [_addMatchButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
             
-            int oldGamesPlayed = [[[_teamOne playerOne] playerMatchesPlayed] intValue];
+            int oldGamesPlayed = [[_teamOnePlayerOneStats playerMatchesPlayed] intValue];
             oldGamesPlayed += 1;
-            [[_teamOne playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
-            oldGamesPlayed = [[[_teamTwo playerOne] playerMatchesPlayed] intValue];
+            [_teamOnePlayerOneStats setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+            oldGamesPlayed = [[_teamTwoPlayerOneStats playerMatchesPlayed] intValue];
             oldGamesPlayed += 1;
-            [[_teamTwo playerOne] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+            [_teamTwoPlayerOneStats setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
             
             if (_isDoubles) {
-                oldGamesPlayed = [[[_teamOne playerTwo] playerMatchesPlayed] intValue];
+                oldGamesPlayed = [[_teamOnePlayerTwoStats playerMatchesPlayed] intValue];
                 oldGamesPlayed += 1;
-                [[_teamOne playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                [_teamOnePlayerTwoStats setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
                 
-                oldGamesPlayed = [[[_teamTwo playerTwo] playerMatchesPlayed] intValue];
+                oldGamesPlayed = [[_teamTwoPlayerTwoStats playerMatchesPlayed] intValue];
                 oldGamesPlayed += 1;
-                [[_teamTwo playerTwo] setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
+                [_teamTwoPlayerTwoStats setPlayerMatchesPlayed:[NSNumber numberWithInt:oldGamesPlayed]];
             }
             
             switch ([_match matchWinner]) {
                 case 1:{
-                    int oldScore = [[[_teamOne playerOne] playerMatchesWon] intValue];
+                    [_teamOneStats setPlayerMatchesWon:[NSNumber numberWithInt:1]];
+                    [_teamTwoStats setPlayerMatchesWon:[NSNumber numberWithInt:0]];
+                    
+                    int oldScore = [[_teamOnePlayerOneStats playerMatchesWon] intValue];
                     oldScore += 1;
-                    [[_teamOne playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    [_teamOnePlayerOneStats setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
                     if (_isDoubles) {
-                        oldScore = [[[_teamOne playerTwo] playerMatchesWon] intValue];
+                        oldScore = [[_teamOnePlayerTwoStats playerMatchesWon] intValue];
                         oldScore += 1;
-                        [[_teamOne playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                        [_teamOnePlayerTwoStats setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
                     }
                     break;
                 }
                 case 2:{
-                    int oldScore = [[[_teamTwo playerOne] playerMatchesWon] intValue];
+                    [_teamOneStats setPlayerMatchesWon:[NSNumber numberWithInt:0]];
+                    [_teamTwoStats setPlayerMatchesWon:[NSNumber numberWithInt:1]];
+                    
+                    int oldScore = [[_teamTwoPlayerOneStats playerMatchesWon] intValue];
                     oldScore += 1;
-                    [[_teamTwo playerOne] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                    [_teamTwoPlayerOneStats setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
                     if (_isDoubles) {
-                        oldScore = [[[_teamTwo playerTwo] playerMatchesWon] intValue];
+                        oldScore = [[_teamTwoPlayerTwoStats playerMatchesWon] intValue];
                         oldScore += 1;
-                        [[_teamTwo playerTwo] setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
+                        [_teamTwoPlayerTwoStats setPlayerMatchesWon:[NSNumber numberWithInt:oldScore]];
                     }
                     break;
                 }
@@ -953,6 +1179,22 @@
     
     switch ([game gameWinner]) {
         case 1:{
+            if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+                if (!_isFault) {
+                    int oldFirstServe = [[_servingPlayerStats firstServesWon] intValue];
+                    [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServe+1]];
+                    
+                    int oldTeamServe = [[_teamOneStats firstServesWon] intValue];
+                    [_teamOneStats setFirstServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
+                }
+                else {
+                    int oldSecondServe = [[_servingPlayerStats secondServesWon] intValue];
+                    [_servingPlayerStats setSecondServesWon:[NSNumber numberWithInt:oldSecondServe+1]];
+                    
+                    int oldTeamServe = [[_teamOneStats secondServesWon] intValue];
+                    [_teamOneStats setSecondServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
+                }
+            }
             int lastScore = [[setOneField text] intValue];
             lastScore += 1;
             [setOneField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
@@ -962,6 +1204,22 @@
             break;
         }
         case 2:{
+            if (_servingPlayerSelector == 2 || _servingPlayerSelector == 4) {
+                if (!_isFault) {
+                    int oldFirstServe = [[_servingPlayerStats firstServesWon] intValue];
+                    [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServe+1]];
+                    
+                    int oldTeamServe = [[_teamTwoStats firstServesWon] intValue];
+                    [_teamTwoStats setFirstServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
+                }
+                else {
+                    int oldSecondServe = [[_teamTwoStats secondServesWon] intValue];
+                    [_servingPlayerStats setSecondServesWon:[NSNumber numberWithInt:oldSecondServe+1]];
+                    
+                    int oldTeamServe = [[_teamTwoStats secondServesWon] intValue];
+                    [_teamTwoStats setSecondServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
+                }
+            }
             int lastScore = [[setTwoField text] intValue];
             lastScore += 1;
             [setTwoField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
@@ -1004,7 +1262,6 @@
     }
     
     if (![game gameWinner]) {
-        //Do nothing and wait for a valid score
         if ([[tmp teamOneScore] intValue] == 50) {
             [tmp setTeamOneScore:[NSNumber numberWithInt:40]];
             oldFieldOne.text = @"Ad.";
@@ -1035,7 +1292,7 @@
         IQDropDownTextField *textFieldOne = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE, GAMESIZE, GAMESIZE)];
         textFieldOne.adjustsFontSizeToFitWidth = YES;
         textFieldOne.isOptionalDropDown = NO;
-        [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
+        [textFieldOne setItemList:@[@"0", @"15", @"30", @"40", @"Ad.", @"\u2713"]];
         textFieldOne.delegate = self;
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
@@ -1043,7 +1300,7 @@
         IQDropDownTextField *textFieldTwo = [[IQDropDownTextField alloc] initWithFrame:CGRectMake(GAMESIZE*[[tmp games] count], GAMESIZE*2, GAMESIZE, GAMESIZE)];
         textFieldTwo.adjustsFontSizeToFitWidth = YES;
         textFieldTwo.isOptionalDropDown = NO;
-        [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad."]];
+        [textFieldTwo setItemList:@[@"0", @"15", @"30", @"40", @"Ad.", @"\u2713"]];
         textFieldTwo.delegate = self;
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
@@ -1065,6 +1322,8 @@
                 tmpButton = (VBFPopFlatButton*)tmp;
             }
         }
+        
+        [self updateServingPlayer];
         //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         //addGameButton.tag = indexPath.row;
         [tmpButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, cell.frame.size.height / 2 )];

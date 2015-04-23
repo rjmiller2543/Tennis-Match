@@ -14,6 +14,8 @@
 		500EE65A1AE403C600478700 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE6591AE403C600478700 /* Player.m */; };
 		500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65C1AE425ED00478700 /* MatchDetailViewController.m */; };
 		500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE65F1AE428F200478700 /* PlayerDetailViewController.m */; };
+		5014F4B31AE84345001437D2 /* Stats.m in Sources */ = {isa = PBXBuildFile; fileRef = 5014F4B21AE84345001437D2 /* Stats.m */; };
+		5014F4B61AE84351001437D2 /* Opponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5014F4B51AE84351001437D2 /* Opponent.m */; };
 		501DC37C1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m in Sources */ = {isa = PBXBuildFile; fileRef = 501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */; };
 		501DC3821AE5794700215EC4 /* InfoPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501DC3811AE5794700215EC4 /* InfoPageViewController.m */; };
 		5042B85E1AE2AD250053CC98 /* no-player-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 5042B85D1AE2AD250053CC98 /* no-player-image.png */; };
@@ -68,6 +70,10 @@
 		500EE65C1AE425ED00478700 /* MatchDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchDetailViewController.m; sourceTree = "<group>"; };
 		500EE65E1AE428F200478700 /* PlayerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerDetailViewController.h; sourceTree = "<group>"; };
 		500EE65F1AE428F200478700 /* PlayerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerDetailViewController.m; sourceTree = "<group>"; };
+		5014F4B11AE84345001437D2 /* Stats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stats.h; sourceTree = "<group>"; };
+		5014F4B21AE84345001437D2 /* Stats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stats.m; sourceTree = "<group>"; };
+		5014F4B41AE84351001437D2 /* Opponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opponent.h; sourceTree = "<group>"; };
+		5014F4B51AE84351001437D2 /* Opponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Opponent.m; sourceTree = "<group>"; };
 		501DC37A1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_MZFormDismissal.h"; sourceTree = "<group>"; };
 		501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_MZFormDismissal.m"; sourceTree = "<group>"; };
 		501DC3801AE5794700215EC4 /* InfoPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPageViewController.h; sourceTree = "<group>"; };
@@ -269,6 +275,10 @@
 				50B8F2171AD1E6B6002D3D51 /* Team.m */,
 				50B8F2191AD1E8F3002D3D51 /* Match.h */,
 				50B8F21A1AD1E8F3002D3D51 /* Match.m */,
+				5014F4B11AE84345001437D2 /* Stats.h */,
+				5014F4B21AE84345001437D2 /* Stats.m */,
+				5014F4B41AE84351001437D2 /* Opponent.h */,
+				5014F4B51AE84351001437D2 /* Opponent.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -455,9 +465,11 @@
 				50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */,
 				50B8F1D41ACF5FFB002D3D51 /* MasterViewController.m in Sources */,
 				50B8F2121AD1E69A002D3D51 /* Game.m in Sources */,
+				5014F4B61AE84351001437D2 /* Opponent.m in Sources */,
 				50B8F1CE1ACF5FFA002D3D51 /* AppDelegate.m in Sources */,
 				50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */,
 				50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */,
+				5014F4B31AE84345001437D2 /* Stats.m in Sources */,
 				500EE6551AE31A0C00478700 /* TeamPlayer.m in Sources */,
 				500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */,
 				5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */,

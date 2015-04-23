@@ -7,25 +7,64 @@
 //
 
 #import "Player.h"
+#import "Stats.h"
 
 
 @implementation Player
 
-@dynamic playerGamesPlayed;
 @dynamic playerImage;
 @dynamic playerName;
-@dynamic playerLastName;
-@dynamic playerGamesWon;
 @dynamic timeStamp;
-@dynamic playerMatchesPlayed;
-@dynamic playerMatchesWon;
-@dynamic playerSetsPlayed;
-@dynamic playerSetsWon;
-@dynamic aces;
-@dynamic doubleFaults;
-@dynamic faults;
-@dynamic firstServesWon;
-@dynamic secondServesWon;
-@dynamic servesMade;
+@dynamic playerLastName;
+@dynamic playerStats;
+@dynamic opponents;
+
+@end
+
+@implementation Opponents
+
++ (Class)transformedValueClass
+{
+    return [NSArray class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation PlayerStats
+
++ (Class)transformedValueClass
+{
+    return [Stats class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (NSArray*)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
 
 @end
