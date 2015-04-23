@@ -10,6 +10,25 @@
 
 @implementation Stats
 
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setPlayerGamesPlayed:[NSNumber numberWithInt:0]];
+        [self setPlayerGamesWon:[NSNumber numberWithInt:0]];
+        [self setPlayerMatchesPlayed:[NSNumber numberWithInt:0]];
+        [self setPlayerMatchesWon:[NSNumber numberWithInt:0]];
+        [self setPlayerSetsPlayed:[NSNumber numberWithInt:0]];
+        [self setPlayerSetsWon:[NSNumber numberWithInt:0]];
+        [self setAces:[NSNumber numberWithInt:0]];
+        [self setDoubleFaults:[NSNumber numberWithInt:0]];
+        [self setFaults:[NSNumber numberWithInt:0]];
+        [self setFirstServesWon:[NSNumber numberWithInt:0]];
+        [self setSecondServesWon:[NSNumber numberWithInt:0]];
+        [self setServesMade:[NSNumber numberWithInt:0]];
+    }
+    return self;
+}
+
 -(id)initWithCoder:(NSCoder*)aDecoder {
     if (self = [super init]) {
         [self setPlayerGamesPlayed:[aDecoder decodeObjectForKey:@"gamesPlayed"]];

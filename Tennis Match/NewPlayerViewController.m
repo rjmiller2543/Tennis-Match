@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #include "UIViewController+UIViewController_MZFormDismissal.h"
 #include "PlayerDetailViewController.h"
+#include "Stats.h"
+#include "Opponent.h"
 
 @interface NewPlayerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -84,6 +86,8 @@
         [newPlayer setPlayerName:[_firstNameField text]];
         [newPlayer setPlayerLastName:[_lastNameField text]];
         [newPlayer setPlayerImage:UIImageJPEGRepresentation(_imageView.image, 0.5)];
+        [newPlayer setPlayerStats:[[Stats alloc] init]];
+        [newPlayer setOpponents:[[NSArray alloc] init]];
         
         NSError *error = nil;
         if (![context save:&error]) {

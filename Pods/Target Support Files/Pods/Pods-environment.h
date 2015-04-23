@@ -96,6 +96,12 @@
 #define COCOAPODS_VERSION_MINOR_FrameAccessor 3
 #define COCOAPODS_VERSION_PATCH_FrameAccessor 2
 
+// GRKBarGraphView
+#define COCOAPODS_POD_AVAILABLE_GRKBarGraphView
+#define COCOAPODS_VERSION_MAJOR_GRKBarGraphView 1
+#define COCOAPODS_VERSION_MINOR_GRKBarGraphView 1
+#define COCOAPODS_VERSION_PATCH_GRKBarGraphView 2
+
 // GraphKit
 #define COCOAPODS_POD_AVAILABLE_GraphKit
 #define COCOAPODS_VERSION_MAJOR_GraphKit 1

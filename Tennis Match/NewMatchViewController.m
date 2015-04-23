@@ -97,13 +97,16 @@
     UILabel *serveLabel = [[UILabel alloc] init];
     serveLabel.text = @"First Serve";
     serveLabel.font = [UIFont flatFontOfSize:16.0f];
-    serveLabel.tintColor = [UIColor turquoiseColor];
+    serveLabel.textAlignment = NSTextAlignmentCenter;
+    serveLabel.textColor = [UIColor turquoiseColor];
+    serveLabel.backgroundColor = [UIColor alizarinColor];
+    serveLabel.layer.cornerRadius = 6.0;
     [serveLabel sizeToFit];
     CGRect lFrame = serveLabel.frame;
     lFrame.size.width = lFrame.size.width + 12;
     lFrame.size.height = lFrame.size.height + 12;
     [serveLabel setFrame:lFrame];
-    [serveLabel setCenter:CGPointMake(self.view.center.x, self.view.center.y - 36)];
+    [serveLabel setCenter:CGPointMake(self.view.center.x, 75)];
     [_tennisView addSubview:serveLabel];
     
     _matchView = [[NewMatchView alloc] init];
@@ -257,6 +260,9 @@
         [matchOpponent setOpposingTeamStats:_matchView.teamTwoStats];
         [matchOpponent setMyTeam:_teamOne];
         [matchOpponent setMyTeamStats:_matchView.teamOneStats];
+        NSMutableArray *oppArray = [[_teamOne playerOne] opponents];
+        [oppArray addObject:matchOpponent];
+        [[_teamOne playerOne] setOpponents:oppArray];
     }
     
     if (!_isSingles) {
@@ -361,6 +367,9 @@
             [matchOneTwoOpponent setOpposingTeamStats:_matchView.teamTwoStats];
             [matchOneTwoOpponent setMyTeam:_teamOne];
             [matchOneTwoOpponent setMyTeamStats:_matchView.teamOneStats];
+            NSMutableArray *oppArray = [[_teamOne playerTwo] opponents];
+            [oppArray addObject:matchOneTwoOpponent];
+            [[_teamOne playerTwo] setOpponents:oppArray];
         }
     }
     
@@ -464,6 +473,9 @@
         [matchTwoOpponent setOpposingTeamStats:_matchView.teamTwoStats];
         [matchTwoOpponent setMyTeam:_teamOne];
         [matchTwoOpponent setMyTeamStats:_matchView.teamOneStats];
+        NSMutableArray *oppArray = [[_teamTwo playerOne] opponents];
+        [oppArray addObject:matchTwoOpponent];
+        [[_teamTwo playerOne] setOpponents:oppArray];
     }
     
     if (!_isSingles) {
@@ -568,6 +580,9 @@
             [matchTwoTwoOpponent setOpposingTeamStats:_matchView.teamTwoStats];
             [matchTwoTwoOpponent setMyTeam:_teamOne];
             [matchTwoTwoOpponent setMyTeamStats:_matchView.teamOneStats];
+            NSMutableArray *oppArray = [[_teamTwo playerTwo] opponents];
+            [oppArray addObject:matchTwoTwoOpponent];
+            [[_teamTwo playerTwo] setOpponents:oppArray];
         }
     }
     

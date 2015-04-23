@@ -13,6 +13,8 @@
 #import "NewPlayerViewController.h"
 #import <MZFormSheetController/MZFormSheetController.h>
 #import "Stats.h"
+#import <GRKBarGraphView/GRKBarGraphView.h>
+#import <VBFPopFlatButton/VBFPopFlatButton.h>
 
 @interface PlayerDetailViewController ()
 
@@ -20,6 +22,11 @@
 @property(nonatomic,retain) UIImageView *imageView;
 @property(nonatomic,retain) UILabel *nameLabel;
 @property(nonatomic,retain) UILabel *lastNameLabel;
+
+@property(nonatomic,retain) UIView *bottomView;
+@property(nonatomic,retain) VBFPopFlatButton *downButton;
+
+@property(nonatomic) BOOL isUp;
 
 @end
 
@@ -32,9 +39,14 @@
     self.view.backgroundColor = [UIColor cloudsColor];
     [self configureView];
     
+    _isUp = true;
+    
     [self performSelector:@selector(addPlayerMatchesGraph) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(addPlayerSetsGraph) withObject:nil afterDelay:1.0];
     [self performSelector:@selector(addPlayerGamesGraph) withObject:nil afterDelay:1.5];
+    [self performSelector:@selector(addDownArrow) withObject:nil afterDelay:2.0];
+    
+    //[self bottomLayout];
     
 }
 
@@ -46,14 +58,18 @@
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPlayer)];
     self.navigationItem.rightBarButtonItem = editButton;
     
+    self.view.backgroundColor = [UIColor cloudsColor];
+    
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _scrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_scrollView];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 5, self.view.frame.size.height)];
     lineView.backgroundColor = [UIColor asbestosColor];
-    [_scrollView addSubview:lineView];
+    //[_scrollView addSubview:lineView];
+    [self.view addSubview:lineView];
     
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, /*self.navigationController.navigationBar.frame.size.height +*/ 45, 90, 90)];
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 45, 90, 90)];
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
     _imageView.backgroundColor = [UIColor cloudsColor];
     _imageView.layer.masksToBounds = YES;
@@ -67,18 +83,58 @@
         _imageView.image = [UIImage imageNamed:@"no-player-image.png"];
         _imageView.userInteractionEnabled = YES;
     }
-    [_scrollView addSubview:_imageView];
+    [self.view addSubview:_imageView];
     
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(110, /*self.navigationController.navigationBar.frame.size.height +*/ 45, self.view.frame.size.width - 110, 45)];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(110, self.navigationController.navigationBar.frame.size.height + 45, self.view.frame.size.width - 110, 45)];
     _nameLabel.text = [_detailPlayer playerName];
     _nameLabel.font = [UIFont boldFlatFontOfSize:22.0f];
-    [_scrollView addSubview:_nameLabel];
+    [self.view addSubview:_nameLabel];
     
-    _lastNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(110, /*self.navigationController.navigationBar.frame.size.height +*/ 90, self.view.frame.size.width - 110, 45)];
+    _lastNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(110, self.navigationController.navigationBar.frame.size.height + 90, self.view.frame.size.width - 110, 45)];
     _lastNameLabel.text = [_detailPlayer playerLastName];
     _lastNameLabel.font = [UIFont boldFlatFontOfSize:22.0f];
-    [_scrollView addSubview:_lastNameLabel];
+    [self.view addSubview:_lastNameLabel];
     
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+    _bottomView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_bottomView];
+    
+}
+
+-(void)switchViews {
+    
+    if (_isUp) {
+        _isUp = false;
+        [UIView animateWithDuration:0.7 animations:^{
+            [_scrollView setFrame:CGRectMake(0, -self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+            [_bottomView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+            [_downButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 40, self.navigationController.navigationBar.frame.size.height + 40, 30, 30)];
+            [_downButton animateToType:buttonUpBasicType];
+            [self bottomLayout];
+        } completion:^(BOOL finished) {
+            // up up
+        }];
+    }
+    else {
+        _isUp = true;
+        [UIView animateWithDuration:0.7 animations:^{
+            [_scrollView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+            [_bottomView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+            [_downButton setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 40, [UIScreen mainScreen].bounds.size.height - 40, 30, 30)];
+            [_downButton animateToType:buttonDownBasicType];
+            //[self bottomLayout];
+        } completion:^(BOOL finished) {
+            // up up
+        }];
+    }
+    
+}
+
+-(void)addDownArrow {
+    _downButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 40, [UIScreen mainScreen].bounds.size.height - 40, 30, 30) buttonType:buttonDownBasicType buttonStyle:buttonPlainStyle animateToInitialState:YES];
+    _downButton.tintColor = [UIColor asbestosColor];
+    [_downButton addTarget:self action:@selector(switchViews) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_downButton];
 }
 
 -(void)addPlayerGamesGraph {
@@ -171,6 +227,42 @@
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];
     [_scrollView addSubview:pieChart];
+    
+}
+
+-(void)bottomLayout {
+    
+    UIScrollView *statsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [statsScrollView setContentSize:CGSizeMake([[_detailPlayer opponents] count]*self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [_bottomView addSubview:statsScrollView];
+    
+    TOMSMorphingLabel *acesWon = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(0, 0, 250, 30)];
+    [acesWon setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, self.navigationController.navigationBar.frame.size.height + 145)];
+    acesWon.textAlignment = NSTextAlignmentCenter;
+    [statsScrollView addSubview:acesWon];
+    acesWon.textColor = [UIColor asbestosColor];
+    NSString *acesWonString = @"Ace %";
+    acesWon.text = acesWonString;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, 300, 300, 80)];
+    view.backgroundColor = [UIColor blackColor];
+    [statsScrollView addSubview:view];
+    GRKBarGraphView *graph = [[GRKBarGraphView alloc] initWithFrame:CGRectMake(0, 0, 300, 80)];
+    graph.percent = 0.5;
+    graph.backgroundColor = [UIColor yellowColor];
+    graph.tintColor = [UIColor blackColor];
+    [view addSubview:graph];
+    
+    GRKBarGraphView *acesGraphView = [[GRKBarGraphView alloc] initWithFrame:CGRectMake(105, self.navigationController.navigationBar.frame.size.height + 145, [UIScreen mainScreen].bounds.size.width - 105 - 45, 30)];
+    acesGraphView.barStyle = GRKBarStyleFromBottom;
+    acesGraphView.mediaTimingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    acesGraphView.backgroundColor = [UIColor blackColor];
+    acesGraphView.barColor = [UIColor turquoiseColor];
+    acesGraphView.barColorUsesTintColor = NO;
+    acesGraphView.tintColor = [UIColor asbestosColor];
+    acesGraphView.animationDuration = 0.0;
+    acesGraphView.percent = 0.5/*[[[_detailPlayer playerStats] aces] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]*/;
+    [statsScrollView addSubview:acesGraphView];
     
 }
 
