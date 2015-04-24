@@ -15,8 +15,9 @@
 #import "Stats.h"
 #import <GRKBarGraphView/GRKBarGraphView.h>
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
+#import <GraphKit.h>
 
-@interface PlayerDetailViewController ()
+@interface PlayerDetailViewController () <GKBarGraphDataSource>
 
 @property(nonatomic,retain) UIScrollView *scrollView;
 @property(nonatomic,retain) UIImageView *imageView;
@@ -26,17 +27,22 @@
 @property(nonatomic,retain) UIView *bottomView;
 @property(nonatomic,retain) VBFPopFlatButton *downButton;
 
+@property(nonatomic,retain) GRKBarGraphView *aces;
+
 @property(nonatomic) BOOL isUp;
 
 @end
 
 @implementation PlayerDetailViewController
 
+@synthesize aces;
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor cloudsColor];
+    
     [self configureView];
     
     _isUp = true;
@@ -232,38 +238,80 @@
 
 -(void)bottomLayout {
     
-    UIScrollView *statsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
-    [statsScrollView setContentSize:CGSizeMake([[_detailPlayer opponents] count]*self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    UIScrollView *statsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 145, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [statsScrollView setContentSize:CGSizeMake(([[_detailPlayer opponents] count]+1)*self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     [_bottomView addSubview:statsScrollView];
     
     TOMSMorphingLabel *acesWon = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(0, 0, 250, 30)];
     [acesWon setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, self.navigationController.navigationBar.frame.size.height + 145)];
     acesWon.textAlignment = NSTextAlignmentCenter;
-    [statsScrollView addSubview:acesWon];
+    //[statsScrollView addSubview:acesWon];
     acesWon.textColor = [UIColor asbestosColor];
     NSString *acesWonString = @"Ace %";
     acesWon.text = acesWonString;
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, 300, 300, 80)];
-    view.backgroundColor = [UIColor blackColor];
+    UIView *view = [[UIView alloc] init];
+    view.transform = CGAffineTransformMakeRotation(90 * M_PI / 180);
+    view.backgroundColor = [UIColor greenColor];
+    //view.backgroundColor = [UIColor blackColor];
     [statsScrollView addSubview:view];
-    GRKBarGraphView *graph = [[GRKBarGraphView alloc] initWithFrame:CGRectMake(0, 0, 300, 80)];
-    graph.percent = 0.5;
-    graph.backgroundColor = [UIColor yellowColor];
-    graph.tintColor = [UIColor blackColor];
-    [view addSubview:graph];
     
-    GRKBarGraphView *acesGraphView = [[GRKBarGraphView alloc] initWithFrame:CGRectMake(105, self.navigationController.navigationBar.frame.size.height + 145, [UIScreen mainScreen].bounds.size.width - 105 - 45, 30)];
-    acesGraphView.barStyle = GRKBarStyleFromBottom;
-    acesGraphView.mediaTimingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
-    acesGraphView.backgroundColor = [UIColor blackColor];
-    acesGraphView.barColor = [UIColor turquoiseColor];
-    acesGraphView.barColorUsesTintColor = NO;
-    acesGraphView.tintColor = [UIColor asbestosColor];
-    acesGraphView.animationDuration = 0.0;
-    acesGraphView.percent = 0.5/*[[[_detailPlayer playerStats] aces] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]*/;
-    [statsScrollView addSubview:acesGraphView];
+    /*
+    GKBarGraph *barGraph = [[GKBarGraph alloc] init];
+    //barGraph.transform = CGAffineTransformMakeRotation(90 * M_PI / 180);
+    [barGraph setFrame:CGRectMake(0, 0, self.view.frame.size.width - 160, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 145)];
+    barGraph.barHeight = self.view.frame.size.width - 105;
+    barGraph.barWidth = 30;
+    barGraph.marginBar = 45;
+    barGraph.transform = CGAffineTransformMakeRotation(90 * M_PI / 180);
+    barGraph.dataSource = self;
+    [view addSubview:barGraph];
     
+    [barGraph draw];
+     */
+    aces = [[GRKBarGraphView alloc] init];
+    [statsScrollView addSubview:aces];
+    [aces setFrame:CGRectMake(100, 200, 200, 30)];
+    aces.percent = 0.5;
+}
+
+-(NSInteger)numberOfBars {
+    return 5;
+}
+
+-(NSNumber *)valueForBarAtIndex:(NSInteger)index {
+    float up = 0;
+    if ([[[_detailPlayer playerStats] servesMade] intValue] == 0) {
+        return 0;
+    }
+    else {
+        switch (index) {
+            case 0:
+                up = 100 * [[[_detailPlayer playerStats] aces] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue];
+                break;
+            case 1:
+                up = 100 * [[[_detailPlayer playerStats] faults] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue];
+                break;
+            case 2:
+                up = 100 * [[[_detailPlayer playerStats] doubleFaults] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue];
+                break;
+            case 3:
+                up = 100 * [[[_detailPlayer playerStats] firstServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue];
+                break;
+            case 4:
+                up = 100 * [[[_detailPlayer playerStats] secondServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue];
+                break;
+            
+            default:
+                break;
+        }
+    }
+    
+    return [NSNumber numberWithFloat:up];
+}
+
+-(NSString *)titleForBarAtIndex:(NSInteger)index {
+    return @"";
 }
 
 -(void)savedPlayer {

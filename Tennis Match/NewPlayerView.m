@@ -8,6 +8,7 @@
 
 #import "NewPlayerView.h"
 #import "AppDelegate.h"
+#import "Stats.h"
 
 @implementation NewPlayerView
 
@@ -176,6 +177,8 @@
             
             [player setTimeStamp:[NSDate date]];
             [player setPlayerName:textField.text];
+            [player setPlayerStats:[[Stats alloc] init]];
+            [player setOpponents:[[NSArray alloc] init]];
             
             NSError *contextError = nil;
             if (![[[AppDelegate sharedInstance] managedObjectContext] save:&contextError]) {
