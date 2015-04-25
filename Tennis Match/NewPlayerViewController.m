@@ -16,7 +16,7 @@
 #include "Stats.h"
 #include "Opponent.h"
 
-@interface NewPlayerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface NewPlayerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 
 @property(nonatomic,retain) UIImageView *imageView;
 @property(nonatomic,retain) JVFloatLabeledTextField *firstNameField;
@@ -45,10 +45,12 @@
     [_imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addPhoto)]];
     
     _firstNameField = [[JVFloatLabeledTextField alloc] initWithFrame:CGRectMake(120, 10, 120, 60)];
+    _firstNameField.delegate = self;
     [_firstNameField setPlaceholder:@"First Name" floatingTitle:@"First Name"];
     [self.view addSubview:_firstNameField];
     
     _lastNameField = [[JVFloatLabeledTextField alloc] initWithFrame:CGRectMake(120, 80, 120, 60)];
+    _lastNameField.delegate = self;
     [_lastNameField setPlaceholder:@"Last Name" floatingTitle:@"Last Name"];
     [self.view addSubview:_lastNameField];
     
@@ -160,6 +162,11 @@
         
         
     }];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 #pragma mark - image picker delegate methods
