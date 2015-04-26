@@ -78,6 +78,12 @@
 #define COCOAPODS_VERSION_MINOR_CSGrowingTextView 0
 #define COCOAPODS_VERSION_PATCH_CSGrowingTextView 4
 
+// DIDatePicker
+#define COCOAPODS_POD_AVAILABLE_DIDatePicker
+#define COCOAPODS_VERSION_MAJOR_DIDatePicker 0
+#define COCOAPODS_VERSION_MINOR_DIDatePicker 1
+#define COCOAPODS_VERSION_PATCH_DIDatePicker 0
+
 // FXBlurView
 #define COCOAPODS_POD_AVAILABLE_FXBlurView
 #define COCOAPODS_VERSION_MAJOR_FXBlurView 1
@@ -90,23 +96,11 @@
 #define COCOAPODS_VERSION_MINOR_FlatUIKit 6
 #define COCOAPODS_VERSION_PATCH_FlatUIKit 0
 
-// FrameAccessor
-#define COCOAPODS_POD_AVAILABLE_FrameAccessor
-#define COCOAPODS_VERSION_MAJOR_FrameAccessor 1
-#define COCOAPODS_VERSION_MINOR_FrameAccessor 3
-#define COCOAPODS_VERSION_PATCH_FrameAccessor 2
-
 // GRKBarGraphView
 #define COCOAPODS_POD_AVAILABLE_GRKBarGraphView
 #define COCOAPODS_VERSION_MAJOR_GRKBarGraphView 1
 #define COCOAPODS_VERSION_MINOR_GRKBarGraphView 1
 #define COCOAPODS_VERSION_PATCH_GRKBarGraphView 2
-
-// GraphKit
-#define COCOAPODS_POD_AVAILABLE_GraphKit
-#define COCOAPODS_VERSION_MAJOR_GraphKit 1
-#define COCOAPODS_VERSION_MINOR_GraphKit 1
-#define COCOAPODS_VERSION_PATCH_GraphKit 1
 
 // IQDropDownTextField
 #define COCOAPODS_POD_AVAILABLE_IQDropDownTextField
@@ -132,12 +126,6 @@
 #define COCOAPODS_VERSION_MAJOR_JVFloatingDrawer 0
 #define COCOAPODS_VERSION_MINOR_JVFloatingDrawer 1
 #define COCOAPODS_VERSION_PATCH_JVFloatingDrawer 0
-
-// MKFoundationKit/NSArray
-#define COCOAPODS_POD_AVAILABLE_MKFoundationKit_NSArray
-#define COCOAPODS_VERSION_MAJOR_MKFoundationKit_NSArray 1
-#define COCOAPODS_VERSION_MINOR_MKFoundationKit_NSArray 2
-#define COCOAPODS_VERSION_PATCH_MKFoundationKit_NSArray 3
 
 // MMProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MMProgressHUD

@@ -25,7 +25,7 @@
 
 + (Class)transformedValueClass
 {
-    return [NSMutableArray class];
+    return [NSArray class];
 }
 
 + (BOOL)allowsReverseTransformation

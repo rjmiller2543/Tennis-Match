@@ -20,7 +20,7 @@
 -(void)configureCell {
     
     self.backgroundColor = [UIColor clearColor];
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 10, 150)];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 10, 180)];
     containerView.backgroundColor = [UIColor cloudsColor];
     containerView.layer.cornerRadius = 10;
     [self addSubview:containerView];
@@ -131,7 +131,23 @@
         textFieldTwo.text = [[[setsArray objectAtIndex:i] teamTwoScore] stringValue];
         [containerView addSubview:textFieldTwo];
         
+        if ([[[setsArray objectAtIndex:i] teamOneScore] intValue] > [[[setsArray objectAtIndex:i] teamTwoScore] intValue]) {
+            textFieldOne.layer.borderWidth = 2.0f;
+        }
+        else {
+            textFieldTwo.layer.borderWidth = 2.0f;
+        }
+        
     }
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width - 10, 25)];
+    [dateLabel setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width / 2, containerView.frame.size.height - 30)];
+    dateLabel.font = [UIFont flatFontOfSize:14.0f];
+    dateLabel.text = [formatter stringFromDate:[_cellMatch timeStamp]];
+    [containerView addSubview:dateLabel];
     
 }
 

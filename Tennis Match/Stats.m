@@ -55,7 +55,7 @@
     [aCoder encodeObject:_playerSetsPlayed forKey:@"setsPlayed"];
     [aCoder encodeObject:_playerSetsWon forKey:@"setsWon"];
     [aCoder encodeObject:_aces forKey:@"aces"];
-    [aCoder encodeObject:_doubleFaults forKey:@"doubleFaules"];
+    [aCoder encodeObject:_doubleFaults forKey:@"doubleFaults"];
     [aCoder encodeObject:_faults forKey:@"faults"];
     [aCoder encodeObject:_firstServesWon forKey:@"firstServesWon"];
     [aCoder encodeObject:_secondServesWon forKey:@"secondServesWon"];

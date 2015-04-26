@@ -66,15 +66,27 @@
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu-25.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     self.navigationItem.leftBarButtonItem = menuButton;
     
-    CAGradientLayer *tableViewLayer = [CAGradientLayer layer];
-    tableViewLayer.frame = self.tableView.frame;
+    UIView *backgroundView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    
+    CAGradientLayer * tableViewLayer = [CAGradientLayer layer];
+    //_tableViewLayer.frame = self.tableView.frame;
+    tableViewLayer.frame = [UIScreen mainScreen].bounds;
     NSArray *locations = @[[NSNumber numberWithFloat:0], [NSNumber numberWithFloat:0.3], [NSNumber numberWithFloat:0.8], [NSNumber numberWithFloat:0.9], [NSNumber numberWithFloat:1.0]];
     tableViewLayer.locations = locations;
     tableViewLayer.colors = @[(id)[[UIColor whiteColor] CGColor], (id)[[UIColor cloudsColor] CGColor], (id)[[UIColor lightGrayColor] CGColor]];
-    self.tableView.backgroundColor = [UIColor clearColor];
-    [self.tableView.layer insertSublayer:tableViewLayer atIndex:0];
-    [self.view.layer insertSublayer:tableViewLayer atIndex:0];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [backgroundView.layer insertSublayer:tableViewLayer atIndex:0];
+    
+    [CATransaction commit];
+    
+    self.tableView.backgroundView = backgroundView;
+    //tableViewLayer.startPoint = CGPointMake(0, 0);
+    //tableViewLayer.endPoint = CGPointMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    //tableViewLayer.bounds = [UIScreen mainScreen].bounds;
+    //tableViewLayer.anchorPoint = CGPointZero;
+    
     
     REMenuItem *home = [[REMenuItem alloc] initWithTitle:@"Matches" image:[UIImage imageNamed:@"tennis-court-50.png"] highlightedImage:[UIImage imageNamed:@"stadium-50.png"] action:^(REMenuItem *item) {
         _tableViewSource = MATCHSOURCE;
@@ -158,9 +170,8 @@
     
     [self.navigationController.navigationBar.layer insertSublayer:gradient atIndex:0];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableViewSource = MATCHSOURCE;
     
     //set the predicate and reload the data
@@ -377,7 +388,7 @@
     CGFloat height = 25;
     
     if ([_tableViewSource isEqualToString:MATCHSOURCE]) {
-        height = 160;
+        height = 190;
     }
     else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
         height = 90;

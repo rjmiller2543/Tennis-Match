@@ -278,6 +278,12 @@
 }
 
 -(void)addAceStat {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
+    
+    int oldFirstServes = [[_servingPlayerStats firstServesWon] intValue];
+    [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServes+1]];
+    
     int oldAce = [[_servingPlayerStats aces] intValue];
     [_servingPlayerStats setAces:[NSNumber numberWithInt:oldAce+1]];
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
@@ -293,6 +299,9 @@
 }
 
 -(void)addFaultStat {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
+    
     int oldFault = [[_servingPlayerStats faults] intValue];
     [_servingPlayerStats setFaults:[NSNumber numberWithInt:oldFault+1]];
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
@@ -307,6 +316,10 @@
 }
 
 -(void)addDoubleFaultStat {
+    int oldServes = [[_servingPlayerStats servesMade] intValue];
+    oldServes += 1;
+    [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes]];
+    
     int oldDoubleFault = [[_servingPlayerStats doubleFaults] intValue];
     [_servingPlayerStats setDoubleFaults:[NSNumber numberWithInt:oldDoubleFault+1]];
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
@@ -326,6 +339,20 @@
     [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
     
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
+        if (!_isFault) {
+            int oldFirstServes = [[_servingPlayerStats firstServesWon] intValue];
+            [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServes+1]];
+            
+            int teamOldFirstServes = [[_teamOneStats firstServesWon] intValue];
+            [_teamOneStats setFirstServesWon:[NSNumber numberWithInt:teamOldFirstServes+1]];
+        }
+        else {
+            int oldSecondServes = [[_servingPlayerStats secondServesWon] intValue];
+            [_servingPlayerStats setSecondServesWon:[NSNumber numberWithInt:oldSecondServes+1]];
+            
+            int teamOldSecondServes = [[_teamOneStats secondServesWon] intValue];
+            [_teamOneStats setSecondServesWon:[NSNumber numberWithInt:teamOldSecondServes+1]];
+        }
         int teamServes = [[_teamOneStats servesMade] intValue];
         [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
     }
@@ -430,6 +457,21 @@
         [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
     }
     else {
+        if (!_isFault) {
+            int oldFirstServes = [[_servingPlayerStats firstServesWon] intValue];
+            [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServes+1]];
+            
+            int teamOldFirstServes = [[_teamOneStats firstServesWon] intValue];
+            [_teamOneStats setFirstServesWon:[NSNumber numberWithInt:teamOldFirstServes+1]];
+        }
+        else {
+            int oldSecondServes = [[_servingPlayerStats secondServesWon] intValue];
+            [_servingPlayerStats setSecondServesWon:[NSNumber numberWithInt:oldSecondServes+1]];
+            
+            int teamOldSecondServes = [[_teamTwoStats secondServesWon] intValue];
+            [_teamTwoStats setSecondServesWon:[NSNumber numberWithInt:teamOldSecondServes+1]];
+        }
+        
         int teamServes = [[_teamTwoStats servesMade] intValue];
         [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
     }
@@ -530,7 +572,8 @@
     [_match setTeamOne:_teamOne];
     
     _teamOneStats = [[Stats alloc] init];
-    _teamOnePlayerOneStats = [[Stats alloc] init];
+    //_teamOnePlayerOneStats = [[Stats alloc] init];
+    _teamOnePlayerOneStats = [[teamOne playerOne] playerStats];
     
     _servingPlayerStats = _teamOnePlayerOneStats;
     
@@ -553,7 +596,8 @@
     teamOneLabel.numberOfLines = 0;
     teamOneLabel.text = [[teamOne playerOne] playerName];
     if (_isDoubles) {
-        _teamTwoPlayerTwoStats = [[Stats alloc] init];
+        //_teamTwoPlayerTwoStats = [[Stats alloc] init];
+        _teamOnePlayerTwoStats = [[teamOne playerTwo] playerStats];
         
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, 90 + SCORESIZE/3, 3*SCORESIZE/4, 3*SCORESIZE/4)];
         imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
@@ -608,8 +652,9 @@
     [_teamTwo setScore:[NSNumber numberWithInt:0]];
     [_match setTeamTwo:_teamTwo];
     
-    _teamTwoStats = [[teamTwo playerOne] playerStats];
-    _teamTwoPlayerOneStats = [[Stats alloc] init];
+    _teamTwoStats = [[Stats alloc] init];
+    //_teamTwoPlayerOneStats = [[Stats alloc] init];
+    _teamTwoPlayerOneStats = [[teamTwo playerOne] playerStats];
     
     UIImageView *imageViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(5, 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
     imageViewOne.contentMode = UIViewContentModeScaleAspectFit;
@@ -630,7 +675,9 @@
     teamTwoLabel.numberOfLines = 0;
     teamTwoLabel.text = [[teamTwo playerOne] playerName];
     if (_isDoubles) {
-        _teamTwoPlayerTwoStats = [[Stats alloc] init];
+        //_teamTwoPlayerTwoStats = [[Stats alloc] init];
+        _teamTwoPlayerTwoStats = [[teamTwo playerTwo] playerStats];
+        
         UIImageView *imageViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(SCORESIZE/2, SCORESIZE/3 + 150, 3*SCORESIZE/4, 3*SCORESIZE/4)];
         imageViewTwo.contentMode = UIViewContentModeScaleAspectFit;
         imageViewTwo.layer.cornerRadius = 3*SCORESIZE/8;
@@ -1180,7 +1227,7 @@
     switch ([game gameWinner]) {
         case 1:{
             if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
-                if (!_isFault) {
+                /*if (!_isFault) {
                     int oldFirstServe = [[_servingPlayerStats firstServesWon] intValue];
                     [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServe+1]];
                     
@@ -1194,6 +1241,7 @@
                     int oldTeamServe = [[_teamOneStats secondServesWon] intValue];
                     [_teamOneStats setSecondServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
                 }
+                 */
             }
             int lastScore = [[setOneField text] intValue];
             lastScore += 1;
@@ -1205,7 +1253,7 @@
         }
         case 2:{
             if (_servingPlayerSelector == 2 || _servingPlayerSelector == 4) {
-                if (!_isFault) {
+                /*if (!_isFault) {
                     int oldFirstServe = [[_servingPlayerStats firstServesWon] intValue];
                     [_servingPlayerStats setFirstServesWon:[NSNumber numberWithInt:oldFirstServe+1]];
                     
@@ -1219,6 +1267,7 @@
                     int oldTeamServe = [[_teamTwoStats secondServesWon] intValue];
                     [_teamTwoStats setSecondServesWon:[NSNumber numberWithInt:oldTeamServe+1]];
                 }
+                 */
             }
             int lastScore = [[setTwoField text] intValue];
             lastScore += 1;

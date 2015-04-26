@@ -88,6 +88,7 @@
         [newPlayer setPlayerName:[_firstNameField text]];
         [newPlayer setPlayerLastName:[_lastNameField text]];
         [newPlayer setPlayerImage:UIImageJPEGRepresentation(_imageView.image, 0.5)];
+        [newPlayer setTimeStamp:[NSDate date]];
         [newPlayer setPlayerStats:[[Stats alloc] init]];
         [newPlayer setOpponents:[[NSArray alloc] init]];
         
