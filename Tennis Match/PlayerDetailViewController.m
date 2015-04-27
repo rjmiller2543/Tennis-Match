@@ -17,19 +17,16 @@
 #import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import "Opponent.h"
 
-@interface PlayerDetailViewController () <UIScrollViewDelegate>
+@interface PlayerDetailViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property(nonatomic,retain) UIScrollView *scrollView;
 @property(nonatomic,retain) UIImageView *imageView;
 @property(nonatomic,retain) UILabel *nameLabel;
 @property(nonatomic,retain) UILabel *lastNameLabel;
 
-//@property(nonatomic,retain) UIView *bottomView;
-//@property(nonatomic,retain) VBFPopFlatButton *downButton;
-
 @property(nonatomic,retain) UIPageControl *pageControl;
 
-//@property(nonatomic) BOOL isUp;
+@property(nonatomic,retain) NSMutableArray *boolArray;
 
 @end
 
@@ -43,7 +40,10 @@
     
     [self configureView];
     
-    //_isUp = true;
+    _boolArray = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [[_detailPlayer opponents] count]; i++) {
+        [_boolArray addObject:[NSNumber numberWithBool:false]];
+    }
     
     [self performSelector:@selector(addPlayerMatchesGraph) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(addPlayerSetsGraph) withObject:nil afterDelay:1.0];
@@ -67,11 +67,21 @@
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _scrollView.backgroundColor = [UIColor clearColor];
     _scrollView.pagingEnabled = YES;
-    _scrollView.bounces = NO;
+    //_scrollView.bounces = NO;
     _scrollView.delegate = self;
     _scrollView.showsVerticalScrollIndicator = YES;
-    _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width * ([[_detailPlayer opponents] count] + 1), 940);
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width * ([[_detailPlayer opponents] count] + 1), 980);
     [self.view addSubview:_scrollView];
+    
+    _scrollView.userInteractionEnabled = YES;
+    
+    UIPanGestureRecognizer *swipe = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    //[swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    swipe.delegate = self;
+    [swipe setCancelsTouchesInView:YES];
+    [swipe setMinimumNumberOfTouches:1];
+    [_scrollView addGestureRecognizer:swipe];
     
     _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2, 30)];
     [_pageControl setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height - 40)];
@@ -146,6 +156,11 @@
 }
 */
 
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
+    CGPoint velocity = [panGestureRecognizer velocityInView:_scrollView];
+    return (fabs(velocity.x) > fabs(velocity.y));
+}
+
 -(void)pageChanged
 {
     NSLog(@"page changed");
@@ -155,15 +170,56 @@
     //[self oppositionLayout:_pageControl.currentPage];
 }
 
+-(void)swipe:(id)sender {
+    UIPanGestureRecognizer *pan = (UIPanGestureRecognizer*)sender;
+    
+    CGPoint velocity = [pan velocityInView:_scrollView];
+    
+    if (velocity.x < -100) {
+        if (_pageControl.currentPage < (_pageControl.numberOfPages - 1)) {
+            [pan setEnabled:NO];
+            _pageControl.currentPage = _pageControl.currentPage + 1;
+            [_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * [UIScreen mainScreen].bounds.size.width, 0) animated:YES];
+            [self oppositionLayout:_pageControl.currentPage complete:^(bool complete) {
+                if (complete) {
+                    [pan setEnabled:YES];
+                }
+            }];
+        }
+    }
+    else if (velocity.x > 100) {
+        if (_pageControl.currentPage > 0) {
+            [pan setEnabled:NO];
+            _pageControl.currentPage = _pageControl.currentPage - 1;
+            [_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * [UIScreen mainScreen].bounds.size.width, 0) animated:YES];
+            if (_pageControl.currentPage == 0) {
+                //don't load the opposition layout
+                [pan setEnabled:YES];
+            }
+            else {
+                [self oppositionLayout:_pageControl.currentPage complete:^(bool complete) {
+                    if (complete) {
+                        [pan setEnabled:YES];
+                    }
+                }];
+            }
+        }
+    }
+    
+}
+
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger page = _scrollView.contentOffset.x / _scrollView.frame.size.width;
-    NSLog(@"the page is: %ld", (long)page);
+    /*NSLog(@"the page is: %ld", (long)page);
     if (page != _pageControl.currentPage) {
         [_pageControl setCurrentPage:page];
         if (_pageControl.currentPage != 0) {
-            [self oppositionLayout:_pageControl.currentPage];
+            [self oppositionLayout:_pageControl.currentPage complete:^(bool complete) {
+                //up up
+            }];
         }
     }
+     */
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
@@ -172,6 +228,17 @@
     //if (yOffset >= ) {
     //    <#statements#>
     //}
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSInteger xOffset = _scrollView.contentOffset.x;
+    
+    if (xOffset != (_pageControl.currentPage * [UIScreen mainScreen].bounds.size.width)) {
+        xOffset = _pageControl.currentPage * [UIScreen mainScreen].bounds.size.width;
+        CGPoint offset = scrollView.contentOffset;
+        offset.x = xOffset;
+        [scrollView setContentOffset:offset animated:NO];
+    }
 }
 
 /*
@@ -333,10 +400,18 @@
     [_scrollView addSubview:firstServes];
     firstServes.textAlignment = NSTextAlignmentCenter;
     firstServes.textColor = [UIColor asbestosColor];
-    float firstServePercentage = ([[[_detailPlayer playerStats] firstServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]);// * 100;
-    NSNumber *firstServePercentageNumber = [NSNumber numberWithFloat:firstServePercentage];
-    NSString *firstServeString = [formatter stringFromNumber:firstServePercentageNumber];
-    firstServes.text = firstServeString;
+    if ([[[_detailPlayer playerStats] servesMade] intValue] == 0) {
+        firstServes.text = @"0%(0)";
+    }
+    else {
+        float firstServePercentage = ([[[_detailPlayer playerStats] firstServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]);// * 100;
+        NSNumber *firstServePercentageNumber = [NSNumber numberWithFloat:firstServePercentage];
+        NSString *firstServeString = [formatter stringFromNumber:firstServePercentageNumber];
+        firstServeString = [firstServeString stringByAppendingString:@"("];
+        firstServeString = [firstServeString stringByAppendingString:[[[_detailPlayer playerStats] firstServesWon] stringValue]];
+        firstServeString = [firstServeString stringByAppendingString:@")"];
+        firstServes.text = firstServeString;
+    }
     
     TOMSMorphingLabel *secondServesLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 785, 200, 25)];
     [_scrollView addSubview:secondServesLabel];
@@ -348,10 +423,30 @@
     [_scrollView addSubview:secondServes];
     secondServes.textAlignment = NSTextAlignmentCenter;
     secondServes.textColor = [UIColor asbestosColor];
-    float secondServePercentage = ([[[_detailPlayer playerStats] secondServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]);// * 100;
-    NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
-    NSString *secondServeString = [formatter stringFromNumber:secondServePercentageNumber];
-    secondServes.text = secondServeString;
+    if ([[[_detailPlayer playerStats] servesMade] intValue] == 0) {
+        secondServes.text = @"0%(0)";
+    }
+    else {
+        float secondServePercentage = ([[[_detailPlayer playerStats] secondServesWon] floatValue] / [[[_detailPlayer playerStats] servesMade] floatValue]);// * 100;
+        NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
+        NSString *secondServeString = [formatter stringFromNumber:secondServePercentageNumber];
+        secondServeString = [secondServeString stringByAppendingString:@"("];
+        secondServeString = [secondServeString stringByAppendingString:[[[_detailPlayer playerStats] secondServesWon] stringValue]];
+        secondServeString = [secondServeString stringByAppendingString:@")"];
+        secondServes.text = secondServeString;
+    }
+    
+    TOMSMorphingLabel *servesMadeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 845, 200, 25)];
+    [_scrollView addSubview:servesMadeLabel];
+    servesMadeLabel.textAlignment = NSTextAlignmentCenter;
+    servesMadeLabel.textColor = [UIColor asbestosColor];
+    servesMadeLabel.text = @"Service Games Played";
+    
+    TOMSMorphingLabel *servesMade = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 875, 200, 25)];
+    [_scrollView addSubview:servesMade];
+    servesMade.textAlignment = NSTextAlignmentCenter;
+    servesMade.textColor = [UIColor asbestosColor];
+    servesMade.text = [[[_detailPlayer playerStats] servesMade] stringValue];
     
 }
 
@@ -538,7 +633,7 @@
     graph.percent = [percent floatValue];
 }
 
--(void)addOppositionStatistics:(Opponent*)opponent {
+-(void)addOppositionStatistics:(Opponent*)opponent complete:(void(^)(bool complete))completionhandler {
     
     Stats *myTeamStats = [opponent myTeamStats];
     Stats *oppTeamStats = [opponent opposingTeamStats];
@@ -657,9 +752,20 @@
     //secondLostStringValue = [secondLostStringValue stringByAppendingString:@"%"];
     secondServesLost.text = secondLostStringValue;
     
+    completionhandler(true);
+    
 }
 
--(void)oppositionLayout:(NSInteger)page {
+-(void)oppositionLayout:(NSInteger)page complete:(void (^)(bool complete))completionHandler {
+    
+    if ([_boolArray objectAtIndex:page-1] == nil) {
+        [_boolArray insertObject:[NSNumber numberWithBool:true] atIndex:page-1];
+    }
+    else if ([[_boolArray objectAtIndex:page-1] boolValue]) {
+        //page has already been loaded
+        completionHandler(true);
+        return;
+    }
     
     float xOffset = page*[UIScreen mainScreen].bounds.size.width;
     
@@ -764,7 +870,20 @@
     [self performSelector:@selector(addOppositionMatchesGraph:) withObject:opponent afterDelay:0.5];
     [self performSelector:@selector(addOppositionSetsGraph:) withObject:opponent afterDelay:1.0];
     [self performSelector:@selector(addOppositionGamesGraph:) withObject:opponent afterDelay:1.5];
-    [self performSelector:@selector(addOppositionStatistics:) withObject:opponent afterDelay:2.0];
+    //[self performSelector:@selector(addOppositionStatistics:) withObject:opponent afterDelay:2.0];
+    
+    __weak typeof(self) weakSelf = self;
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        //code to be executed on the main queue after delay
+        [self addOppositionStatistics:opponent complete:^(bool complete) {
+            [weakSelf.boolArray insertObject:[NSNumber numberWithBool:true] atIndex:page-1];
+            completionHandler(true);
+        }];
+    });
+    
+    //completionHandler(true);
     
 }
 

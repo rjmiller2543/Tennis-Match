@@ -42,13 +42,29 @@
         winner = 1;
     }
     else if ([_teamOneScore intValue] == 7) {
-        winner = 1;
+        if ([_teamTwoScore intValue] == 5) {
+            winner = 1;
+        }
+        else if ([_teamTwoScore intValue] == 6) {
+            winner = 1;
+        }
+        else {
+            winner = 3;
+        }
     }
     else if (([_teamTwoScore intValue] == 6) && (([_teamOneScore intValue] != 5) && ([_teamOneScore intValue] != 6) && ([_teamOneScore intValue] != 7))) {
         winner = 2;
     }
     else if ([_teamTwoScore intValue] == 7) {
-        winner = 2;
+        if ([_teamOneScore intValue] == 5) {
+            winner = 2;
+        }
+        else if ([_teamOneScore intValue] == 6) {
+            winner = 2;
+        }
+        else {
+            winner = 3;
+        }
     }
     else {
         winner = 0;

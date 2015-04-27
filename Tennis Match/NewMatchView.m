@@ -1085,6 +1085,20 @@
                 }
                 break;
             }
+            case 3: {
+                FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"Invalid Score" message:@"Change the Score for this set to a valid score.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                [winnerAlert show];
+            }
                 
             default:
                 break;
@@ -1160,11 +1174,13 @@
             }
         }
         else {
-            [self addNewSetColumn];
-            
-            Set *newSet = [[Set alloc] init];
-            [_setsArray addObject:newSet];
-            [_tableView reloadData];
+            if ([tmp hasWinner] < 3) {
+                [self addNewSetColumn];
+                
+                Set *newSet = [[Set alloc] init];
+                [_setsArray addObject:newSet];
+                [_tableView reloadData];
+            }
         }
         //[self addNewSetColumn];
         
@@ -1321,8 +1337,11 @@
         }
     }
     else if ([tmp hasWinner]) {
-        //if this set has a winner, don't add more games..
-        [self addNewSet];
+        //make sure the set actually has a winner with a valid score
+        if ([tmp hasWinner] < 3) {
+            //if this set has a winner, don't add more games..
+            [self addNewSet];
+        }
     }
     else {
         

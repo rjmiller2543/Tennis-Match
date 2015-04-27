@@ -133,12 +133,14 @@
     for (int i = 0; i < [_setsArray count]; i++) {
         
         UITextField *textFieldOne = [[UITextField alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 + SCORESIZE*i, firstTeamPixelStart, SCORESIZE, SCORESIZE)];
+        [textFieldOne setEnabled:NO];
         textFieldOne.borderStyle = UITextBorderStyleLine;
         textFieldOne.textAlignment = NSTextAlignmentCenter;
         textFieldOne.text = [[[_setsArray objectAtIndex:i] teamOneScore] stringValue];
         [containerView addSubview:textFieldOne];
         
         UITextField *textFieldTwo = [[UITextField alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 + SCORESIZE*i, SCORESIZE + firstTeamPixelStart, SCORESIZE, SCORESIZE)];
+        [textFieldTwo setEnabled:NO];
         textFieldTwo.borderStyle = UITextBorderStyleLine;
         textFieldTwo.textAlignment = NSTextAlignmentCenter;
         textFieldTwo.text = [[[_setsArray objectAtIndex:i] teamTwoScore] stringValue];
