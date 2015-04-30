@@ -266,43 +266,25 @@
     acesLost.textColor = [UIColor asbestosColor];
     acesLost.text = [[[_detailMatch teamTwoMatchStats] aces] stringValue];
     
-    UILabel *faultsLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 105, 200, 25)];
-    [cell addSubview:faultsLabel];
-    faultsLabel.textAlignment = NSTextAlignmentCenter;
-    faultsLabel.textColor = [UIColor asbestosColor];
-    faultsLabel.text = @"Faults:";
-    
-    UILabel *faults = [[UILabel alloc] initWithFrame:CGRectMake(45, 135, 120, 25)];
-    [cell addSubview:faults];
-    faults.textAlignment = NSTextAlignmentLeft;
-    faults.textColor = [UIColor asbestosColor];
-    faults.text = [[[_detailMatch teamOneMatchStats] faults] stringValue];
-    
-    UILabel *faultsLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 135, 120, 25)];
-    [cell addSubview:faultsLost];
-    faultsLost.textAlignment = NSTextAlignmentRight;
-    faultsLost.textColor = [UIColor asbestosColor];
-    faultsLost.text = [[[_detailMatch teamTwoMatchStats] faults] stringValue];
-    
-    UILabel *doubleFaultsLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 165, 200, 25)];
+   UILabel *doubleFaultsLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 105, 200, 25)];
     [cell addSubview:doubleFaultsLabel];
     doubleFaultsLabel.textAlignment = NSTextAlignmentCenter;
     doubleFaultsLabel.textColor = [UIColor asbestosColor];
     doubleFaultsLabel.text = @"Double Faults:";
     
-    UILabel *doubleFaults = [[UILabel alloc] initWithFrame:CGRectMake(45, 195, 120, 25)];
+    UILabel *doubleFaults = [[UILabel alloc] initWithFrame:CGRectMake(45, 135, 120, 25)];
     [cell addSubview:doubleFaults];
     doubleFaults.textAlignment = NSTextAlignmentLeft;
     doubleFaults.textColor = [UIColor asbestosColor];
     doubleFaults.text = [[[_detailMatch teamOneMatchStats] doubleFaults] stringValue];
     
-    UILabel *doubleFaultsLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 195, 120, 25)];
+    UILabel *doubleFaultsLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 135, 120, 25)];
     [cell addSubview:doubleFaultsLost];
     doubleFaultsLost.textAlignment = NSTextAlignmentRight;
     doubleFaultsLost.textColor = [UIColor asbestosColor];
     doubleFaultsLost.text = [[[_detailMatch teamTwoMatchStats] doubleFaults] stringValue];
     
-    UILabel *firstServeLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 225, 200, 25)];
+    UILabel *firstServeLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 165, 200, 25)];
     [cell addSubview:firstServeLabel];
     firstServeLabel.textAlignment = NSTextAlignmentCenter;
     firstServeLabel.textColor = [UIColor asbestosColor];
@@ -311,7 +293,7 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
     
-    UILabel *firstServes = [[UILabel alloc] initWithFrame:CGRectMake(45, 255, 120, 25)];
+    UILabel *firstServes = [[UILabel alloc] initWithFrame:CGRectMake(45, 195, 120, 25)];
     [cell addSubview:firstServes];
     firstServes.textAlignment = NSTextAlignmentLeft;
     firstServes.textColor = [UIColor asbestosColor];
@@ -320,7 +302,7 @@
     NSString *firstStingValue = [formatter stringFromNumber:firstServePercentageNumber];//[firstServePercentageNumber stringValue];
     firstServes.text = firstStingValue;
     
-    UILabel *firstServesLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 255, 120, 25)];
+    UILabel *firstServesLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 195, 120, 25)];
     [cell addSubview:firstServesLost];
     firstServesLost.textAlignment = NSTextAlignmentRight;
     firstServesLost.textColor = [UIColor asbestosColor];
@@ -329,30 +311,63 @@
     NSString *firstLostStingValue = [formatter stringFromNumber:firstServePercentageNumberLost];//[firstServePercentageNumberLost stringValue];
     firstServesLost.text = firstLostStingValue;
     
-    UILabel *secondServesLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 285, 200, 25)];
+    UILabel *secondServesLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 225, 200, 25)];
     [cell addSubview:secondServesLabel];
     secondServesLabel.textAlignment = NSTextAlignmentCenter;
     secondServesLabel.textColor = [UIColor asbestosColor];
     secondServesLabel.text = @"Second Serves Won:";
     
-    UILabel *secondServes = [[UILabel alloc] initWithFrame:CGRectMake(45, 315, 120, 25)];
+    UILabel *secondServes = [[UILabel alloc] initWithFrame:CGRectMake(45, 255, 120, 25)];
     [cell addSubview:secondServes];
     secondServes.textAlignment = NSTextAlignmentLeft;
     secondServes.textColor = [UIColor asbestosColor];
-    float secondServePercentage = ([[[_detailMatch teamOneMatchStats] secondServesWon] floatValue] / [[[_detailMatch teamOneMatchStats] servesMade] floatValue]);// * 100;
-    NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
-    NSString *secondStringValue = [formatter stringFromNumber:secondServePercentageNumber];//[secondServePercentageNumber stringValue];
-    secondServes.text = secondStringValue;
+    if ([[[_detailMatch teamOneMatchStats] servesMade] intValue] == 0) {
+        secondServes.text = @"0%(0)";
+    }
+    else {
+        float secondServePercentage = ([[[_detailMatch teamOneMatchStats] secondServesWon] floatValue] / [[[_detailMatch teamOneMatchStats] servesMade] floatValue]);// * 100;
+        NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
+        NSString *secondServeString = [formatter stringFromNumber:secondServePercentageNumber];
+        secondServeString = [secondServeString stringByAppendingString:@"("];
+        secondServeString = [secondServeString stringByAppendingString:[[[_detailMatch teamOneMatchStats] secondServesWon] stringValue]];
+        secondServeString = [secondServeString stringByAppendingString:@")"];
+        secondServes.text = secondServeString;
+    }
     
-    UILabel *secondServesLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 315, 120, 25)];
+    UILabel *secondServesLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 255, 120, 25)];
     [cell addSubview:secondServesLost];
     secondServesLost.textAlignment = NSTextAlignmentRight;
     secondServesLost.textColor = [UIColor asbestosColor];
-    float secondServePercentageLost = ([[[_detailMatch teamTwoMatchStats] secondServesWon] floatValue] / [[[_detailMatch teamTwoMatchStats] servesMade] floatValue]);// * 100;
-    NSNumber *secondServePercentageNumberLost = [NSNumber numberWithFloat:secondServePercentageLost];
-    NSString *secondLostStringValue = [formatter stringFromNumber:secondServePercentageNumberLost];//[secondServePercentageNumberLost stringValue];
-    //secondLostStringValue = [secondLostStringValue stringByAppendingString:@"%"];
-    secondServesLost.text = secondLostStringValue;
+    if ([[[_detailMatch teamTwoMatchStats] servesMade] intValue] == 0) {
+        secondServesLost.text = @"0%(0)";
+    }
+    else {
+        float secondServePercentageLost = ([[[_detailMatch teamTwoMatchStats] secondServesWon] floatValue] / [[[_detailMatch teamTwoMatchStats] servesMade] floatValue]);// * 100;
+        NSNumber *secondServePercentageNumberLost = [NSNumber numberWithFloat:secondServePercentageLost];
+        NSString *secondServeStringLost = [formatter stringFromNumber:secondServePercentageNumberLost];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:@"("];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:[[[_detailMatch teamTwoMatchStats] secondServesWon] stringValue]];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:@")"];
+        secondServesLost.text = secondServeStringLost;
+    }
+    
+    UILabel *servesMadeLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 285, 200, 25)];
+    [cell addSubview:servesMadeLabel];
+    servesMadeLabel.textAlignment = NSTextAlignmentCenter;
+    servesMadeLabel.textColor = [UIColor asbestosColor];
+    servesMadeLabel.text = @"Service Games Played";
+    
+    UILabel *servesMade = [[UILabel alloc] initWithFrame:CGRectMake(45, 315, 120, 25)];
+    [cell addSubview:servesMade];
+    servesMade.textAlignment = NSTextAlignmentLeft;
+    servesMade.textColor = [UIColor asbestosColor];
+    servesMade.text = [[[_detailMatch teamOneMatchStats] servesMade] stringValue];
+    
+    UILabel *servesMadeLost = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 45 - 120, 315, 120, 25)];
+    [cell addSubview:servesMadeLost];
+    servesMadeLost.textAlignment = NSTextAlignmentRight;
+    servesMadeLost.textColor = [UIColor asbestosColor];
+    servesMadeLost.text = [[[_detailMatch teamTwoMatchStats] servesMade] stringValue];
 }
 
 -(void)configureCell:(UITableViewCell *)cell withIndex:(NSIndexPath *)indexPath {

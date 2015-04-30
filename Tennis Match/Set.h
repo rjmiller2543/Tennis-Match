@@ -14,7 +14,12 @@
 @property(nonatomic,retain) NSNumber *teamOneScore;
 @property(nonatomic,retain) NSNumber *teamTwoScore;
 @property(nonatomic,retain) NSMutableArray *games;
+@property(nonatomic,retain) NSNumber *tieBreakScore;
+
+@property(nonatomic) BOOL setHasTieBreak;
+
 
 -(int)hasWinner;
+-(BOOL)hasTieBreak;
 
 @end

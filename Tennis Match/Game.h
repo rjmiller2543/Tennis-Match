@@ -12,7 +12,9 @@
 
 @property(nonatomic,retain) NSNumber *teamOneScore;
 @property(nonatomic,retain) NSNumber *teamTwoScore;
+@property(nonatomic) BOOL isTieBreak;
 
 -(int)gameWinner;
+-(int)tieBreakWinner;
 
 @end

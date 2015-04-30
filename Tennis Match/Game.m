@@ -32,6 +32,23 @@
     [aCoder encodeObject:_teamTwoScore forKey:@"teamTwoScore"];
 }
 
+-(int)tieBreakWinner {
+    int winner = 0;
+    
+    if ([_teamOneScore intValue] >= 7) {
+        if ([_teamOneScore intValue] >= ([_teamTwoScore intValue] + 2)) {
+            winner = 1;
+        }
+    }
+    else if ([_teamTwoScore intValue] >= 7) {
+        if ([_teamTwoScore intValue] >= ([_teamOneScore intValue] +2)) {
+            winner = 2;
+        }
+    }
+    
+    return winner;
+}
+
 -(int)gameWinner {
     int winner = 0;
     if (([_teamOneScore intValue] > [_teamTwoScore intValue]) && ([_teamOneScore intValue] > 40)) {

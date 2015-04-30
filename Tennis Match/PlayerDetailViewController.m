@@ -177,14 +177,16 @@
     
     if (velocity.x < -100) {
         if (_pageControl.currentPage < (_pageControl.numberOfPages - 1)) {
-            [pan setEnabled:NO];
-            _pageControl.currentPage = _pageControl.currentPage + 1;
-            [_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * [UIScreen mainScreen].bounds.size.width, 0) animated:YES];
-            [self oppositionLayout:_pageControl.currentPage complete:^(bool complete) {
-                if (complete) {
-                    [pan setEnabled:YES];
-                }
-            }];
+            if (pan.isEnabled) {
+                [pan setEnabled:NO];
+                _pageControl.currentPage = _pageControl.currentPage + 1;
+                [_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * [UIScreen mainScreen].bounds.size.width, 0) animated:YES];
+                [self oppositionLayout:_pageControl.currentPage complete:^(bool complete) {
+                    if (complete) {
+                        [pan setEnabled:YES];
+                    }
+                }];
+            }
         }
     }
     else if (velocity.x > 100) {
@@ -363,25 +365,13 @@
     acesWon.textColor = [UIColor asbestosColor];
     acesWon.text = [[[_detailPlayer playerStats] aces] stringValue];
     
-    TOMSMorphingLabel *faultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 605, 200, 25)];
-    [_scrollView addSubview:faultsLabel];
-    faultsLabel.textAlignment = NSTextAlignmentCenter;
-    faultsLabel.textColor = [UIColor asbestosColor];
-    faultsLabel.text = @"Faults:";
-    
-    TOMSMorphingLabel *faults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 635, 200, 25)];
-    [_scrollView addSubview:faults];
-    faults.textAlignment = NSTextAlignmentCenter;
-    faults.textColor = [UIColor asbestosColor];
-    faults.text = [[[_detailPlayer playerStats] faults] stringValue];
-    
-    TOMSMorphingLabel *doubleFaultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 665, 200, 25)];
+    TOMSMorphingLabel *doubleFaultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 605, 200, 25)];
     [_scrollView addSubview:doubleFaultsLabel];
     doubleFaultsLabel.textAlignment = NSTextAlignmentCenter;
     doubleFaultsLabel.textColor = [UIColor asbestosColor];
     doubleFaultsLabel.text = @"Double Faults:";
     
-    TOMSMorphingLabel *doubleFaults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 695, 200, 25)];
+    TOMSMorphingLabel *doubleFaults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 635, 200, 25)];
     [_scrollView addSubview:doubleFaults];
     doubleFaults.textAlignment = NSTextAlignmentCenter;
     doubleFaults.textColor = [UIColor asbestosColor];
@@ -390,13 +380,13 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
     
-    TOMSMorphingLabel *firstServeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 725, 200, 25)];
+    TOMSMorphingLabel *firstServeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 665, 200, 25)];
     [_scrollView addSubview:firstServeLabel];
     firstServeLabel.textAlignment = NSTextAlignmentCenter;
     firstServeLabel.textColor = [UIColor asbestosColor];
     firstServeLabel.text = @"First Serves Won:";
     
-    TOMSMorphingLabel *firstServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 755, 200, 25)];
+    TOMSMorphingLabel *firstServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 695, 200, 25)];
     [_scrollView addSubview:firstServes];
     firstServes.textAlignment = NSTextAlignmentCenter;
     firstServes.textColor = [UIColor asbestosColor];
@@ -413,13 +403,13 @@
         firstServes.text = firstServeString;
     }
     
-    TOMSMorphingLabel *secondServesLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 785, 200, 25)];
+    TOMSMorphingLabel *secondServesLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 725, 200, 25)];
     [_scrollView addSubview:secondServesLabel];
     secondServesLabel.textAlignment = NSTextAlignmentCenter;
     secondServesLabel.textColor = [UIColor asbestosColor];
     secondServesLabel.text = @"Second Serves Won:";
     
-    TOMSMorphingLabel *secondServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 815, 200, 25)];
+    TOMSMorphingLabel *secondServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 755, 200, 25)];
     [_scrollView addSubview:secondServes];
     secondServes.textAlignment = NSTextAlignmentCenter;
     secondServes.textColor = [UIColor asbestosColor];
@@ -436,13 +426,13 @@
         secondServes.text = secondServeString;
     }
     
-    TOMSMorphingLabel *servesMadeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 845, 200, 25)];
+    TOMSMorphingLabel *servesMadeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 785, 200, 25)];
     [_scrollView addSubview:servesMadeLabel];
     servesMadeLabel.textAlignment = NSTextAlignmentCenter;
     servesMadeLabel.textColor = [UIColor asbestosColor];
     servesMadeLabel.text = @"Service Games Played";
     
-    TOMSMorphingLabel *servesMade = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 875, 200, 25)];
+    TOMSMorphingLabel *servesMade = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 815, 200, 25)];
     [_scrollView addSubview:servesMade];
     servesMade.textAlignment = NSTextAlignmentCenter;
     servesMade.textColor = [UIColor asbestosColor];
@@ -664,43 +654,25 @@
     acesLost.textColor = [UIColor asbestosColor];
     acesLost.text = [[oppTeamStats aces] stringValue];
     
-    TOMSMorphingLabel *faultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 605, 200, 25)];
-    [_scrollView addSubview:faultsLabel];
-    faultsLabel.textAlignment = NSTextAlignmentCenter;
-    faultsLabel.textColor = [UIColor asbestosColor];
-    faultsLabel.text = @"Faults:";
-    
-    TOMSMorphingLabel *faults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 635, 120, 25)];
-    [_scrollView addSubview:faults];
-    faults.textAlignment = NSTextAlignmentLeft;
-    faults.textColor = [UIColor asbestosColor];
-    faults.text = [[myTeamStats faults] stringValue];
-    
-    TOMSMorphingLabel *faultsLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 635, 120, 25)];
-    [_scrollView addSubview:faultsLost];
-    faultsLost.textAlignment = NSTextAlignmentRight;
-    faultsLost.textColor = [UIColor asbestosColor];
-    faultsLost.text = [[oppTeamStats faults] stringValue];
-    
-    TOMSMorphingLabel *doubleFaultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 665, 200, 25)];
+    TOMSMorphingLabel *doubleFaultsLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 605, 200, 25)];
     [_scrollView addSubview:doubleFaultsLabel];
     doubleFaultsLabel.textAlignment = NSTextAlignmentCenter;
     doubleFaultsLabel.textColor = [UIColor asbestosColor];
     doubleFaultsLabel.text = @"Double Faults:";
     
-    TOMSMorphingLabel *doubleFaults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 695, 120, 25)];
+    TOMSMorphingLabel *doubleFaults = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 635, 120, 25)];
     [_scrollView addSubview:doubleFaults];
     doubleFaults.textAlignment = NSTextAlignmentLeft;
     doubleFaults.textColor = [UIColor asbestosColor];
     doubleFaults.text = [[myTeamStats doubleFaults] stringValue];
     
-    TOMSMorphingLabel *doubleFaultsLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 695, 120, 25)];
+    TOMSMorphingLabel *doubleFaultsLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 635, 120, 25)];
     [_scrollView addSubview:doubleFaultsLost];
     doubleFaultsLost.textAlignment = NSTextAlignmentRight;
     doubleFaultsLost.textColor = [UIColor asbestosColor];
     doubleFaultsLost.text = [[oppTeamStats doubleFaults] stringValue];
     
-    TOMSMorphingLabel *firstServeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 725, 200, 25)];
+    TOMSMorphingLabel *firstServeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 665, 200, 25)];
     [_scrollView addSubview:firstServeLabel];
     firstServeLabel.textAlignment = NSTextAlignmentCenter;
     firstServeLabel.textColor = [UIColor asbestosColor];
@@ -709,48 +681,97 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
     
-    TOMSMorphingLabel *firstServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 755, 120, 25)];
+    TOMSMorphingLabel *firstServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 695, 120, 25)];
     [_scrollView addSubview:firstServes];
     firstServes.textAlignment = NSTextAlignmentLeft;
     firstServes.textColor = [UIColor asbestosColor];
-    float firstServePercentage = ([[myTeamStats firstServesWon] floatValue] / [[myTeamStats servesMade] floatValue]);// * 100;
-    NSNumber *firstServePercentageNumber = [NSNumber numberWithFloat:firstServePercentage];
-    NSString *firstStingValue = [formatter stringFromNumber:firstServePercentageNumber];//[firstServePercentageNumber stringValue];
-    firstServes.text = firstStingValue;
+    if ([[[_detailPlayer playerStats] servesMade] intValue] == 0) {
+        firstServes.text = @"0%(0)";
+    }
+    else {
+        float firstServePercentage = ([[myTeamStats firstServesWon] floatValue] / [[myTeamStats servesMade] floatValue]);// * 100;
+        NSNumber *firstServePercentageNumber = [NSNumber numberWithFloat:firstServePercentage];
+        NSString *firstServeString = [formatter stringFromNumber:firstServePercentageNumber];
+        firstServeString = [firstServeString stringByAppendingString:@"("];
+        firstServeString = [firstServeString stringByAppendingString:[[myTeamStats firstServesWon] stringValue]];
+        firstServeString = [firstServeString stringByAppendingString:@")"];
+        firstServes.text = firstServeString;
+    }
     
-    TOMSMorphingLabel *firstServesLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 755, 120, 25)];
+    TOMSMorphingLabel *firstServesLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 695, 120, 25)];
     [_scrollView addSubview:firstServesLost];
     firstServesLost.textAlignment = NSTextAlignmentRight;
     firstServesLost.textColor = [UIColor asbestosColor];
-    float firstServePercentageLost = ([[oppTeamStats firstServesWon] floatValue] / [[oppTeamStats servesMade] floatValue]);// * 100;
-    NSNumber *firstServePercentageNumberLost = [NSNumber numberWithFloat:firstServePercentageLost];
-    NSString *firstLostStingValue = [formatter stringFromNumber:firstServePercentageNumberLost];//[firstServePercentageNumberLost stringValue];
-    firstServesLost.text = firstLostStingValue;
+    if ([[[_detailPlayer playerStats] servesMade] intValue] == 0) {
+        firstServesLost.text = @"0%(0)";
+    }
+    else {
+        float firstServePercentageLost = ([[oppTeamStats firstServesWon] floatValue] / [[oppTeamStats servesMade] floatValue]);// * 100;
+        NSNumber *firstServePercentageNumberLost = [NSNumber numberWithFloat:firstServePercentageLost];
+        NSString *firstServeStringLost = [formatter stringFromNumber:firstServePercentageNumberLost];
+        firstServeStringLost = [firstServeStringLost stringByAppendingString:@"("];
+        firstServeStringLost = [firstServeStringLost stringByAppendingString:[[oppTeamStats firstServesWon] stringValue]];
+        firstServeStringLost = [firstServeStringLost stringByAppendingString:@")"];
+        firstServesLost.text = firstServeStringLost;
+    }
     
-    TOMSMorphingLabel *secondServesLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 785, 200, 25)];
+    TOMSMorphingLabel *secondServesLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width / 2 - 100, 725, 200, 25)];
     [_scrollView addSubview:secondServesLabel];
     secondServesLabel.textAlignment = NSTextAlignmentCenter;
     secondServesLabel.textColor = [UIColor asbestosColor];
     secondServesLabel.text = @"Second Serves Won:";
     
-    TOMSMorphingLabel *secondServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 815, 120, 25)];
+    TOMSMorphingLabel *secondServes = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 755, 120, 25)];
     [_scrollView addSubview:secondServes];
     secondServes.textAlignment = NSTextAlignmentLeft;
     secondServes.textColor = [UIColor asbestosColor];
-    float secondServePercentage = ([[myTeamStats secondServesWon] floatValue] / [[myTeamStats servesMade] floatValue]);// * 100;
-    NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
-    NSString *secondStringValue = [formatter stringFromNumber:secondServePercentageNumber];//[secondServePercentageNumber stringValue];
-    secondServes.text = secondStringValue;
+    if ([[myTeamStats servesMade] intValue] == 0) {
+        secondServes.text = @"0%(0)";
+    }
+    else {
+        float secondServePercentage = ([[myTeamStats secondServesWon] floatValue] / [[myTeamStats servesMade] floatValue]);// * 100;
+        NSNumber *secondServePercentageNumber = [NSNumber numberWithFloat:secondServePercentage];
+        NSString *secondServeString = [formatter stringFromNumber:secondServePercentageNumber];
+        secondServeString = [secondServeString stringByAppendingString:@"("];
+        secondServeString = [secondServeString stringByAppendingString:[[myTeamStats secondServesWon] stringValue]];
+        secondServeString = [secondServeString stringByAppendingString:@")"];
+        secondServes.text = secondServeString;
+    }
     
-    TOMSMorphingLabel *secondServesLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 815, 120, 25)];
+    TOMSMorphingLabel *secondServesLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 755, 120, 25)];
     [_scrollView addSubview:secondServesLost];
     secondServesLost.textAlignment = NSTextAlignmentRight;
     secondServesLost.textColor = [UIColor asbestosColor];
-    float secondServePercentageLost = ([[oppTeamStats secondServesWon] floatValue] / [[oppTeamStats servesMade] floatValue]);// * 100;
-    NSNumber *secondServePercentageNumberLost = [NSNumber numberWithFloat:secondServePercentageLost];
-    NSString *secondLostStringValue = [formatter stringFromNumber:secondServePercentageNumberLost];//[secondServePercentageNumberLost stringValue];
-    //secondLostStringValue = [secondLostStringValue stringByAppendingString:@"%"];
-    secondServesLost.text = secondLostStringValue;
+    if ([[oppTeamStats servesMade] intValue] == 0) {
+        secondServesLost.text = @"0%(0)";
+    }
+    else {
+        float secondServePercentageLost = ([[oppTeamStats secondServesWon] floatValue] / [[oppTeamStats servesMade] floatValue]);// * 100;
+        NSNumber *secondServePercentageNumberLost = [NSNumber numberWithFloat:secondServePercentageLost];
+        NSString *secondServeStringLost = [formatter stringFromNumber:secondServePercentageNumberLost];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:@"("];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:[[oppTeamStats secondServesWon] stringValue]];
+        secondServeStringLost = [secondServeStringLost stringByAppendingString:@")"];
+        secondServesLost.text = secondServeStringLost;
+    }
+    
+    TOMSMorphingLabel *servesMadeLabel = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width / 2 - 100, 785, 200, 25)];
+    [_scrollView addSubview:servesMadeLabel];
+    servesMadeLabel.textAlignment = NSTextAlignmentCenter;
+    servesMadeLabel.textColor = [UIColor asbestosColor];
+    servesMadeLabel.text = @"Service Games Played";
+    
+    TOMSMorphingLabel *servesMade = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + 45, 815, 120, 25)];
+    [_scrollView addSubview:servesMade];
+    servesMade.textAlignment = NSTextAlignmentLeft;
+    servesMade.textColor = [UIColor asbestosColor];
+    servesMade.text = [[myTeamStats servesMade] stringValue];
+    
+    TOMSMorphingLabel *servesMadeLost = [[TOMSMorphingLabel alloc] initWithFrame:CGRectMake(xOffset + [UIScreen mainScreen].bounds.size.width - 45 - 120, 815, 120, 25)];
+    [_scrollView addSubview:servesMadeLost];
+    servesMadeLost.textAlignment = NSTextAlignmentRight;
+    servesMadeLost.textColor = [UIColor asbestosColor];
+    servesMadeLost.text = [[oppTeamStats servesMade] stringValue];
     
     completionhandler(true);
     
