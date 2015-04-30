@@ -365,11 +365,11 @@
         [_teamTwoStats setServesMade:[NSNumber numberWithInt:teamServes+1]];
     }
     
-    _isFault = false;
-    
     NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
     NSDictionary *dict = [gamesArray lastObject];
     UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
+    
+    _isFault = false;
     
     int score = 0;
     if ([oldFieldOne.text isEqualToString:@"Ad."]) {
@@ -379,27 +379,40 @@
         score = [oldFieldOne.text intValue];
     }
     
-    switch (score) {
-        case 0:
-            oldFieldOne.text = @"15";
-            break;
-        case 15:
-            oldFieldOne.text = @"30";
-            break;
-        case 30:
-            oldFieldOne.text = @"40";
-            break;
-        case 40:
-            oldFieldOne.text = @"\u2713";
+    if (_tieBreak) {
+        score += 1;
+        oldFieldOne.text = [[NSNumber numberWithInt:score] stringValue];
+        Set *tmp = [_setsArray lastObject];
+        Game *game = [[tmp games] lastObject];
+        [game setTeamOneScore:[NSNumber numberWithInt:score]];
+        if ([game tieBreakWinner]) {
             [self addNewGame:nil];
-            break;
-        case 50:
-            oldFieldOne.text = @"\u2714";
-            [self addNewGame:nil];
-            break;
-        default:
-            break;
+        }
     }
+    else {
+        switch (score) {
+            case 0:
+                oldFieldOne.text = @"15";
+                break;
+            case 15:
+                oldFieldOne.text = @"30";
+                break;
+            case 30:
+                oldFieldOne.text = @"40";
+                break;
+            case 40:
+                oldFieldOne.text = @"\u2713";
+                [self addNewGame:nil];
+                break;
+            case 50:
+                oldFieldOne.text = @"\u2714";
+                [self addNewGame:nil];
+                break;
+            default:
+                break;
+        }
+    }
+    
 }
 
 -(void)subtractPointFromTeamOne {
@@ -429,26 +442,35 @@
         score = [oldFieldOne.text intValue];
     }
     
-    switch (score) {
-        case 0:
-            oldFieldOne.text = @"0";
-            break;
-        case 15:
-            oldFieldOne.text = @"0";
-            break;
-        case 30:
-            oldFieldOne.text = @"15";
-            break;
-        case 40:
-            oldFieldOne.text = @"30";
-            [self addNewGame:nil];
-            break;
-        case 50:
-            oldFieldOne.text = @"40";
-            [self addNewGame:nil];
-            break;
-        default:
-            break;
+    if (_tieBreak) {
+        score -= 1;
+        if (score <= 0) {
+            score = 0;
+        }
+        oldFieldOne.text = [[NSNumber numberWithInt:score] stringValue];
+    }
+    else {
+        switch (score) {
+            case 0:
+                oldFieldOne.text = @"0";
+                break;
+            case 15:
+                oldFieldOne.text = @"0";
+                break;
+            case 30:
+                oldFieldOne.text = @"15";
+                break;
+            case 40:
+                oldFieldOne.text = @"30";
+                [self addNewGame:nil];
+                break;
+            case 50:
+                oldFieldOne.text = @"40";
+                [self addNewGame:nil];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -494,26 +516,38 @@
         score = [oldFieldTwo.text intValue];
     }
     
-    switch (score) {
-        case 0:
-            oldFieldTwo.text = @"15";
-            break;
-        case 15:
-            oldFieldTwo.text = @"30";
-            break;
-        case 30:
-            oldFieldTwo.text = @"40";
-            break;
-        case 40:
-            oldFieldTwo.text = @"\u2713";
+    if (_tieBreak) {
+        score += 1;
+        oldFieldTwo.text = [[NSNumber numberWithInt:score] stringValue];
+        Set *tmp = [_setsArray lastObject];
+        Game *game = [[tmp games] lastObject];
+        [game setTeamTwoScore:[NSNumber numberWithInt:score]];
+        if ([game tieBreakWinner]) {
             [self addNewGame:nil];
-            break;
-        case 50:
-            oldFieldTwo.text = @"\u2714";
-            [self addNewGame:nil];
-            break;
-        default:
-            break;
+        }
+    }
+    else {
+        switch (score) {
+            case 0:
+                oldFieldTwo.text = @"15";
+                break;
+            case 15:
+                oldFieldTwo.text = @"30";
+                break;
+            case 30:
+                oldFieldTwo.text = @"40";
+                break;
+            case 40:
+                oldFieldTwo.text = @"\u2713";
+                [self addNewGame:nil];
+                break;
+            case 50:
+                oldFieldTwo.text = @"\u2714";
+                [self addNewGame:nil];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -544,25 +578,34 @@
         score = [oldFieldTwo.text intValue];
     }
     
-    switch (score) {
-        case 0:
-            oldFieldTwo.text = @"0";
-            break;
-        case 15:
-            oldFieldTwo.text = @"0";
-            break;
-        case 30:
-            oldFieldTwo.text = @"15";
-            break;
-        case 40:
-            oldFieldTwo.text = @"30";
-            break;
-        case 50:
-            oldFieldTwo.text = @"40";
-            [self addNewGame:nil];
-            break;
-        default:
-            break;
+    if (_tieBreak) {
+        score -= 0;
+        if (score <= 0) {
+            score = 0;
+        }
+        oldFieldTwo.text = [[NSNumber numberWithInt:score] stringValue];
+    }
+    else {
+        switch (score) {
+            case 0:
+                oldFieldTwo.text = @"0";
+                break;
+            case 15:
+                oldFieldTwo.text = @"0";
+                break;
+            case 30:
+                oldFieldTwo.text = @"15";
+                break;
+            case 40:
+                oldFieldTwo.text = @"30";
+                break;
+            case 50:
+                oldFieldTwo.text = @"40";
+                [self addNewGame:nil];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -885,6 +928,22 @@
                     oldScore += 1;
                     [_teamOnePlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
                 }
+                if ([tmp setHasTieBreak]) {
+                    NSString *setString = [tmp2 text];
+                    setString = [setString stringByAppendingString:[[tmp tieBreakScore] stringValue]];
+                    if ([[tmp tieBreakScore] intValue] < 10) {
+                        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                        [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                          , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                        [tmp2 setAttributedText:attributedString];
+                    }
+                    else {
+                        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                        [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                          , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                        [tmp2 setAttributedText:attributedString];
+                    }
+                }
                 break;
             }
             case 2: {
@@ -903,6 +962,14 @@
                     oldScore = [[_teamTwoPlayerTwoStats playerSetsWon] intValue];
                     oldScore += 1;
                     [_teamTwoPlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                }
+                if ([tmp setHasTieBreak]) {
+                    NSString *setString = [tmp1 text];
+                    setString = [setString stringByAppendingString:[[tmp tieBreakScore] stringValue]];
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(2, 1)];
+                    [tmp1 setAttributedText:attributedString];
                 }
                 break;
             }
@@ -1084,6 +1151,49 @@
             //make sure it's not a tie break before we start screaming at the user that there is no winner
             if (game.isTieBreak) {
                 //do some tie break stuff
+                switch ([game tieBreakWinner]) {
+                    case 1: {
+                        _tieBreak = false;
+                        int lastScore = [[setOneField text] intValue];
+                        lastScore += 1;
+                        [setOneField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
+                        [tmp setTeamOneScore:[NSNumber numberWithInt:lastScore]];
+                        [tmp setTieBreakScore:[NSNumber numberWithInt:[[oldFieldTwo text] intValue]]];
+                        [tmp setSetHasTieBreak:true];
+                        [oldFieldOne setEnabled:NO];
+                        [oldFieldTwo setEnabled:NO];
+                        break;
+                    }
+                    case 2: {
+                        _tieBreak = false;
+                        int lastScore = [[setTwoField text] intValue];
+                        lastScore += 1;
+                        [setTwoField setText:[[NSNumber numberWithInt:lastScore] stringValue]];
+                        [tmp setTeamTwoScore:[NSNumber numberWithInt:lastScore]];
+                        [tmp setTieBreakScore:[NSNumber numberWithInt:[[oldFieldOne text] intValue]]];
+                        [tmp setSetHasTieBreak:true];
+                        [oldFieldOne setEnabled:NO];
+                        [oldFieldTwo setEnabled:NO];
+                        break;
+                    }
+                    case 0: {
+                        FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"What was the score??" message:@"It appears we don't have a clear winner.. Enter the score in the score board and try to add a game again.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                        winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                        winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                        winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                        winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                        winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                        winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                        winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                        winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                        winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                        [winnerAlert show];
+                    }
+                        
+                    default:
+                        break;
+                }
             }
             else {
                 if (([[game teamOneScore] intValue] == 50) && ([[game teamTwoScore] intValue] == 50)) {
@@ -1118,7 +1228,12 @@
             break;
     }
     
-    if (![game gameWinner]) {
+    if ([tmp setHasTieBreak]) {
+        if ([game tieBreakWinner]) {
+            [self addNewSet];
+        }
+    }
+    else if (![game gameWinner]) {
         if ([[tmp teamOneScore] intValue] == 50) {
             [tmp setTeamOneScore:[NSNumber numberWithInt:40]];
             oldFieldOne.text = @"Ad.";
@@ -1135,6 +1250,11 @@
             [self addNewSet];
         }
     }
+    //else if ([tmp setHasTieBreak]) {
+    //    if ([game tieBreakWinner]) {
+    //        [self addNewSet];
+    //    }
+    //}
     else if ([tmp hasTieBreak]) {
         //set the tie break flag for the new match, for the set, and add a new game with a tie break flag
         //adding points is only one at a time to 7
@@ -1176,6 +1296,7 @@
         [gamesArray addObject:dict];
         
         Game *newGame = [[Game alloc] init];
+        [newGame setIsTieBreak:true];
         
         [[tmp games] addObject:newGame];
         
