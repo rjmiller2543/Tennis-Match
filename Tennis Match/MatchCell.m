@@ -133,9 +133,41 @@
         
         if ([[[setsArray objectAtIndex:i] teamOneScore] intValue] > [[[setsArray objectAtIndex:i] teamTwoScore] intValue]) {
             textFieldOne.layer.borderWidth = 2.0f;
+            if ([[setsArray objectAtIndex:i] setHasTieBreak]) {
+                NSString *setString = [textFieldTwo text];
+                setString = [setString stringByAppendingString:[[[setsArray objectAtIndex:i] tieBreakScore] stringValue]];
+                if ([[[setsArray objectAtIndex:i] tieBreakScore] intValue] < 10) {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                    [textFieldTwo setAttributedText:attributedString];
+                }
+                else {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                    [textFieldTwo setAttributedText:attributedString];
+                }
+            }
         }
         else {
             textFieldTwo.layer.borderWidth = 2.0f;
+            if ([[setsArray objectAtIndex:i] setHasTieBreak]) {
+                NSString *setString = [textFieldOne text];
+                setString = [setString stringByAppendingString:[[[setsArray objectAtIndex:i] tieBreakScore] stringValue]];
+                if ([[[setsArray objectAtIndex:i] tieBreakScore] intValue] < 10) {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                    [textFieldOne setAttributedText:attributedString];
+                }
+                else {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                    [textFieldOne setAttributedText:attributedString];
+                }
+            }
         }
         
     }

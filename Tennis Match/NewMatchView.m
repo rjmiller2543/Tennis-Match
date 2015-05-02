@@ -14,7 +14,7 @@
 #import "AppDelegate.h"
 #import "NewMatchViewController.h"
 
-@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate, FUIAlertViewDelegate>
+@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate, FUIAlertViewDelegate, AwesomeMenuDelegate>
 
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
@@ -42,6 +42,7 @@
 @property(nonatomic) BOOL isFault;
 
 @property(nonatomic) BOOL tieBreak;
+@property(nonatomic) int tieBreakServes;
 
 @end
 
@@ -125,6 +126,10 @@
         
     }
     return self;
+}
+
+-(void)AwesomeMenu:(AwesomeMenu *)menu didSelectIndex:(NSInteger)idx {
+    
 }
 
 -(void)setupScreen {
@@ -339,9 +344,18 @@
 }
 
 -(void)addPointToTeamOne {
+    
     int oldServes = [[_servingPlayerStats servesMade] intValue];
     [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
     
+    
+    if (_tieBreak) {
+        _tieBreakServes++;
+        if (_tieBreakServes > 1) {
+            [self updateServingPlayer];
+            _tieBreakServes = 0;
+        }
+    }
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
         if (!_isFault) {
             int oldFirstServes = [[_servingPlayerStats firstServesWon] intValue];
@@ -419,6 +433,14 @@
     int oldServes = [[_servingPlayerStats servesMade] intValue];
     [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes-1]];
     
+    if (_tieBreak) {
+        _tieBreakServes--;
+        if (_tieBreakServes < 0) {
+            //[self updateServingPlayer];
+            _tieBreakServes = 0;
+        }
+    }
+    
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
         int teamServes = [[_teamOneStats servesMade] intValue];
         [_teamOneStats setServesMade:[NSNumber numberWithInt:teamServes-1]];
@@ -477,6 +499,14 @@
 -(void)addPointToTeamTwo {
     int oldServes = [[_servingPlayerStats servesMade] intValue];
     [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes+1]];
+    
+    if (_tieBreak) {
+        _tieBreakServes++;
+        if (_tieBreakServes > 1) {
+            [self updateServingPlayer];
+            _tieBreakServes = 0;
+        }
+    }
     
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
         int teamServes = [[_teamOneStats servesMade] intValue];
@@ -554,6 +584,14 @@
 -(void)subtractPointFromTeamTwo {
     int oldServes = [[_servingPlayerStats servesMade] intValue];
     [_servingPlayerStats setServesMade:[NSNumber numberWithInt:oldServes-1]];
+    
+    if (_tieBreak) {
+        _tieBreakServes--;
+        if (_tieBreakServes < 0) {
+            //[self updateServingPlayer];
+            _tieBreakServes = 0;
+        }
+    }
     
     if (_servingPlayerSelector == 1 || _servingPlayerSelector == 3) {
         int teamServes = [[_teamOneStats servesMade] intValue];
@@ -910,6 +948,121 @@
             [_teamTwoPlayerTwoStats setPlayerSetsPlayed:[NSNumber numberWithInt:oldSetsPlayed]];
         }
         
+        __block BOOL stillWaitingForTieBreak = false;
+        if ([tmp setHasTieBreakWinner]) {
+            if ([tmp tieBreakScore] == nil) {
+                stillWaitingForTieBreak = true;
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"What was the tie break score?" message:@"There should be a tie break score.. what was the losing score?" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.placeholder = @"Losing Score";
+                    textField.keyboardType = UIKeyboardTypeNumberPad;
+                }];
+                [alert addAction:[UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    UITextField *textField = [[alert textFields] objectAtIndex:0];
+                    NSNumber *score = [NSNumber numberWithInt:[[textField text] intValue]];
+                    [tmp setTieBreakScore:score];
+                    [tmp setSetHasTieBreak:true];
+                    stillWaitingForTieBreak = false;
+                    
+                    switch ([tmp hasWinner]) {
+                        case 1: {
+                            int setsTeamOneWon = [[_teamOneStats playerSetsWon] intValue];
+                            [_teamOneStats setPlayerSetsWon:[NSNumber numberWithInt:(setsTeamOneWon+1)]];
+                            
+                            tmp1.layer.borderWidth = 2.0;
+                            tmp1.font = [UIFont boldSystemFontOfSize:18.0f];
+                            int oldScore = [[_teamOne score] intValue];
+                            [_teamOne setScore:[NSNumber numberWithInt:oldScore+1]];
+                            
+                            oldScore = [[_teamOnePlayerOneStats playerSetsWon] intValue];
+                            oldScore += 1;
+                            [_teamOnePlayerOneStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                            if (_isDoubles) {
+                                oldScore = [[_teamOnePlayerTwoStats playerSetsWon] intValue];
+                                oldScore += 1;
+                                [_teamOnePlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                            }
+                            if ([tmp setHasTieBreak]) {
+                                NSString *setString = [tmp2 text];
+                                setString = [setString stringByAppendingString:[[tmp tieBreakScore] stringValue]];
+                                if ([[tmp tieBreakScore] intValue] < 10) {
+                                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                                    [tmp2 setAttributedText:attributedString];
+                                }
+                                else {
+                                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                                    [tmp2 setAttributedText:attributedString];
+                                }
+                            }
+                            break;
+                        }
+                        case 2: {
+                            int setsTeamTwoWon = [[_teamTwoStats playerSetsWon] intValue];
+                            [_teamTwoStats setPlayerSetsWon:[NSNumber numberWithInt:(setsTeamTwoWon+1)]];
+                            
+                            tmp2.layer.borderWidth = 2.0;
+                            tmp2.font = [UIFont boldSystemFontOfSize:18.0f];
+                            int oldScore = [[_teamTwo score] intValue];
+                            [_teamTwo setScore:[NSNumber numberWithInt:oldScore+1]];
+                            
+                            oldScore = [[_teamTwoPlayerOneStats playerSetsWon] intValue];
+                            oldScore += 1;
+                            [_teamTwoPlayerOneStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                            if (_isDoubles) {
+                                oldScore = [[_teamTwoPlayerTwoStats playerSetsWon] intValue];
+                                oldScore += 1;
+                                [_teamTwoPlayerTwoStats setPlayerSetsWon:[NSNumber numberWithInt:oldScore]];
+                            }
+                            if ([tmp setHasTieBreak]) {
+                                NSString *setString = [tmp1 text];
+                                setString = [setString stringByAppendingString:[[tmp tieBreakScore] stringValue]];
+                                if ([[tmp tieBreakScore] intValue] < 10) {
+                                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                                    [tmp2 setAttributedText:attributedString];
+                                }
+                                else {
+                                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                                    [tmp2 setAttributedText:attributedString];
+                                }
+                            }
+                            break;
+                        }
+                        case 3: {
+                            FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"Invalid Score" message:@"Change the Score for this set to a valid score.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                            winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                            winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                            winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                            winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                            winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                            winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                            winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                            winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                            winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                            winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                            [winnerAlert show];
+                        }
+                            
+                        default:
+                            break;
+                    }
+                }]];
+                [_parentViewContoller presentViewController:alert animated:YES completion:^{
+                    //up up
+                }];
+            }
+        }
+        
+        //while (stillWaitingForTieBreak) {
+            //waiting for the tie break to get a score
+        //}
         switch ([tmp hasWinner]) {
             case 1: {
                 int setsTeamOneWon = [[_teamOneStats playerSetsWon] intValue];
@@ -966,10 +1119,18 @@
                 if ([tmp setHasTieBreak]) {
                     NSString *setString = [tmp1 text];
                     setString = [setString stringByAppendingString:[[tmp tieBreakScore] stringValue]];
-                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
-                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
-                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(2, 1)];
-                    [tmp1 setAttributedText:attributedString];
+                    if ([[tmp tieBreakScore] intValue] < 10) {
+                        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                        [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                          , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                        [tmp2 setAttributedText:attributedString];
+                    }
+                    else {
+                        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                        [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                          , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                        [tmp2 setAttributedText:attributedString];
+                    }
                 }
                 break;
             }
@@ -1244,6 +1405,7 @@
         }
     }
     else if ([tmp hasWinner]) {
+        [self updateServingPlayer];
         //make sure the set actually has a winner with a valid score
         if ([tmp hasWinner] < 3) {
             //if this set has a winner, don't add more games..
@@ -1260,6 +1422,7 @@
         //adding points is only one at a time to 7
         //the text fields can only be a number, not the usual 0 15 30 40 game
         _tieBreak = true;
+        _tieBreakServes = 1;
         [tmp setSetHasTieBreak:true];
         
         UIScrollView *scrollView = nil;
@@ -1307,7 +1470,6 @@
             }
         }
         
-        [self updateServingPlayer];
         //VBFPopFlatButton *addGameButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake(([[tmp games] count])*30, cell.frame.size.height / 2 - 10, 15, 15) buttonType:buttonAddType buttonStyle:buttonRoundedStyle animateToInitialState:YES];
         //addGameButton.tag = indexPath.row;
         [tmpButton setCenter:CGPointMake(GAMESIZE*[[tmp games] count] + 20, cell.frame.size.height / 2 )];

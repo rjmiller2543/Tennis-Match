@@ -21,5 +21,6 @@
 
 -(int)hasWinner;
 -(BOOL)hasTieBreak;
+-(BOOL)setHasTieBreakWinner;
 
 @end

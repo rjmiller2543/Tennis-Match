@@ -6,9 +6,10 @@
 #import <UIKit/UIKit.h>
 
 
-extern const CGFloat kDIDatepickerHeight;
+extern const CGFloat kDIDetepickerHeight;
 
-@interface DIDatepicker : UIControl <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@interface DIDatepicker : UIControl
 
 // data
 @property (strong, nonatomic) NSArray *dates;
@@ -19,10 +20,6 @@ extern const CGFloat kDIDatepickerHeight;
 @property (strong, nonatomic) UIColor *selectedDateBottomLineColor;
 
 // methods
-- (void)fillDatesFromDate:(NSDate *)fromDate numberOfDays:(NSInteger)nextDatesCount;
-- (void)fillCurrentWeek;
-- (void)fillCurrentMonth;
-- (void)fillCurrentYear;
 - (void)selectDate:(NSDate *)date;
 - (void)selectDateAtIndex:(NSUInteger)index;
 

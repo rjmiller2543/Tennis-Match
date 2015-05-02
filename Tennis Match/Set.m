@@ -18,7 +18,8 @@
         _teamOneScore = [[NSNumber alloc] initWithInt:0];
         _teamTwoScore = [[NSNumber alloc] initWithInt:0];
         _setHasTieBreak = false;
-        _tieBreakScore = [[NSNumber alloc] initWithInt:0];
+        //_tieBreakScore = [[NSNumber alloc] initWithInt:0];
+        _tieBreakScore = nil;
     }
     return self;
 }
@@ -55,6 +56,18 @@
     }
     
     return tieBreak;
+}
+
+-(BOOL)setHasTieBreakWinner {
+    BOOL winner = 0;
+    if (([_teamOneScore intValue] == 7) && ([_teamTwoScore intValue] == 6)) {
+        winner = 1;
+    }
+    else if (([_teamTwoScore intValue] == 7) && ([_teamOneScore intValue] == 6)) {
+        winner = 1;
+    }
+    
+    return winner;
 }
 
 -(int)hasWinner {

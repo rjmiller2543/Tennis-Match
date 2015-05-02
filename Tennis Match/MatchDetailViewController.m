@@ -146,6 +146,45 @@
         textFieldTwo.text = [[[_setsArray objectAtIndex:i] teamTwoScore] stringValue];
         [containerView addSubview:textFieldTwo];
         
+        if ([[[_setsArray objectAtIndex:i] teamOneScore] intValue] > [[[_setsArray objectAtIndex:i] teamTwoScore] intValue]) {
+            textFieldOne.layer.borderWidth = 2.0f;
+            if ([[_setsArray objectAtIndex:i] setHasTieBreak]) {
+                NSString *setString = [textFieldTwo text];
+                setString = [setString stringByAppendingString:[[[_setsArray objectAtIndex:i] tieBreakScore] stringValue]];
+                if ([[[_setsArray objectAtIndex:i] tieBreakScore] intValue] < 10) {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                    [textFieldTwo setAttributedText:attributedString];
+                }
+                else {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                    [textFieldTwo setAttributedText:attributedString];
+                }
+            }
+        }
+        else {
+            textFieldTwo.layer.borderWidth = 2.0f;
+            if ([[_setsArray objectAtIndex:i] setHasTieBreak]) {
+                NSString *setString = [textFieldOne text];
+                setString = [setString stringByAppendingString:[[[_setsArray objectAtIndex:i] tieBreakScore] stringValue]];
+                if ([[[_setsArray objectAtIndex:i] tieBreakScore] intValue] < 10) {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 1)];
+                    [textFieldOne setAttributedText:attributedString];
+                }
+                else {
+                    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:setString attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f]}];
+                    [attributedString setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:10.0f]
+                                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(1, 2)];
+                    [textFieldOne setAttributedText:attributedString];
+                }
+            }
+        }
+        
     }
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 220, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 220)];

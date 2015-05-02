@@ -103,6 +103,12 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
     else if (images.count > 0) {
         self.animationImages = images;
     }
+    else if (self.spinAnimationImages.count == 1) {
+        self.image = self.spinAnimationImages[0];
+    }
+    else if (self.spinAnimationImages.count > 0) {
+        self.animationImages = self.spinAnimationImages;
+    }
     
     self.cancelBlock = cancelBlock;
     self.title = title;
@@ -461,20 +467,28 @@ CGSize const MMProgressHUDDefaultImageSize = {37.f, 37.f};
     
     CGFloat hudHeight = CGRectGetHeight(self.hud.frame);
     
-    CGPoint position;
-    if (UIInterfaceOrientationIsPortrait([[self.window rootViewController] interfaceOrientation])) {
-        
-        CGFloat y = roundf(self.window.center.y + (anchor.y - 0.5f) * hudHeight);
-        CGFloat x = roundf(self.window.center.x);
-        
-        position = CGPointMake(x, y);
+    CGPoint windowCenter = self.window.center;
+    CGFloat x = roundf(windowCenter.x);
+    CGFloat y = roundf(windowCenter.y + (anchor.y - 0.5f) * hudHeight);
+    UIInterfaceOrientation currentOrientation = [[self.window rootViewController] interfaceOrientation];
+    NSString *reqSysVer = @"8.0";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    BOOL usesWindowTransformRotation = ([currSysVer compare:reqSysVer
+                                                    options:NSNumericSearch] != NSOrderedAscending);
+    
+    if (usesWindowTransformRotation == NO) {
+        if (UIInterfaceOrientationIsPortrait(currentOrientation)) {
+            
+            y = roundf(windowCenter.y + (anchor.y - 0.5f) * hudHeight);
+            x = roundf(windowCenter.x);
+        }
+        else {
+            x = roundf(windowCenter.y);
+            y = roundf(windowCenter.x + (anchor.y - 0.5f) * hudHeight);
+        }
     }
-    else {
-        CGFloat x = roundf(self.window.center.y);
-        CGFloat y = roundf(self.window.center.x + (anchor.y - 0.5f) * hudHeight);
-        
-        position = CGPointMake(x, y);
-    }
+    
+    CGPoint position = CGPointMake(x, y);
     
     return [self _antialiasedPositionPointForPoint:position forLayer:self.hud.layer];
 }
