@@ -97,7 +97,7 @@
             NSLog(@"error saving new player with error: %@", error);
         }
         
-        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+        [self dismissMZFormWithCompletionHandler:^(UIViewController *viewController) {
             //up up
         }];
     }
@@ -119,12 +119,12 @@
         detail.detailPlayer = _editPlayer;
         [detail savedPlayer];
         
-        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+        [self dismissMZFormWithCompletionHandler:^(UIViewController *viewController) {
             //up up
         }];
     }
     else {
-        [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+        [self dismissMZFormWithCompletionHandler:^(UIViewController *viewController) {
             //up up
         }];
     }
@@ -132,7 +132,7 @@
 }
 
 -(void)cancelView {
-    [self dismissNewPlayerWithCompletionHandler:^(UIViewController *viewController) {
+    [self dismissMZFormWithCompletionHandler:^(UIViewController *viewController) {
         //up up
     }];
 }

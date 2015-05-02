@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (UIViewController_MZFormDismissal)
--(void)dismissNewPlayerWithCompletionHandler:(void (^)(UIViewController *viewController))completionHandler;
+-(void)dismissMZFormWithCompletionHandler:(void (^)(UIViewController *viewController))completionHandler;
 @end

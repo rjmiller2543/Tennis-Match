@@ -11,7 +11,7 @@
 
 @implementation UIViewController (UIViewController_MZFormDismissal)
 
--(void)dismissNewPlayerWithCompletionHandler:(void (^)(UIViewController *viewController))completionHandler {
+-(void)dismissMZFormWithCompletionHandler:(void (^)(UIViewController *viewController))completionHandler {
     [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController *formSheetController) {
         //up up
         completionHandler([formSheetController presentedFSViewController]);

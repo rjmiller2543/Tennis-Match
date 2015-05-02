@@ -17,7 +17,7 @@
 @property(nonatomic,retain) NSNumber *tieBreakScore;
 
 @property(nonatomic) BOOL setHasTieBreak;
-
+@property(nonatomic) BOOL isSuperset;
 
 -(int)hasWinner;
 -(BOOL)hasTieBreak;

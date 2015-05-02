@@ -20,6 +20,7 @@
         _setHasTieBreak = false;
         //_tieBreakScore = [[NSNumber alloc] initWithInt:0];
         _tieBreakScore = nil;
+        _isSuperset = false;
     }
     return self;
 }
@@ -31,6 +32,7 @@
         [self setTeamTwoScore:[aDecoder decodeObjectForKey:@"teamTwoScore"]];
         [self setTieBreakScore:[aDecoder decodeObjectForKey:@"tieBreakScore"]];
         [self setSetHasTieBreak:[[aDecoder decodeObjectForKey:@"hasTieBreak"] boolValue]];
+        [self setIsSuperset:[[aDecoder decodeObjectForKey:@"isSuperset"] boolValue]];
     }
     return self;
 }
@@ -41,6 +43,7 @@
     [aCoder encodeObject:_teamTwoScore forKey:@"teamTwoScore"];
     [aCoder encodeObject:_tieBreakScore forKey:@"tieBreakScore"];
     [aCoder encodeObject:[NSNumber numberWithBool:_setHasTieBreak] forKey:@"hasTieBreak"];
+    [aCoder encodeObject:[NSNumber numberWithBool:_isSuperset] forKey:@"isSuperset"];
 }
 
 -(BOOL)setHasTieBreak {

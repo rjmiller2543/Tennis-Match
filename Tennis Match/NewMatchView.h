@@ -21,6 +21,8 @@
 @property(nonatomic,retain) Match *match;
 @property(nonatomic,retain) UITableView *tableView;
 @property(nonatomic) BOOL isDoubles;
+@property(nonatomic) BOOL isSuperset;
+@property(nonatomic) int numberOfSupersetGames;
 
 @property(nonatomic,retain) Stats *teamOnePlayerOneStats;
 @property(nonatomic,retain) Stats *teamOnePlayerTwoStats;
@@ -33,5 +35,7 @@
 @property(nonatomic,retain) id parentViewContoller;
 
 -(void)addNewSet;
+-(void)showSetsChoice;
+-(void)doneShowingSetsChoice;
 
 @end

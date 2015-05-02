@@ -776,7 +776,7 @@
         //up up
         NSLog(@"completed animations");
         [_matchViewButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
-        
+        [_matchView showSetsChoice];
     }];
 }
 

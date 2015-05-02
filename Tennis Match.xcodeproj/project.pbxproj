@@ -48,6 +48,7 @@
 		50BF29F71AF2ADCB00A9B577 /* 1-104.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29F61AF2ADCB00A9B577 /* 1-104.png */; };
 		50BF29F91AF2ADE500A9B577 /* 1-48.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29F81AF2ADE500A9B577 /* 1-48.png */; };
 		50BF29FB1AF2ADF800A9B577 /* 3-48.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29FA1AF2ADF800A9B577 /* 3-48.png */; };
+		50D1E4F21AF515C40008F173 /* SetTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1E4F11AF515C40008F173 /* SetTypeViewController.m */; };
 		C114E88BAA84E2E4F3C6855E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C6D9330E0026AA286932AB /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +130,8 @@
 		50BF29F61AF2ADCB00A9B577 /* 1-104.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-104.png"; sourceTree = "<group>"; };
 		50BF29F81AF2ADE500A9B577 /* 1-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-48.png"; sourceTree = "<group>"; };
 		50BF29FA1AF2ADF800A9B577 /* 3-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3-48.png"; sourceTree = "<group>"; };
+		50D1E4F01AF515C40008F173 /* SetTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetTypeViewController.h; sourceTree = "<group>"; };
+		50D1E4F11AF515C40008F173 /* SetTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetTypeViewController.m; sourceTree = "<group>"; };
 		57C6D9330E0026AA286932AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 				501DC37B1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m */,
 				501DC3801AE5794700215EC4 /* InfoPageViewController.h */,
 				501DC3811AE5794700215EC4 /* InfoPageViewController.m */,
+				50D1E4F01AF515C40008F173 /* SetTypeViewController.h */,
+				50D1E4F11AF515C40008F173 /* SetTypeViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -482,6 +487,7 @@
 				50B8F1CB1ACF5FFA002D3D51 /* main.m in Sources */,
 				50B8F1D11ACF5FFB002D3D51 /* Tennis_Match.xcdatamodeld in Sources */,
 				5014F4B31AE84345001437D2 /* Stats.m in Sources */,
+				50D1E4F21AF515C40008F173 /* SetTypeViewController.m in Sources */,
 				500EE6551AE31A0C00478700 /* TeamPlayer.m in Sources */,
 				500EE65D1AE425ED00478700 /* MatchDetailViewController.m in Sources */,
 				5073596A1AD42FD5007228BA /* NewMatchView.m in Sources */,
