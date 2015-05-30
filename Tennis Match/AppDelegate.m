@@ -27,6 +27,11 @@
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;
+    
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor asbestosColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor turquoiseColor];
+    
     return YES;
 }
 

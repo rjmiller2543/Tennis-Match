@@ -1,22 +1,21 @@
 //
-//  PlayerDetailViewController.h
+//  OppositionDetailViewController.h
 //  Tennis Match
 //
-//  Created by Robert Miller on 4/19/15.
+//  Created by Robert Miller on 5/4/15.
 //  Copyright (c) 2015 Robert Miller. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "Opponent.h"
 #import "Player.h"
 
-@interface PlayerDetailViewController : UIViewController
+@interface OppositionDetailViewController : UIViewController
 
-@property(nonatomic,retain) Player *detailPlayer;
+@property(nonatomic,retain) Opponent *detailOpponent;
 
 @property(assign, nonatomic) NSInteger indexNumber;
 @property(nonatomic,retain) UINavigationItem *navItem;
 @property(nonatomic,retain) UINavigationBar *navBar;
-
--(void)savedPlayer;
 
 @end

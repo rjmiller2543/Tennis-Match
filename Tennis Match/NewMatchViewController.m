@@ -18,7 +18,7 @@
 #import "Stats.h"
 #import <DIDatepicker/DIDatepicker.h>
 
-@interface NewMatchViewController () <NewPlayerViewDelegate>
+@interface NewMatchViewController () <NewPlayerViewDelegate, FUIAlertViewDelegate>
 
 @property(nonatomic,retain) NewPlayerView *playerList;
 @property(nonatomic) int playerNumber;
@@ -40,6 +40,8 @@
 
 @property(nonatomic,retain) FUIButton *dateButton;
 @property(nonatomic,retain) NSDate *matchDate;
+
+@property(nonatomic,retain) NSMutableArray *playersArray;
 
 @end
 
@@ -147,6 +149,8 @@
     _matchViewButton.tintColor = [UIColor lightGrayColor];
     [self.view addSubview:_matchViewButton];
     
+    _playersArray = [[NSMutableArray alloc] init];
+    
 }
 
 -(void)cancelView {
@@ -193,9 +197,7 @@
     }];
 }
 
--(void)saveMatch {
-    NSLog(@"save match");
-    
+-(void)saveMatchToContext {
     [_matchView.match setTimeStamp:_matchDate];
     [_matchView.match setDoubles:[NSNumber numberWithBool:!_isSingles]];
     [_matchView.match setSets:_matchView.setsArray];
@@ -358,386 +360,386 @@
         [[_teamTwo playerTwo] setOpponents:twoTwoArray];
         
     }
-/*
-    if (!_isSingles) {
-        
-        NSArray *playerTwoOpponents = [[_teamOne playerTwo] opponents];
-        Opponent *matchOneTwoOpponent = nil;
-        index = 0;
-        for (Opponent *tmp in playerTwoOpponents) {
-            if (_isSingles) {
-                if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamTwo playerOne] playerName]]) {
-                    if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamTwo playerOne] timeStamp]]) {
-                        matchOneTwoOpponent = tmp;
-                        break;
-                    }
-                }
-                else {
-                    index++;
-                }
-            }
-            else {
-                if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamTwo playerOne] playerName]]) {
-                    if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamTwo playerOne] timeStamp]]) {
-                        if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamTwo playerTwo] playerName]]) {
-                            if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamTwo playerTwo] timeStamp]]) {
-                                matchOneTwoOpponent = tmp;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    index++;
-                }
-            }
-        }
-        if (matchOneTwoOpponent != nil) {
-            Stats *oldStat = [matchOneTwoOpponent opposingTeamStats];
-            
-            int oldMatches = [[oldStat playerMatchesPlayed] intValue];
-            [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
-            int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
-            oldMatchesWon = oldMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
-            [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
-            
-            int oldSets = [[oldStat playerSetsPlayed] intValue];
-            [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
-            int oldSetsWon = [[oldStat playerSetsWon] intValue];
-            [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
-            
-            int oldGames = [[oldStat playerGamesPlayed] intValue];
-            [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
-            int oldGamesWon = [[oldStat playerGamesWon] intValue];
-            [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
-            
-            int oldAces = [[oldStat aces] intValue];
-            [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamTwoStats.aces intValue]]];
-            
-            int oldFaults = [[oldStat faults] intValue];
-            [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamTwoStats.faults intValue]]];
-            
-            int oldDoubleFaults = [[oldStat doubleFaults] intValue];
-            [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
-            
-            int oldFirstServesWon = [[oldStat firstServesWon] intValue];
-            [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
-            
-            int oldSecondServesWon = [[oldStat secondServesWon] intValue];
-            [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
-            
-            int oldServes = [[oldStat servesMade] intValue];
-            [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamTwoStats.servesMade intValue]]];
-            
-            [matchOneTwoOpponent setOpposingTeamStats:oldStat];
-            
-            Stats *myStats = [matchOneTwoOpponent myTeamStats];
-            
-            int myMatches = [[myStats playerMatchesPlayed] intValue];
-            [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
-            int myMatchesWon = [[myStats playerMatchesWon] intValue];
-            myMatchesWon = myMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
-            [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
-            
-            int mySets = [[myStats playerSetsPlayed] intValue];
-            [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
-            int mySetsWon = [[myStats playerSetsWon] intValue];
-            [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
-            
-            int myGames = [[myStats playerGamesPlayed] intValue];
-            [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
-            int myGamesWon = [[myStats playerGamesWon] intValue];
-            [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
-            
-            int myAces = [[myStats aces] intValue];
-            [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamOneStats.aces intValue]]];
-            
-            int myFaults = [[myStats faults] intValue];
-            [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamOneStats.faults intValue]]];
-            
-            int myDoubleFaults = [[myStats doubleFaults] intValue];
-            [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
-            
-            int myFirstServesWon = [[myStats firstServesWon] intValue];
-            [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
-            
-            int mySecondServesWon = [[myStats secondServesWon] intValue];
-            [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
-            
-            int myServes = [[myStats servesMade] intValue];
-            [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamOneStats.servesMade intValue]]];
-            
-            [matchOneTwoOpponent setMyTeamStats:myStats];
-            
-            NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamOne playerTwo] opponents]];
-            [oppArray replaceObjectAtIndex:index withObject:matchOneTwoOpponent];
-            [[_teamOne playerTwo] setOpponents:oppArray];
-        }
-        else {
-            matchOneTwoOpponent = [[Opponent alloc] init];
-            [matchOneTwoOpponent setOpposingTeam:_teamTwo];
-            [matchOneTwoOpponent setOpposingTeamStats:_matchView.teamTwoStats];
-            [matchOneTwoOpponent setMyTeam:_teamOne];
-            [matchOneTwoOpponent setMyTeamStats:_matchView.teamOneStats];
-            NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamOne playerTwo] opponents]];
-            [oppArray addObject:matchOneTwoOpponent];
-            [[_teamOne playerTwo] setOpponents:oppArray];
-        }
-    }
-    
-    NSArray *playerTwoOpponents = [[_teamTwo playerOne] opponents];
-    Opponent *matchTwoOpponent = nil;
-    index = 0;
-    for (Opponent *tmp in playerTwoOpponents) {
-        if (_isSingles) {
-            if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
-                if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
-                    matchTwoOpponent = tmp;
-                    break;
-                }
-            }
-            else {
-                index++;
-            }
-        }
-        else {
-            if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
-                if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
-                    if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamOne playerTwo] playerName]]) {
-                        if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamOne playerTwo] timeStamp]]) {
-                            matchTwoOpponent = tmp;
-                            break;
-                        }
-                    }
-                }
-            }
-            else {
-                index++;
-            }
-        }
-    }
-    if (matchTwoOpponent != nil) {
-        Stats *oldStat = [matchTwoOpponent opposingTeamStats];
-        
-        int oldMatches = [[oldStat playerMatchesPlayed] intValue];
-        [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
-        int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
-        oldMatchesWon = oldMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
-        [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
-        
-        int oldSets = [[oldStat playerSetsPlayed] intValue];
-        [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
-        int oldSetsWon = [[oldStat playerSetsWon] intValue];
-        [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
-        
-        int oldGames = [[oldStat playerGamesPlayed] intValue];
-        [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
-        int oldGamesWon = [[oldStat playerGamesWon] intValue];
-        [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
-        
-        int oldAces = [[oldStat aces] intValue];
-        [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamOneStats.aces intValue]]];
-        
-        int oldFaults = [[oldStat faults] intValue];
-        [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamOneStats.faults intValue]]];
-        
-        int oldDoubleFaults = [[oldStat doubleFaults] intValue];
-        [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
-        
-        int oldFirstServesWon = [[oldStat firstServesWon] intValue];
-        [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
-        
-        int oldSecondServesWon = [[oldStat secondServesWon] intValue];
-        [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
-        
-        int oldServes = [[oldStat servesMade] intValue];
-        [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamOneStats.servesMade intValue]]];
-        
-        [matchTwoOpponent setOpposingTeamStats:oldStat];
-        
-        Stats *myStats = [matchTwoOpponent myTeamStats];
-        
-        int myMatches = [[myStats playerMatchesPlayed] intValue];
-        [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
-        int myMatchesWon = [[myStats playerMatchesWon] intValue];
-        myMatchesWon = myMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
-        [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
-        
-        int mySets = [[myStats playerSetsPlayed] intValue];
-        [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
-        int mySetsWon = [[myStats playerSetsWon] intValue];
-        [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
-        
-        int myGames = [[myStats playerGamesPlayed] intValue];
-        [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
-        int myGamesWon = [[myStats playerGamesWon] intValue];
-        [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
-        
-        int myAces = [[myStats aces] intValue];
-        [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamTwoStats.aces intValue]]];
-        
-        int myFaults = [[myStats faults] intValue];
-        [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamTwoStats.faults intValue]]];
-        
-        int myDoubleFaults = [[myStats doubleFaults] intValue];
-        [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
-        
-        int myFirstServesWon = [[myStats firstServesWon] intValue];
-        [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
-        
-        int mySecondServesWon = [[myStats secondServesWon] intValue];
-        [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
-        
-        int myServes = [[myStats servesMade] intValue];
-        [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamTwoStats.servesMade intValue]]];
-        
-        [matchTwoOpponent setMyTeamStats:myStats];
-        
-        NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerOne] opponents]];
-        [oppArray replaceObjectAtIndex:index withObject:matchTwoOpponent];
-        [[_teamTwo playerOne] setOpponents:oppArray];
-    }
-    else {
-        matchTwoOpponent = [[Opponent alloc] init];
-        [matchTwoOpponent setOpposingTeam:_teamOne];
-        [matchTwoOpponent setOpposingTeamStats:_matchView.teamOneStats];
-        [matchTwoOpponent setMyTeam:_teamTwo];
-        [matchTwoOpponent setMyTeamStats:_matchView.teamTwoStats];
-        NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerOne] opponents]];
-        [oppArray addObject:matchTwoOpponent];
-        [[_teamTwo playerOne] setOpponents:oppArray];
-    }
-    
-    if (!_isSingles) {
-        
-        NSArray *playerTwoOpponents = [[_teamTwo playerTwo] opponents];
-        Opponent *matchTwoTwoOpponent = nil;
-        index = 0;
-        for (Opponent *tmp in playerTwoOpponents) {
-            if (_isSingles) {
-                if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
-                    if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
-                        matchTwoTwoOpponent = tmp;
-                        break;
-                    }
-                }
-                else {
-                    index++;
-                }
-            }
-            else {
-                if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
-                    if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
-                        if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamOne playerTwo] playerName]]) {
-                            if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamOne playerTwo] timeStamp]]) {
-                                matchTwoTwoOpponent = tmp;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    index++;
-                }
-            }
-        }
-        if (matchTwoTwoOpponent != nil) {
-            Stats *oldStat = [matchTwoTwoOpponent opposingTeamStats];
-            
-            int oldMatches = [[oldStat playerMatchesPlayed] intValue];
-            [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
-            int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
-            oldMatchesWon = oldMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
-            [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
-            
-            int oldSets = [[oldStat playerSetsPlayed] intValue];
-            [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
-            int oldSetsWon = [[oldStat playerSetsWon] intValue];
-            [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
-            
-            int oldGames = [[oldStat playerGamesPlayed] intValue];
-            [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
-            int oldGamesWon = [[oldStat playerGamesWon] intValue];
-            [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
-            
-            int oldAces = [[oldStat aces] intValue];
-            [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamOneStats.aces intValue]]];
-            
-            int oldFaults = [[oldStat faults] intValue];
-            [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamOneStats.faults intValue]]];
-            
-            int oldDoubleFaults = [[oldStat doubleFaults] intValue];
-            [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
-            
-            int oldFirstServesWon = [[oldStat firstServesWon] intValue];
-            [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
-            
-            int oldSecondServesWon = [[oldStat secondServesWon] intValue];
-            [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
-            
-            int oldServes = [[oldStat servesMade] intValue];
-            [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamOneStats.servesMade intValue]]];
-            
-            [matchTwoTwoOpponent setOpposingTeamStats:oldStat];
-            
-            Stats *myStats = [matchTwoTwoOpponent myTeamStats];
-            
-            int myMatches = [[myStats playerMatchesPlayed] intValue];
-            [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
-            int myMatchesWon = [[myStats playerMatchesWon] intValue];
-            myMatchesWon = myMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
-            [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
-            
-            int mySets = [[myStats playerSetsPlayed] intValue];
-            [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
-            int mySetsWon = [[myStats playerSetsWon] intValue];
-            [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
-            
-            int myGames = [[myStats playerGamesPlayed] intValue];
-            [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
-            int myGamesWon = [[myStats playerGamesWon] intValue];
-            [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
-            
-            int myAces = [[myStats aces] intValue];
-            [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamTwoStats.aces intValue]]];
-            
-            int myFaults = [[myStats faults] intValue];
-            [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamTwoStats.faults intValue]]];
-            
-            int myDoubleFaults = [[myStats doubleFaults] intValue];
-            [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
-            
-            int myFirstServesWon = [[myStats firstServesWon] intValue];
-            [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
-            
-            int mySecondServesWon = [[myStats secondServesWon] intValue];
-            [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
-            
-            int myServes = [[myStats servesMade] intValue];
-            [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamTwoStats.servesMade intValue]]];
-            
-            [matchTwoTwoOpponent setMyTeamStats:myStats];
-            
-            NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerTwo] opponents]];
-            [oppArray replaceObjectAtIndex:index withObject:matchTwoTwoOpponent];
-            [[_teamTwo playerTwo] setOpponents:oppArray];
-        }
-        else {
-            matchTwoTwoOpponent = [[Opponent alloc] init];
-            [matchTwoTwoOpponent setOpposingTeam:_teamOne];
-            [matchTwoTwoOpponent setOpposingTeamStats:_matchView.teamOneStats];
-            [matchTwoTwoOpponent setMyTeam:_teamTwo];
-            [matchTwoTwoOpponent setMyTeamStats:_matchView.teamTwoStats];
-            NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerTwo] opponents]];
-            [oppArray addObject:matchTwoTwoOpponent];
-            [[_teamTwo playerTwo] setOpponents:oppArray];
-        }
-    }
-*/
+    /*
+     if (!_isSingles) {
+     
+     NSArray *playerTwoOpponents = [[_teamOne playerTwo] opponents];
+     Opponent *matchOneTwoOpponent = nil;
+     index = 0;
+     for (Opponent *tmp in playerTwoOpponents) {
+     if (_isSingles) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamTwo playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamTwo playerOne] timeStamp]]) {
+     matchOneTwoOpponent = tmp;
+     break;
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     else {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamTwo playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamTwo playerOne] timeStamp]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamTwo playerTwo] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamTwo playerTwo] timeStamp]]) {
+     matchOneTwoOpponent = tmp;
+     break;
+     }
+     }
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     }
+     if (matchOneTwoOpponent != nil) {
+     Stats *oldStat = [matchOneTwoOpponent opposingTeamStats];
+     
+     int oldMatches = [[oldStat playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
+     int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
+     oldMatchesWon = oldMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
+     [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
+     
+     int oldSets = [[oldStat playerSetsPlayed] intValue];
+     [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
+     int oldSetsWon = [[oldStat playerSetsWon] intValue];
+     [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
+     
+     int oldGames = [[oldStat playerGamesPlayed] intValue];
+     [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
+     int oldGamesWon = [[oldStat playerGamesWon] intValue];
+     [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
+     
+     int oldAces = [[oldStat aces] intValue];
+     [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamTwoStats.aces intValue]]];
+     
+     int oldFaults = [[oldStat faults] intValue];
+     [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamTwoStats.faults intValue]]];
+     
+     int oldDoubleFaults = [[oldStat doubleFaults] intValue];
+     [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
+     
+     int oldFirstServesWon = [[oldStat firstServesWon] intValue];
+     [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
+     
+     int oldSecondServesWon = [[oldStat secondServesWon] intValue];
+     [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
+     
+     int oldServes = [[oldStat servesMade] intValue];
+     [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamTwoStats.servesMade intValue]]];
+     
+     [matchOneTwoOpponent setOpposingTeamStats:oldStat];
+     
+     Stats *myStats = [matchOneTwoOpponent myTeamStats];
+     
+     int myMatches = [[myStats playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
+     int myMatchesWon = [[myStats playerMatchesWon] intValue];
+     myMatchesWon = myMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
+     [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
+     
+     int mySets = [[myStats playerSetsPlayed] intValue];
+     [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
+     int mySetsWon = [[myStats playerSetsWon] intValue];
+     [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
+     
+     int myGames = [[myStats playerGamesPlayed] intValue];
+     [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
+     int myGamesWon = [[myStats playerGamesWon] intValue];
+     [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
+     
+     int myAces = [[myStats aces] intValue];
+     [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamOneStats.aces intValue]]];
+     
+     int myFaults = [[myStats faults] intValue];
+     [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamOneStats.faults intValue]]];
+     
+     int myDoubleFaults = [[myStats doubleFaults] intValue];
+     [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
+     
+     int myFirstServesWon = [[myStats firstServesWon] intValue];
+     [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
+     
+     int mySecondServesWon = [[myStats secondServesWon] intValue];
+     [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
+     
+     int myServes = [[myStats servesMade] intValue];
+     [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamOneStats.servesMade intValue]]];
+     
+     [matchOneTwoOpponent setMyTeamStats:myStats];
+     
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamOne playerTwo] opponents]];
+     [oppArray replaceObjectAtIndex:index withObject:matchOneTwoOpponent];
+     [[_teamOne playerTwo] setOpponents:oppArray];
+     }
+     else {
+     matchOneTwoOpponent = [[Opponent alloc] init];
+     [matchOneTwoOpponent setOpposingTeam:_teamTwo];
+     [matchOneTwoOpponent setOpposingTeamStats:_matchView.teamTwoStats];
+     [matchOneTwoOpponent setMyTeam:_teamOne];
+     [matchOneTwoOpponent setMyTeamStats:_matchView.teamOneStats];
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamOne playerTwo] opponents]];
+     [oppArray addObject:matchOneTwoOpponent];
+     [[_teamOne playerTwo] setOpponents:oppArray];
+     }
+     }
+     
+     NSArray *playerTwoOpponents = [[_teamTwo playerOne] opponents];
+     Opponent *matchTwoOpponent = nil;
+     index = 0;
+     for (Opponent *tmp in playerTwoOpponents) {
+     if (_isSingles) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
+     matchTwoOpponent = tmp;
+     break;
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     else {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamOne playerTwo] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamOne playerTwo] timeStamp]]) {
+     matchTwoOpponent = tmp;
+     break;
+     }
+     }
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     }
+     if (matchTwoOpponent != nil) {
+     Stats *oldStat = [matchTwoOpponent opposingTeamStats];
+     
+     int oldMatches = [[oldStat playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
+     int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
+     oldMatchesWon = oldMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
+     [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
+     
+     int oldSets = [[oldStat playerSetsPlayed] intValue];
+     [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
+     int oldSetsWon = [[oldStat playerSetsWon] intValue];
+     [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
+     
+     int oldGames = [[oldStat playerGamesPlayed] intValue];
+     [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
+     int oldGamesWon = [[oldStat playerGamesWon] intValue];
+     [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
+     
+     int oldAces = [[oldStat aces] intValue];
+     [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamOneStats.aces intValue]]];
+     
+     int oldFaults = [[oldStat faults] intValue];
+     [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamOneStats.faults intValue]]];
+     
+     int oldDoubleFaults = [[oldStat doubleFaults] intValue];
+     [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
+     
+     int oldFirstServesWon = [[oldStat firstServesWon] intValue];
+     [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
+     
+     int oldSecondServesWon = [[oldStat secondServesWon] intValue];
+     [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
+     
+     int oldServes = [[oldStat servesMade] intValue];
+     [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamOneStats.servesMade intValue]]];
+     
+     [matchTwoOpponent setOpposingTeamStats:oldStat];
+     
+     Stats *myStats = [matchTwoOpponent myTeamStats];
+     
+     int myMatches = [[myStats playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
+     int myMatchesWon = [[myStats playerMatchesWon] intValue];
+     myMatchesWon = myMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
+     [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
+     
+     int mySets = [[myStats playerSetsPlayed] intValue];
+     [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
+     int mySetsWon = [[myStats playerSetsWon] intValue];
+     [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
+     
+     int myGames = [[myStats playerGamesPlayed] intValue];
+     [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
+     int myGamesWon = [[myStats playerGamesWon] intValue];
+     [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
+     
+     int myAces = [[myStats aces] intValue];
+     [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamTwoStats.aces intValue]]];
+     
+     int myFaults = [[myStats faults] intValue];
+     [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamTwoStats.faults intValue]]];
+     
+     int myDoubleFaults = [[myStats doubleFaults] intValue];
+     [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
+     
+     int myFirstServesWon = [[myStats firstServesWon] intValue];
+     [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
+     
+     int mySecondServesWon = [[myStats secondServesWon] intValue];
+     [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
+     
+     int myServes = [[myStats servesMade] intValue];
+     [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamTwoStats.servesMade intValue]]];
+     
+     [matchTwoOpponent setMyTeamStats:myStats];
+     
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerOne] opponents]];
+     [oppArray replaceObjectAtIndex:index withObject:matchTwoOpponent];
+     [[_teamTwo playerOne] setOpponents:oppArray];
+     }
+     else {
+     matchTwoOpponent = [[Opponent alloc] init];
+     [matchTwoOpponent setOpposingTeam:_teamOne];
+     [matchTwoOpponent setOpposingTeamStats:_matchView.teamOneStats];
+     [matchTwoOpponent setMyTeam:_teamTwo];
+     [matchTwoOpponent setMyTeamStats:_matchView.teamTwoStats];
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerOne] opponents]];
+     [oppArray addObject:matchTwoOpponent];
+     [[_teamTwo playerOne] setOpponents:oppArray];
+     }
+     
+     if (!_isSingles) {
+     
+     NSArray *playerTwoOpponents = [[_teamTwo playerTwo] opponents];
+     Opponent *matchTwoTwoOpponent = nil;
+     index = 0;
+     for (Opponent *tmp in playerTwoOpponents) {
+     if (_isSingles) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
+     matchTwoTwoOpponent = tmp;
+     break;
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     else {
+     if ([[[[tmp opposingTeam] teamPlayerOne] name] isEqualToString:[[_teamOne playerOne] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerOne] timeStamp] isEqualToDate:[[_teamOne playerOne] timeStamp]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] name] isEqualToString:[[_teamOne playerTwo] playerName]]) {
+     if ([[[[tmp opposingTeam] teamPlayerTwo] timeStamp] isEqualToDate:[[_teamOne playerTwo] timeStamp]]) {
+     matchTwoTwoOpponent = tmp;
+     break;
+     }
+     }
+     }
+     }
+     else {
+     index++;
+     }
+     }
+     }
+     if (matchTwoTwoOpponent != nil) {
+     Stats *oldStat = [matchTwoTwoOpponent opposingTeamStats];
+     
+     int oldMatches = [[oldStat playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches+1]];
+     int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
+     oldMatchesWon = oldMatchesWon + [[_matchView.teamOneStats playerMatchesWon] intValue];
+     [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
+     
+     int oldSets = [[oldStat playerSetsPlayed] intValue];
+     [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets+[_matchView.teamOneStats.playerSetsPlayed intValue]]];
+     int oldSetsWon = [[oldStat playerSetsWon] intValue];
+     [oldStat setPlayerSetsWon:[NSNumber numberWithInt:oldSetsWon+[_matchView.teamOneStats.playerSetsWon intValue]]];
+     
+     int oldGames = [[oldStat playerGamesPlayed] intValue];
+     [oldStat setPlayerGamesPlayed:[NSNumber numberWithInt:oldGames+[_matchView.teamOneStats.playerGamesPlayed intValue]]];
+     int oldGamesWon = [[oldStat playerGamesWon] intValue];
+     [oldStat setPlayerGamesWon:[NSNumber numberWithInt:oldGamesWon+[_matchView.teamOneStats.playerGamesWon intValue]]];
+     
+     int oldAces = [[oldStat aces] intValue];
+     [oldStat setAces:[NSNumber numberWithInt:oldAces+[_matchView.teamOneStats.aces intValue]]];
+     
+     int oldFaults = [[oldStat faults] intValue];
+     [oldStat setFaults:[NSNumber numberWithInt:oldFaults+[_matchView.teamOneStats.faults intValue]]];
+     
+     int oldDoubleFaults = [[oldStat doubleFaults] intValue];
+     [oldStat setDoubleFaults:[NSNumber numberWithInt:oldDoubleFaults+[_matchView.teamOneStats.doubleFaults intValue]]];
+     
+     int oldFirstServesWon = [[oldStat firstServesWon] intValue];
+     [oldStat setFirstServesWon:[NSNumber numberWithInt:oldFirstServesWon+[_matchView.teamOneStats.firstServesWon intValue]]];
+     
+     int oldSecondServesWon = [[oldStat secondServesWon] intValue];
+     [oldStat setSecondServesWon:[NSNumber numberWithInt:oldSecondServesWon+[_matchView.teamOneStats.secondServesWon intValue]]];
+     
+     int oldServes = [[oldStat servesMade] intValue];
+     [oldStat setServesMade:[NSNumber numberWithInt:oldServes+[_matchView.teamOneStats.servesMade intValue]]];
+     
+     [matchTwoTwoOpponent setOpposingTeamStats:oldStat];
+     
+     Stats *myStats = [matchTwoTwoOpponent myTeamStats];
+     
+     int myMatches = [[myStats playerMatchesPlayed] intValue];
+     [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches+1]];
+     int myMatchesWon = [[myStats playerMatchesWon] intValue];
+     myMatchesWon = myMatchesWon + [[_matchView.teamTwoStats playerMatchesWon] intValue];
+     [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
+     
+     int mySets = [[myStats playerSetsPlayed] intValue];
+     [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets+[_matchView.teamTwoStats.playerSetsPlayed intValue]]];
+     int mySetsWon = [[myStats playerSetsWon] intValue];
+     [myStats setPlayerSetsWon:[NSNumber numberWithInt:mySetsWon+[_matchView.teamTwoStats.playerSetsWon intValue]]];
+     
+     int myGames = [[myStats playerGamesPlayed] intValue];
+     [myStats setPlayerGamesPlayed:[NSNumber numberWithInt:myGames+[_matchView.teamTwoStats.playerGamesPlayed intValue]]];
+     int myGamesWon = [[myStats playerGamesWon] intValue];
+     [myStats setPlayerGamesWon:[NSNumber numberWithInt:myGamesWon+[_matchView.teamTwoStats.playerGamesWon intValue]]];
+     
+     int myAces = [[myStats aces] intValue];
+     [myStats setAces:[NSNumber numberWithInt:myAces+[_matchView.teamTwoStats.aces intValue]]];
+     
+     int myFaults = [[myStats faults] intValue];
+     [myStats setFaults:[NSNumber numberWithInt:myFaults+[_matchView.teamTwoStats.faults intValue]]];
+     
+     int myDoubleFaults = [[myStats doubleFaults] intValue];
+     [myStats setDoubleFaults:[NSNumber numberWithInt:myDoubleFaults+[_matchView.teamTwoStats.doubleFaults intValue]]];
+     
+     int myFirstServesWon = [[myStats firstServesWon] intValue];
+     [myStats setFirstServesWon:[NSNumber numberWithInt:myFirstServesWon+[_matchView.teamTwoStats.firstServesWon intValue]]];
+     
+     int mySecondServesWon = [[myStats secondServesWon] intValue];
+     [myStats setSecondServesWon:[NSNumber numberWithInt:mySecondServesWon+[_matchView.teamTwoStats.secondServesWon intValue]]];
+     
+     int myServes = [[myStats servesMade] intValue];
+     [myStats setServesMade:[NSNumber numberWithInt:myServes+[_matchView.teamTwoStats.servesMade intValue]]];
+     
+     [matchTwoTwoOpponent setMyTeamStats:myStats];
+     
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerTwo] opponents]];
+     [oppArray replaceObjectAtIndex:index withObject:matchTwoTwoOpponent];
+     [[_teamTwo playerTwo] setOpponents:oppArray];
+     }
+     else {
+     matchTwoTwoOpponent = [[Opponent alloc] init];
+     [matchTwoTwoOpponent setOpposingTeam:_teamOne];
+     [matchTwoTwoOpponent setOpposingTeamStats:_matchView.teamOneStats];
+     [matchTwoTwoOpponent setMyTeam:_teamTwo];
+     [matchTwoTwoOpponent setMyTeamStats:_matchView.teamTwoStats];
+     NSMutableArray *oppArray = [[NSMutableArray alloc] initWithArray:[[_teamTwo playerTwo] opponents]];
+     [oppArray addObject:matchTwoTwoOpponent];
+     [[_teamTwo playerTwo] setOpponents:oppArray];
+     }
+     }
+     */
     [_matchView.match setTeamOneMatchStats:_matchView.teamOneStats];
     [_matchView.match setTeamTwoMatchStats:_matchView.teamTwoStats];
     
-   // NSLog(@"team one: %@ team two: %@", [[[_matchView.match teamOne] playerOneFromTeam] playerName], [[[_matchView.match teamTwo] playerOneFromTeam] playerName]);
+    // NSLog(@"team one: %@ team two: %@", [[[_matchView.match teamOne] playerOneFromTeam] playerName], [[[_matchView.match teamTwo] playerOneFromTeam] playerName]);
     
     NSError *error = nil;
     if ([[[AppDelegate sharedInstance] managedObjectContext] save:&error]) {
@@ -756,6 +758,48 @@
             //up up
         }];
     }];
+}
+
+-(void)saveMatch {
+    NSLog(@"save match");
+    
+    //if ([_matchView.match matchWinner]) {
+        [self saveMatchToContext];
+    //}
+    /*else {
+        FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"We don't seem to have a clear winner..." message:@"Save data so we you can check out your matches later.." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Team One", @"Team Two"];
+        winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+        winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+        winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+        winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+        winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+        winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+        winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+        winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+        winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+        winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+        [winnerAlert show];
+    }
+     */
+}
+
+-(void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            //do nothing
+            break;
+        case 1:
+            [[_matchView.match teamOne] setScore:[NSNumber numberWithInt:1]];
+            [[_matchView.match teamTwo] setScore:[NSNumber numberWithInt:0]];
+            break;
+        case 2:
+            [[_matchView.match teamTwo] setScore:[NSNumber numberWithInt:1]];
+            [[_matchView.match teamOne] setScore:[NSNumber numberWithInt:0]];
+            break;
+            
+        default:
+            break;
+    }
 }
 
 -(void)showMatchView {
@@ -777,6 +821,7 @@
         NSLog(@"completed animations");
         [_matchViewButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
         [_matchView showSetsChoice];
+        //[self canSave];
     }];
 }
 
@@ -951,6 +996,7 @@
     _playerList = [[NewPlayerView alloc] init];
     _playerList.delegate = self;
     _playerList.parentViewController = self;
+    _playerList.players = _playersArray;
     _playerList.blurRadius = 20.0;
     [_playerList setFrame:CGRectMake(0, self.view.frame.size.height+5, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:_playerList];
@@ -1035,6 +1081,7 @@
         //Do nothing then close
     }
     else {
+        [_playersArray addObject:player];
         [self setPlayerButtonWithPlayer:player];
         if (_isSingles) {
             switch (_playerNumber) {

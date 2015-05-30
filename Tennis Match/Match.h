@@ -23,6 +23,7 @@
 @property (nonatomic, retain) id teamTwoMatchStats;
 
 -(int)matchWinner;
+-(int)savedMatchWinner;
 
 @end
 

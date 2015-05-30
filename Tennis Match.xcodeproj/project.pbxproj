@@ -48,6 +48,8 @@
 		50BF29F71AF2ADCB00A9B577 /* 1-104.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29F61AF2ADCB00A9B577 /* 1-104.png */; };
 		50BF29F91AF2ADE500A9B577 /* 1-48.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29F81AF2ADE500A9B577 /* 1-48.png */; };
 		50BF29FB1AF2ADF800A9B577 /* 3-48.png in Resources */ = {isa = PBXBuildFile; fileRef = 50BF29FA1AF2ADF800A9B577 /* 3-48.png */; };
+		50BF29FE1AF7C8FA00A9B577 /* OppositionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BF29FD1AF7C8FA00A9B577 /* OppositionDetailViewController.m */; };
+		50BF2A011AF7C91800A9B577 /* PlayerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BF2A001AF7C91800A9B577 /* PlayerPageViewController.m */; };
 		50D1E4F21AF515C40008F173 /* SetTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1E4F11AF515C40008F173 /* SetTypeViewController.m */; };
 		C114E88BAA84E2E4F3C6855E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C6D9330E0026AA286932AB /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -130,6 +132,10 @@
 		50BF29F61AF2ADCB00A9B577 /* 1-104.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-104.png"; sourceTree = "<group>"; };
 		50BF29F81AF2ADE500A9B577 /* 1-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-48.png"; sourceTree = "<group>"; };
 		50BF29FA1AF2ADF800A9B577 /* 3-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3-48.png"; sourceTree = "<group>"; };
+		50BF29FC1AF7C8FA00A9B577 /* OppositionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OppositionDetailViewController.h; sourceTree = "<group>"; };
+		50BF29FD1AF7C8FA00A9B577 /* OppositionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OppositionDetailViewController.m; sourceTree = "<group>"; };
+		50BF29FF1AF7C91800A9B577 /* PlayerPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerPageViewController.h; sourceTree = "<group>"; };
+		50BF2A001AF7C91800A9B577 /* PlayerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerPageViewController.m; sourceTree = "<group>"; };
 		50D1E4F01AF515C40008F173 /* SetTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetTypeViewController.h; sourceTree = "<group>"; };
 		50D1E4F11AF515C40008F173 /* SetTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetTypeViewController.m; sourceTree = "<group>"; };
 		57C6D9330E0026AA286932AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,6 +261,10 @@
 				501DC3811AE5794700215EC4 /* InfoPageViewController.m */,
 				50D1E4F01AF515C40008F173 /* SetTypeViewController.h */,
 				50D1E4F11AF515C40008F173 /* SetTypeViewController.m */,
+				50BF29FC1AF7C8FA00A9B577 /* OppositionDetailViewController.h */,
+				50BF29FD1AF7C8FA00A9B577 /* OppositionDetailViewController.m */,
+				50BF29FF1AF7C91800A9B577 /* PlayerPageViewController.h */,
+				50BF2A001AF7C91800A9B577 /* PlayerPageViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -480,6 +490,7 @@
 				50B8F2041ACF7119002D3D51 /* NewMatchViewController.m in Sources */,
 				50B8F2181AD1E6B6002D3D51 /* Team.m in Sources */,
 				50549A6B1AE4600C00EDE4A1 /* NewPlayerViewController.m in Sources */,
+				50BF29FE1AF7C8FA00A9B577 /* OppositionDetailViewController.m in Sources */,
 				50B8F1D41ACF5FFB002D3D51 /* MasterViewController.m in Sources */,
 				50B8F2121AD1E69A002D3D51 /* Game.m in Sources */,
 				5014F4B61AE84351001437D2 /* Opponent.m in Sources */,
@@ -495,6 +506,7 @@
 				5073596D1AD5B3FF007228BA /* PlayerCell.m in Sources */,
 				500EE6601AE428F200478700 /* PlayerDetailViewController.m in Sources */,
 				501DC37C1AE552DB00215EC4 /* UIViewController+UIViewController_MZFormDismissal.m in Sources */,
+				50BF2A011AF7C91800A9B577 /* PlayerPageViewController.m in Sources */,
 				50B8F1F81ACF63FE002D3D51 /* MatchCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -575,6 +587,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)\"/**";
 			};
 			name = Debug;
 		};
@@ -609,6 +622,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)\"/**";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -639,6 +653,7 @@
 		};
 		50B8F1F21ACF5FFB002D3D51 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -658,6 +673,7 @@
 		};
 		50B8F1F31ACF5FFB002D3D51 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

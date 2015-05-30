@@ -32,6 +32,19 @@
     return winner;
 }
 
+-(int)savedMatchWinner {
+    int winner = 0;
+    Team *one = (Team*)self.teamOne;
+    Team *two = (Team*)self.teamTwo;
+    if ([[one score] intValue] > [[two score] intValue]) {
+        winner = 1;
+    }
+    else {
+        winner = 2;
+    }
+    return winner;
+}
+
 @end
 
 @implementation Sets

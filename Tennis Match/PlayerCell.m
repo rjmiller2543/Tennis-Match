@@ -43,7 +43,16 @@
     [label sizeToFit];
     [containerView addSubview:label];
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 110, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:[[[_cellPlayer playerStats] playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:([[[_cellPlayer playerStats] playerMatchesPlayed] floatValue] - [[[_cellPlayer playerStats] playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Losses"]]];
+    float matchesWon = [[[_cellPlayer playerStats] playerMatchesWon] floatValue];
+    float matchesLost = ([[[_cellPlayer playerStats] playerMatchesPlayed] floatValue] - [[[_cellPlayer playerStats] playerMatchesWon] floatValue]);
+    
+    if (matchesWon < 0) {
+        matchesWon = 0;
+    }
+    if (matchesLost < 0) {
+        matchesLost = 0;
+    }
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 110, 5, 70, 70) items:@[[PNPieChartDataItem dataItemWithValue:matchesWon color:[UIColor greenSeaColor] description:@"Wins"], [PNPieChartDataItem dataItemWithValue:matchesLost color:[UIColor alizarinColor] description:@"Losses"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];

@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "Stats.h"
 
-@implementation NewPlayerView
+@implementation NewPlayerView 
 
 -(instancetype)init {
     self = [super init];
@@ -84,6 +84,20 @@
         NSManagedObject *object = [_fetchedResultsController objectAtIndexPath:indexPath];
         Player *player = (Player*)object;
         
+        BOOL notListed = true;
+        for (Player *tmp in _players) {
+            if ([tmp isEqual:player]) {
+                notListed = false;
+                //cell.backgroundColor = [UIColor asbestosColor];
+            }
+        }
+        if (notListed) {
+            cell.backgroundColor = [UIColor turquoiseColor];
+        }
+        else {
+            cell.backgroundColor = [UIColor asbestosColor];
+        }
+        
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 90, 90)];
         imageView.layer.masksToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -101,7 +115,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 100, 100, 15)];
         label.text = [player playerName];
         label.textAlignment = NSTextAlignmentRight;
-        cell.backgroundColor = [UIColor asbestosColor];
+        
         
         [cell addSubview:label];
     }
@@ -201,6 +215,23 @@
     
     else {
         Player *player = [[_fetchedResultsController fetchedObjects] objectAtIndex:indexPath.row];
+        for (Player *tmp in _players) {
+            if ([tmp isEqual:player]) {
+                FUIAlertView *winnerAlert = [[FUIAlertView alloc] initWithTitle:@"Player is already in use" message:@"Pick a different player.." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                winnerAlert.titleLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.messageLabel.textColor = [UIColor alizarinColor];
+                winnerAlert.messageLabel.font = [UIFont flatFontOfSize:14.0f];
+                winnerAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                winnerAlert.defaultButtonColor = [UIColor asbestosColor];
+                winnerAlert.defaultButtonTitleColor = [UIColor turquoiseColor];
+                winnerAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16.0f];
+                winnerAlert.defaultButtonShadowColor = [UIColor grayColor];
+                winnerAlert.backgroundOverlay.backgroundColor = [UIColor clearColor];
+                [winnerAlert show];
+                return;
+            }
+        }
         [self.delegate pickedPlayer:player];
     }
     

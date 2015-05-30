@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3BDEA5525931805C89C4CBCE"
+               BlueprintIdentifier = "8CE91877F2C661B7647DFF87"
                BuildableName = "libPods-DIDatepicker.a"
                BlueprintName = "Pods-DIDatepicker"
                ReferencedContainer = "container:Pods.xcodeproj">

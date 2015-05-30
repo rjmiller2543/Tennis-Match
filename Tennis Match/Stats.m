@@ -25,6 +25,13 @@
         [self setFirstServesWon:[NSNumber numberWithInt:0]];
         [self setSecondServesWon:[NSNumber numberWithInt:0]];
         [self setServesMade:[NSNumber numberWithInt:0]];
+        
+        [self setAcesTwo:[NSNumber numberWithInt:0]];
+        [self setDoubleFaultsTwo:[NSNumber numberWithInt:0]];
+        [self setFaultsTwo:[NSNumber numberWithInt:0]];
+        [self setFirstServesWonTwo:[NSNumber numberWithInt:0]];
+        [self setSecondServesWonTwo:[NSNumber numberWithInt:0]];
+        [self setServesMadeTwo:[NSNumber numberWithInt:0]];
     }
     return self;
 }
@@ -43,6 +50,13 @@
         [self setFirstServesWon:[aDecoder decodeObjectForKey:@"firstServesWon"]];
         [self setSecondServesWon:[aDecoder decodeObjectForKey:@"secondServesWon"]];
         [self setServesMade:[aDecoder decodeObjectForKey:@"servesMade"]];
+        
+        [self setAcesTwo:[aDecoder decodeObjectForKey:@"acesTwo"]];
+        [self setDoubleFaultsTwo:[aDecoder decodeObjectForKey:@"doubleFaultsTwo"]];
+        [self setFaultsTwo:[aDecoder decodeObjectForKey:@"faultsTwo"]];
+        [self setFirstServesWonTwo:[aDecoder decodeObjectForKey:@"firstServesWonTwo"]];
+        [self setSecondServesWonTwo:[aDecoder decodeObjectForKey:@"secondServesWonTwo"]];
+        [self setServesMadeTwo:[aDecoder decodeObjectForKey:@"servesMadeTwo"]];
     }
     return self;
 }
@@ -60,6 +74,13 @@
     [aCoder encodeObject:_firstServesWon forKey:@"firstServesWon"];
     [aCoder encodeObject:_secondServesWon forKey:@"secondServesWon"];
     [aCoder encodeObject:_servesMade forKey:@"servesMade"];
+    
+    [aCoder encodeObject:_acesTwo forKey:@"acesTwo"];
+    [aCoder encodeObject:_doubleFaultsTwo forKey:@"doubleFaultsTwo"];
+    [aCoder encodeObject:_faultsTwo forKey:@"faultsTwo"];
+    [aCoder encodeObject:_firstServesWonTwo forKey:@"firstServesWonTwo"];
+    [aCoder encodeObject:_secondServesWonTwo forKey:@"secondServesWonTwo"];
+    [aCoder encodeObject:_servesMadeTwo forKey:@"servesMadeTwo"];
 }
 
 @end

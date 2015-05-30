@@ -60,37 +60,37 @@
     //[self.navigationController setTitle:@"Player"];
     
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPlayer)];
-    self.navigationItem.rightBarButtonItem = editButton;
+    _navItem.rightBarButtonItem = editButton;
     
     self.view.backgroundColor = [UIColor cloudsColor];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _scrollView.backgroundColor = [UIColor clearColor];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _navBar.bounds.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, self.view.frame.size.width, self.view.frame.size.height - _navBar.bounds.size.height)];
+    //_scrollView.backgroundColor = [UIColor clearColor];
     _scrollView.pagingEnabled = YES;
     //_scrollView.bounces = NO;
     _scrollView.delegate = self;
     _scrollView.showsVerticalScrollIndicator = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width * ([[_detailPlayer opponents] count] + 1), 980);
+    //_scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width * ([[_detailPlayer opponents] count] + 1), 980);
+    _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 980);
     [self.view addSubview:_scrollView];
     
-    _scrollView.userInteractionEnabled = YES;
-    
-    UIPanGestureRecognizer *swipe = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    //_scrollView.userInteractionEnabled = YES;
+    //UIPanGestureRecognizer *swipe = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     //[swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-    swipe.delegate = self;
-    [swipe setCancelsTouchesInView:YES];
-    [swipe setMinimumNumberOfTouches:1];
-    [_scrollView addGestureRecognizer:swipe];
+    //swipe.delegate = self;
+    //[swipe setCancelsTouchesInView:YES];
+    //[swipe setMinimumNumberOfTouches:1];
+    //[_scrollView addGestureRecognizer:swipe];
     
-    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2, 30)];
-    [_pageControl setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height - 40)];
-    [_pageControl addTarget:self action:@selector(pageChanged) forControlEvents:UIControlEventValueChanged];
-    _pageControl.hidesForSinglePage = YES;
-    _pageControl.numberOfPages = [[_detailPlayer opponents] count] + 1;
-    [_pageControl setPageIndicatorTintColor:[UIColor asbestosColor]];
-    [_pageControl setCurrentPageIndicatorTintColor:[UIColor turquoiseColor]];
-    [self.view addSubview:_pageControl];
+    //_pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2, 30)];
+    //[_pageControl setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height - 40)];
+    //[_pageControl addTarget:self action:@selector(pageChanged) forControlEvents:UIControlEventValueChanged];
+    //_pageControl.hidesForSinglePage = YES;
+    //_pageControl.numberOfPages = [[_detailPlayer opponents] count] + 1;
+    //[_pageControl setPageIndicatorTintColor:[UIColor asbestosColor]];
+    //[_pageControl setCurrentPageIndicatorTintColor:[UIColor turquoiseColor]];
+    //[self.view addSubview:_pageControl];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 5, _scrollView.contentSize.height)];
     lineView.backgroundColor = [UIColor asbestosColor];
@@ -155,7 +155,7 @@
     
 }
 */
-
+/*
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
     CGPoint velocity = [panGestureRecognizer velocityInView:_scrollView];
     return (fabs(velocity.x) > fabs(velocity.y));
@@ -209,9 +209,9 @@
     }
     
 }
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSInteger page = _scrollView.contentOffset.x / _scrollView.frame.size.width;
+*/
+//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    NSInteger page = _scrollView.contentOffset.x / _scrollView.frame.size.width;
     /*NSLog(@"the page is: %ld", (long)page);
     if (page != _pageControl.currentPage) {
         [_pageControl setCurrentPage:page];
@@ -222,16 +222,16 @@
         }
     }
      */
-}
+//}
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+//-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     //NSInteger yOffset = _scrollView.contentOffset.y;
     //NSLog(@"offset: %lu", yOffset);
     //if (yOffset >= ) {
     //    <#statements#>
     //}
-}
-
+//}
+/*
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSInteger xOffset = _scrollView.contentOffset.x;
     
@@ -242,7 +242,7 @@
         [scrollView setContentOffset:offset animated:NO];
     }
 }
-
+*/
 /*
 -(void)addDownArrow {
     _downButton = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 40, [UIScreen mainScreen].bounds.size.height - 40, 30, 30) buttonType:buttonDownBasicType buttonStyle:buttonPlainStyle animateToInitialState:YES];
@@ -275,7 +275,19 @@
     wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerGamesWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 375, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerGamesWon] floatValue] color:[UIColor greenSeaColor] description:@"Games Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerGamesPlayed] floatValue] - [[[_detailPlayer playerStats] playerGamesWon] floatValue]) color:[UIColor alizarinColor] description:@"Games Lost"]]];
+    float gamesWon = [[[_detailPlayer playerStats] playerGamesWon] floatValue];
+    float gamesPlayed = [[[_detailPlayer playerStats] playerGamesPlayed] floatValue];
+    float gamesLost = gamesPlayed - gamesWon;
+    if (gamesWon < 0) {
+        gamesWon = 0;
+    }
+    if (gamesPlayed < 0) {
+        gamesPlayed = 0;
+    }
+    if (gamesLost < 0) {
+        gamesLost = 0;
+    }
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 375, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:gamesWon color:[UIColor greenSeaColor] description:@"Games Won"], [PNPieChartDataItem dataItemWithValue:gamesLost color:[UIColor alizarinColor] description:@"Games Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];
@@ -306,7 +318,19 @@
     wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerSetsWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 260, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerSetsWon] floatValue] color:[UIColor greenSeaColor] description:@"Sets Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerSetsPlayed] floatValue] - [[[_detailPlayer playerStats] playerSetsWon] floatValue]) color:[UIColor alizarinColor] description:@"Sets Lost"]]];
+    float setsPlayed = [[[_detailPlayer playerStats] playerSetsPlayed] floatValue];
+    float setsWon = [[[_detailPlayer playerStats] playerSetsWon] floatValue];
+    float setsLost = setsPlayed - setsWon;
+    if (setsPlayed < 0) {
+        setsPlayed = 0;
+    }
+    if (setsWon < 0) {
+        setsWon = 0;
+    }
+    if (setsLost < 0) {
+        setsLost = 0;
+    }
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 260, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:setsWon color:[UIColor greenSeaColor] description:@"Sets Won"], [PNPieChartDataItem dataItemWithValue:setsLost color:[UIColor alizarinColor] description:@"Sets Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];
@@ -337,7 +361,19 @@
     wonLabelString = [wonLabelString stringByAppendingString:[[[_detailPlayer playerStats] playerMatchesWon] stringValue]];
     wonLabel.text = wonLabelString;
     
-    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 145, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:[[[_detailPlayer playerStats] playerMatchesWon] floatValue] color:[UIColor greenSeaColor] description:@"Mathes Won"], [PNPieChartDataItem dataItemWithValue:([[[_detailPlayer playerStats] playerMatchesPlayed] floatValue] - [[[_detailPlayer playerStats] playerMatchesWon] floatValue]) color:[UIColor alizarinColor] description:@"Matches Lost"]]];
+    float matchesPlayed = [[[_detailPlayer playerStats] playerMatchesPlayed] floatValue];
+    float matchesWon = [[[_detailPlayer playerStats] playerMatchesWon] floatValue];
+    float matchesLost = matchesPlayed - matchesWon;
+    if (matchesPlayed < 0) {
+        matchesPlayed = 0;
+    }
+    if (matchesWon < 0) {
+        matchesWon = 0;
+    }
+    if (matchesLost < 0) {
+        matchesLost = 0;
+    }
+    PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, /*self.navigationController.navigationBar.frame.size.height +*/ 145, 100, 100) items:@[[PNPieChartDataItem dataItemWithValue:matchesWon color:[UIColor greenSeaColor] description:@"Mathes Won"], [PNPieChartDataItem dataItemWithValue:matchesLost color:[UIColor alizarinColor] description:@"Matches Lost"]]];
     pieChart.descriptionTextColor = [UIColor cloudsColor];
     pieChart.descriptionTextFont = [UIFont boldFlatFontOfSize:12.0f];
     [pieChart strokeChart];

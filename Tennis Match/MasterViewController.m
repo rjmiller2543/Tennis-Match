@@ -21,6 +21,7 @@
 #import <MZFormSheetController/MZFormSheetController.h>
 #import "InfoPageViewController.h"
 #import "Opponent.h"
+#import "PlayerPageViewController.h"
 
 @interface MasterViewController () <FUIAlertViewDelegate>
 
@@ -307,9 +308,7 @@
     [[teamOnePlayerOne playerStats] setPlayerMatchesPlayed:[NSNumber numberWithInt:[[[teamOnePlayerOne playerStats] playerMatchesPlayed] intValue] - 1]];
     [[teamTwoPlayerOne playerStats] setPlayerMatchesPlayed:[NSNumber numberWithInt:[[[teamTwoPlayerOne playerStats] playerMatchesPlayed] intValue] - 1]];
     
-    Stats *up = [teamOnePlayerOne playerStats];
-    
-    switch ([thisMatch matchWinner]) {
+    switch ([thisMatch savedMatchWinner]) {
         case 1:
             [[teamOnePlayerOne playerStats] setPlayerMatchesWon:[NSNumber numberWithInt:[[[teamOnePlayerOne playerStats] playerMatchesWon] intValue] - 1]];
             break;
@@ -332,6 +331,24 @@
     
     [[teamOnePlayerOne playerStats] setPlayerGamesWon:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] playerGamesWon] intValue] - [[teamOneMatchStats playerGamesWon] intValue])]];
     [[teamTwoPlayerOne playerStats] setPlayerGamesWon:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] playerGamesWon] intValue] - [[teamTwoMatchStats playerGamesWon] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setAces:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] aces] intValue] - [[teamOneMatchStats aces] intValue])]];
+    [[teamTwoPlayerOne playerStats] setAces:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] aces] intValue] - [[teamTwoMatchStats aces] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setFaults:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] faults] intValue] - [[teamOneMatchStats faults] intValue])]];
+    [[teamTwoPlayerOne playerStats] setFaults:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] faults] intValue] - [[teamTwoMatchStats faults] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setDoubleFaults:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] doubleFaults] intValue] - [[teamOneMatchStats doubleFaults] intValue])]];
+    [[teamTwoPlayerOne playerStats] setDoubleFaults:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] doubleFaults] intValue] - [[teamTwoMatchStats doubleFaults] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setFirstServesWon:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] firstServesWon] intValue] - [[teamOneMatchStats firstServesWon] intValue])]];
+    [[teamTwoPlayerOne playerStats] setFirstServesWon:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] firstServesWon] intValue] - [[teamTwoMatchStats firstServesWon] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setSecondServesWon:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] secondServesWon] intValue] - [[teamOneMatchStats secondServesWon] intValue])]];
+    [[teamTwoPlayerOne playerStats] setSecondServesWon:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] secondServesWon] intValue] - [[teamTwoMatchStats secondServesWon] intValue])]];
+    
+    [[teamOnePlayerOne playerStats] setServesMade:[NSNumber numberWithInt:([[[teamOnePlayerOne playerStats] servesMade] intValue] - [[teamOneMatchStats servesMade] intValue])]];
+    [[teamTwoPlayerOne playerStats] setServesMade:[NSNumber numberWithInt:([[[teamTwoPlayerOne playerStats] servesMade] intValue] - [[teamTwoMatchStats servesMade] intValue])]];
     
     if ([thisMatch doubles]) {
         Player *teamOnePlayerTwo = [_teamOne playerTwo];
@@ -363,6 +380,24 @@
         
         [[teamOnePlayerTwo playerStats] setPlayerGamesWon:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] playerGamesWon] intValue] - [[teamOneMatchStats playerGamesWon] intValue])]];
         [[teamTwoPlayerTwo playerStats] setPlayerGamesWon:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] playerGamesWon] intValue] - [[teamTwoMatchStats playerGamesWon] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setAces:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] aces] intValue] - [[teamOneMatchStats acesTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setAces:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] aces] intValue] - [[teamTwoMatchStats acesTwo] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setFaults:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] faults] intValue] - [[teamOneMatchStats faultsTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setFaults:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] faults] intValue] - [[teamTwoMatchStats faultsTwo] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setDoubleFaults:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] doubleFaults] intValue] - [[teamOneMatchStats doubleFaultsTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setDoubleFaults:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] doubleFaults] intValue] - [[teamTwoMatchStats doubleFaultsTwo] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setFirstServesWon:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] firstServesWon] intValue] - [[teamOneMatchStats firstServesWonTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setFirstServesWon:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] firstServesWon] intValue] - [[teamTwoMatchStats firstServesWonTwo] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setSecondServesWon:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] secondServesWon] intValue] - [[teamOneMatchStats secondServesWonTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setSecondServesWon:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] secondServesWon] intValue] - [[teamTwoMatchStats secondServesWonTwo] intValue])]];
+        
+        [[teamOnePlayerTwo playerStats] setServesMade:[NSNumber numberWithInt:([[[teamOnePlayerTwo playerStats] servesMade] intValue] - [[teamOneMatchStats servesMadeTwo] intValue])]];
+        [[teamTwoPlayerTwo playerStats] setServesMade:[NSNumber numberWithInt:([[[teamTwoPlayerTwo playerStats] servesMade] intValue] - [[teamTwoMatchStats servesMadeTwo] intValue])]];
     }
     
     NSArray *playerOneOpponents = [[_teamOne playerOne] opponents];
@@ -402,8 +437,10 @@
         int oldMatches = [[oldStat playerMatchesPlayed] intValue];
         [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:oldMatches-1]];
         int oldMatchesWon = [[oldStat playerMatchesWon] intValue];
-        oldMatchesWon = oldMatchesWon - [[thisMatch.teamTwoMatchStats playerMatchesWon] intValue];
-        [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
+        if ([thisMatch savedMatchWinner] == 2) {
+            oldMatchesWon = oldMatchesWon - [[thisMatch.teamTwoMatchStats playerMatchesWon] intValue];
+            [oldStat setPlayerMatchesWon:[NSNumber numberWithInt:oldMatchesWon]];
+        }
         
         int oldSets = [[oldStat playerSetsPlayed] intValue];
         [oldStat setPlayerSetsPlayed:[NSNumber numberWithInt:oldSets-[teamTwoMatchStats.playerSetsPlayed intValue]]];
@@ -440,8 +477,10 @@
         int myMatches = [[myStats playerMatchesPlayed] intValue];
         [oldStat setPlayerMatchesPlayed:[NSNumber numberWithInt:myMatches-1]];
         int myMatchesWon = [[myStats playerMatchesWon] intValue];
-        myMatchesWon = myMatchesWon + [[teamOneMatchStats playerMatchesWon] intValue];
-        [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
+        if ([thisMatch savedMatchWinner] == 1) {
+            myMatchesWon = myMatchesWon - [[teamOneMatchStats playerMatchesWon] intValue];
+            [myStats setPlayerMatchesWon:[NSNumber numberWithInt:myMatchesWon]];
+        }
         
         int mySets = [[myStats playerSetsPlayed] intValue];
         [myStats setPlayerSetsPlayed:[NSNumber numberWithInt:mySets-[teamOneMatchStats.playerSetsPlayed intValue]]];
@@ -582,7 +621,8 @@
     }
     else if ([_tableViewSource isEqualToString:PLAYERSOURCE]) {
         Player *player = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        PlayerDetailViewController *vc = [[PlayerDetailViewController alloc] init];
+        //PlayerDetailViewController *vc = [[PlayerDetailViewController alloc] init];
+        PlayerPageViewController *vc = [[PlayerPageViewController alloc] init];
         vc.detailPlayer = player;
         [self.navigationController pushViewController:vc animated:YES];
     }

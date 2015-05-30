@@ -23,4 +23,11 @@
 @property (nonatomic, retain) NSNumber * secondServesWon;
 @property (nonatomic, retain) NSNumber * servesMade;
 
+@property (nonatomic, retain) NSNumber * acesTwo;
+@property (nonatomic, retain) NSNumber * doubleFaultsTwo;
+@property (nonatomic, retain) NSNumber * faultsTwo;
+@property (nonatomic, retain) NSNumber * firstServesWonTwo;
+@property (nonatomic, retain) NSNumber * secondServesWonTwo;
+@property (nonatomic, retain) NSNumber * servesMadeTwo;
+
 @end

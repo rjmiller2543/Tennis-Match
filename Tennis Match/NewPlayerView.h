@@ -16,12 +16,13 @@
 -(void)pickedPlayer:(Player*)player;
 @end
 
-@interface NewPlayerView : FXBlurView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate>
+@interface NewPlayerView : FXBlurView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, FUIAlertViewDelegate>
 
 @property(nonatomic,retain) UICollectionView *collectionView;
 @property(nonatomic,retain) NSFetchedResultsController *fetchedResultsController;
 @property(nonatomic,weak) id <NewPlayerViewDelegate> delegate;
 
 @property(nonatomic) id parentViewController;
+@property(nonatomic,retain) NSArray *players;
 
 @end
