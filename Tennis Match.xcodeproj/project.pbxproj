@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5003DA9D1C20DEB800BDA05B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5003DA9B1C20DEB800BDA05B /* Interface.storyboard */; };
+		5003DA9F1C20DEB800BDA05B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5003DA9E1C20DEB800BDA05B /* Assets.xcassets */; };
+		5003DAA61C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5003DAA51C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5003DAAE1C20DEB900BDA05B /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5003DAAD1C20DEB900BDA05B /* InterfaceController.m */; };
+		5003DAB11C20DEB900BDA05B /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5003DAB01C20DEB900BDA05B /* ExtensionDelegate.m */; };
+		5003DAB41C20DEB900BDA05B /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5003DAB31C20DEB900BDA05B /* NotificationController.m */; };
+		5003DAB61C20DEB900BDA05B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5003DAB51C20DEB900BDA05B /* Assets.xcassets */; };
+		5003DABA1C20DEB900BDA05B /* Tennis Match Watchkit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5003DA991C20DEB800BDA05B /* Tennis Match Watchkit App.app */; };
 		500702951AE2FFA2003A66DC /* down-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 500702941AE2FFA2003A66DC /* down-arrow.png */; };
 		500EE6501AE303E100478700 /* menu-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 500EE64F1AE303E100478700 /* menu-50.png */; };
 		500EE6551AE31A0C00478700 /* TeamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 500EE6541AE31A0C00478700 /* TeamPlayer.m */; };
@@ -51,10 +59,26 @@
 		50BF29FE1AF7C8FA00A9B577 /* OppositionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BF29FD1AF7C8FA00A9B577 /* OppositionDetailViewController.m */; };
 		50BF2A011AF7C91800A9B577 /* PlayerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BF2A001AF7C91800A9B577 /* PlayerPageViewController.m */; };
 		50D1E4F21AF515C40008F173 /* SetTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1E4F11AF515C40008F173 /* SetTypeViewController.m */; };
+		50FED4C31C22267900382569 /* down-alpha-80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FED4C11C22267900382569 /* down-alpha-80@2x.png */; };
+		50FED4C41C22267900382569 /* up-alpha-80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FED4C21C22267900382569 /* up-alpha-80@2x.png */; };
 		C114E88BAA84E2E4F3C6855E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C6D9330E0026AA286932AB /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5003DAA71C20DEB900BDA05B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50B8F1BD1ACF5FFA002D3D51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5003DAA41C20DEB900BDA05B;
+			remoteInfo = "Tennis Match Watchkit App Extension";
+		};
+		5003DAB81C20DEB900BDA05B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50B8F1BD1ACF5FFA002D3D51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5003DA981C20DEB800BDA05B;
+			remoteInfo = "Tennis Match Watchkit App";
+		};
 		50B8F1E51ACF5FFB002D3D51 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50B8F1BD1ACF5FFA002D3D51 /* Project object */;
@@ -64,7 +88,46 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5003DAC01C20DEB900BDA05B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5003DAA61C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5003DAC21C20DEB900BDA05B /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				5003DABA1C20DEB900BDA05B /* Tennis Match Watchkit App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5003DA991C20DEB800BDA05B /* Tennis Match Watchkit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tennis Match Watchkit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5003DA9C1C20DEB800BDA05B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		5003DA9E1C20DEB800BDA05B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5003DAA01C20DEB800BDA05B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5003DAA51C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Tennis Match Watchkit App Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5003DAAB1C20DEB900BDA05B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		5003DAAC1C20DEB900BDA05B /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		5003DAAD1C20DEB900BDA05B /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		5003DAAF1C20DEB900BDA05B /* ExtensionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtensionDelegate.h; sourceTree = "<group>"; };
+		5003DAB01C20DEB900BDA05B /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
+		5003DAB21C20DEB900BDA05B /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
+		5003DAB31C20DEB900BDA05B /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
+		5003DAB51C20DEB900BDA05B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5003DAB71C20DEB900BDA05B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		500702941AE2FFA2003A66DC /* down-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-arrow.png"; sourceTree = "<group>"; };
 		500EE64F1AE303E100478700 /* menu-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-50.png"; sourceTree = "<group>"; };
 		500EE6531AE31A0C00478700 /* TeamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamPlayer.h; sourceTree = "<group>"; };
@@ -138,12 +201,24 @@
 		50BF2A001AF7C91800A9B577 /* PlayerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerPageViewController.m; sourceTree = "<group>"; };
 		50D1E4F01AF515C40008F173 /* SetTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetTypeViewController.h; sourceTree = "<group>"; };
 		50D1E4F11AF515C40008F173 /* SetTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetTypeViewController.m; sourceTree = "<group>"; };
+		50FED4B21C21E9C200382569 /* Tennis Match.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Tennis Match.entitlements"; sourceTree = "<group>"; };
+		50FED4B31C21EA3100382569 /* Tennis Match Watchkit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Tennis Match Watchkit App.entitlements"; sourceTree = "<group>"; };
+		50FED4B41C21EAB600382569 /* Tennis Match Watchkit App Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Tennis Match Watchkit App Extension.entitlements"; sourceTree = "<group>"; };
+		50FED4C11C22267900382569 /* down-alpha-80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-alpha-80@2x.png"; sourceTree = "<group>"; };
+		50FED4C21C22267900382569 /* up-alpha-80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up-alpha-80@2x.png"; sourceTree = "<group>"; };
 		57C6D9330E0026AA286932AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5003DAA21C20DEB900BDA05B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		50B8F1C21ACF5FFA002D3D51 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,11 +237,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5003DA9A1C20DEB800BDA05B /* Tennis Match Watchkit App */ = {
+			isa = PBXGroup;
+			children = (
+				50FED4B31C21EA3100382569 /* Tennis Match Watchkit App.entitlements */,
+				5003DA9B1C20DEB800BDA05B /* Interface.storyboard */,
+				5003DA9E1C20DEB800BDA05B /* Assets.xcassets */,
+				5003DAA01C20DEB800BDA05B /* Info.plist */,
+			);
+			path = "Tennis Match Watchkit App";
+			sourceTree = "<group>";
+		};
+		5003DAA91C20DEB900BDA05B /* Tennis Match Watchkit App Extension */ = {
+			isa = PBXGroup;
+			children = (
+				50FED4B41C21EAB600382569 /* Tennis Match Watchkit App Extension.entitlements */,
+				5003DAAC1C20DEB900BDA05B /* InterfaceController.h */,
+				5003DAAD1C20DEB900BDA05B /* InterfaceController.m */,
+				5003DAAF1C20DEB900BDA05B /* ExtensionDelegate.h */,
+				5003DAB01C20DEB900BDA05B /* ExtensionDelegate.m */,
+				5003DAB21C20DEB900BDA05B /* NotificationController.h */,
+				5003DAB31C20DEB900BDA05B /* NotificationController.m */,
+				5003DAB51C20DEB900BDA05B /* Assets.xcassets */,
+				5003DAB71C20DEB900BDA05B /* Info.plist */,
+				5003DAAA1C20DEB900BDA05B /* Supporting Files */,
+			);
+			path = "Tennis Match Watchkit App Extension";
+			sourceTree = "<group>";
+		};
+		5003DAAA1C20DEB900BDA05B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				50FED4C11C22267900382569 /* down-alpha-80@2x.png */,
+				50FED4C21C22267900382569 /* up-alpha-80@2x.png */,
+				5003DAAB1C20DEB900BDA05B /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		50B8F1BC1ACF5FFA002D3D51 = {
 			isa = PBXGroup;
 			children = (
 				50B8F1C71ACF5FFA002D3D51 /* Tennis Match */,
 				50B8F1E71ACF5FFB002D3D51 /* Tennis MatchTests */,
+				5003DA9A1C20DEB800BDA05B /* Tennis Match Watchkit App */,
+				5003DAA91C20DEB900BDA05B /* Tennis Match Watchkit App Extension */,
 				50B8F1C61ACF5FFA002D3D51 /* Products */,
 				8AF5DDE6026CCAF4EB618818 /* Pods */,
 				CEE8BFBEB2CA5AC8DE185F88 /* Frameworks */,
@@ -178,6 +293,8 @@
 			children = (
 				50B8F1C51ACF5FFA002D3D51 /* Tennis Match.app */,
 				50B8F1E41ACF5FFB002D3D51 /* Tennis MatchTests.xctest */,
+				5003DA991C20DEB800BDA05B /* Tennis Match Watchkit App.app */,
+				5003DAA51C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -185,6 +302,7 @@
 		50B8F1C71ACF5FFA002D3D51 /* Tennis Match */ = {
 			isa = PBXGroup;
 			children = (
+				50FED4B21C21E9C200382569 /* Tennis Match.entitlements */,
 				50B8F1CC1ACF5FFA002D3D51 /* AppDelegate.h */,
 				50B8F1CD1ACF5FFA002D3D51 /* AppDelegate.m */,
 				50B8F2001ACF6D12002D3D51 /* Helpers */,
@@ -335,6 +453,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5003DA981C20DEB800BDA05B /* Tennis Match Watchkit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5003DAC11C20DEB900BDA05B /* Build configuration list for PBXNativeTarget "Tennis Match Watchkit App" */;
+			buildPhases = (
+				5003DA971C20DEB800BDA05B /* Resources */,
+				5003DAC01C20DEB900BDA05B /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5003DAA81C20DEB900BDA05B /* PBXTargetDependency */,
+			);
+			name = "Tennis Match Watchkit App";
+			productName = "Tennis Match Watchkit App";
+			productReference = 5003DA991C20DEB800BDA05B /* Tennis Match Watchkit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		5003DAA41C20DEB900BDA05B /* Tennis Match Watchkit App Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5003DABF1C20DEB900BDA05B /* Build configuration list for PBXNativeTarget "Tennis Match Watchkit App Extension" */;
+			buildPhases = (
+				5003DAA11C20DEB900BDA05B /* Sources */,
+				5003DAA21C20DEB900BDA05B /* Frameworks */,
+				5003DAA31C20DEB900BDA05B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Tennis Match Watchkit App Extension";
+			productName = "Tennis Match Watchkit App Extension";
+			productReference = 5003DAA51C20DEB900BDA05B /* Tennis Match Watchkit App Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		50B8F1C41ACF5FFA002D3D51 /* Tennis Match */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50B8F1EE1ACF5FFB002D3D51 /* Build configuration list for PBXNativeTarget "Tennis Match" */;
@@ -344,10 +496,12 @@
 				50B8F1C21ACF5FFA002D3D51 /* Frameworks */,
 				50B8F1C31ACF5FFA002D3D51 /* Resources */,
 				8845AB57A0DE31CC6714678A /* Copy Pods Resources */,
+				5003DAC21C20DEB900BDA05B /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5003DAB91C20DEB900BDA05B /* PBXTargetDependency */,
 			);
 			name = "Tennis Match";
 			productName = "Tennis Match";
@@ -381,9 +535,32 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Robert Miller";
 				TargetAttributes = {
+					5003DA981C20DEB800BDA05B = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = G98XDUC443;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					5003DAA41C20DEB900BDA05B = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = G98XDUC443;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					50B8F1C41ACF5FFA002D3D51 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = G98XDUC443;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					50B8F1E31ACF5FFB002D3D51 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -406,11 +583,32 @@
 			targets = (
 				50B8F1C41ACF5FFA002D3D51 /* Tennis Match */,
 				50B8F1E31ACF5FFB002D3D51 /* Tennis MatchTests */,
+				5003DA981C20DEB800BDA05B /* Tennis Match Watchkit App */,
+				5003DAA41C20DEB900BDA05B /* Tennis Match Watchkit App Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5003DA971C20DEB800BDA05B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5003DA9F1C20DEB800BDA05B /* Assets.xcassets in Resources */,
+				5003DA9D1C20DEB800BDA05B /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5003DAA31C20DEB900BDA05B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50FED4C31C22267900382569 /* down-alpha-80@2x.png in Resources */,
+				5003DAB61C20DEB900BDA05B /* Assets.xcassets in Resources */,
+				50FED4C41C22267900382569 /* up-alpha-80@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		50B8F1C31ACF5FFA002D3D51 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -478,6 +676,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5003DAA11C20DEB900BDA05B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5003DAB11C20DEB900BDA05B /* ExtensionDelegate.m in Sources */,
+				5003DAAE1C20DEB900BDA05B /* InterfaceController.m in Sources */,
+				5003DAB41C20DEB900BDA05B /* NotificationController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		50B8F1C11ACF5FFA002D3D51 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -522,6 +730,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5003DAA81C20DEB900BDA05B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5003DAA41C20DEB900BDA05B /* Tennis Match Watchkit App Extension */;
+			targetProxy = 5003DAA71C20DEB900BDA05B /* PBXContainerItemProxy */;
+		};
+		5003DAB91C20DEB900BDA05B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5003DA981C20DEB800BDA05B /* Tennis Match Watchkit App */;
+			targetProxy = 5003DAB81C20DEB900BDA05B /* PBXContainerItemProxy */;
+		};
 		50B8F1E61ACF5FFB002D3D51 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 50B8F1C41ACF5FFA002D3D51 /* Tennis Match */;
@@ -530,6 +748,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		5003DA9B1C20DEB800BDA05B /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5003DA9C1C20DEB800BDA05B /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		50B8F1D81ACF5FFB002D3D51 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -549,6 +775,92 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5003DABB1C20DEB900BDA05B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match Watchkit App/Tennis Match Watchkit App.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = Tennis_Match_Watchkit_App_Extension;
+				INFOPLIST_FILE = "Tennis Match Watchkit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "Codex-Applications--LLC.Tennis-Match.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5003DABC1C20DEB900BDA05B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match Watchkit App/Tennis Match Watchkit App.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = Tennis_Match_Watchkit_App_Extension;
+				INFOPLIST_FILE = "Tennis Match Watchkit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "Codex-Applications--LLC.Tennis-Match.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		5003DABD1C20DEB900BDA05B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match Watchkit App Extension/Tennis Match Watchkit App Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Tennis Match Watchkit App Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Codex-Applications--LLC.Tennis-Match.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5003DABE1C20DEB900BDA05B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match Watchkit App Extension/Tennis Match Watchkit App Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Tennis Match Watchkit App Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Codex-Applications--LLC.Tennis-Match.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 		50B8F1EC1ACF5FFB002D3D51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -632,10 +944,13 @@
 			baseConfigurationReference = B506EEA0CD23F46D1AB0D06F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match/Tennis Match.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Tennis Match/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -644,10 +959,13 @@
 			baseConfigurationReference = CB0AEDE7C48652C6094300ED /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = "Tennis Match/Tennis Match.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Tennis Match/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -690,6 +1008,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5003DABF1C20DEB900BDA05B /* Build configuration list for PBXNativeTarget "Tennis Match Watchkit App Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5003DABD1C20DEB900BDA05B /* Debug */,
+				5003DABE1C20DEB900BDA05B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5003DAC11C20DEB900BDA05B /* Build configuration list for PBXNativeTarget "Tennis Match Watchkit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5003DABB1C20DEB900BDA05B /* Debug */,
+				5003DABC1C20DEB900BDA05B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		50B8F1C01ACF5FFA002D3D51 /* Build configuration list for PBXProject "Tennis Match" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

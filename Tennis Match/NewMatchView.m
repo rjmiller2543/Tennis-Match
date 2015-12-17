@@ -15,8 +15,11 @@
 #import "NewMatchViewController.h"
 #import <MZFormSheetController.h>
 #import "SetTypeViewController.h"
+#import <WatchConnectivity/WatchConnectivity.h>
+#import <WatchKit/WatchKit.h>
+#import "TennisMatchHelper.h"
 
-@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate, FUIAlertViewDelegate>
+@interface NewMatchView () <UITextFieldDelegate, IQDropDownTextFieldDelegate, FUIAlertViewDelegate, WCSessionDelegate>
 
 @property(nonatomic,retain) VBFPopFlatButton *addMatchButton;
 @property(nonatomic,retain) UIScrollView *setsScrollView;
@@ -46,6 +49,8 @@
 @property(nonatomic) BOOL tieBreak;
 @property(nonatomic) int tieBreakServes;
 
+@property(nonatomic,retain) WCSession *wcSession;
+
 @end
 
 #define PLAYERONE 0x10
@@ -63,6 +68,7 @@
         //Configure the view
         //self.backgroundColor = [UIColor colorWithRed:0xad/0xff green:0xff/0xff blue:0x2f/0xff alpha:1.0];
         //[self setFrame:[UIScreen mainScreen].bounds];
+        
         _match = [NSEntityDescription insertNewObjectForEntityForName:@"Match" inManagedObjectContext:[[AppDelegate sharedInstance] managedObjectContext]];
         
         _setsArray = [[NSMutableArray alloc] init];
@@ -2242,6 +2248,107 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"will display cell");
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+
+#pragma mark - WatchitKit Session Delegate Methods
+-(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
+    
+    NSString *updateString = [message valueForKey:kUpdateScore];
+    
+    if ([updateString isEqualToString:kPlayerOneUp]) {
+        [self addPointToTeamOne];
+    }
+    else if ([updateString isEqualToString:kPlayerOneDn]) {
+        [self subtractPointFromTeamOne];
+    }
+    else if ([updateString isEqualToString:kPlayerTwoUp]) {
+        [self addPointToTeamTwo];
+    }
+    else if ([updateString isEqualToString:kPlayerTwoDn]) {
+        [self subtractPointFromTeamTwo];
+    }
+    
+    NSMutableDictionary *reply = [[NSMutableDictionary alloc] init];
+    if ([[_match doubles] boolValue]) {
+        NSString *teamOneString = [[[_match teamOne] playerOne] playerName];
+        teamOneString = [teamOneString stringByAppendingString:@" & "];
+        teamOneString = [teamOneString stringByAppendingString:[[[_match teamOne] playerTwo] playerName]];
+        [reply setObject:teamOneString forKey:kTeamOneName];
+        
+        NSString *teamTwoString = [[[_match teamTwo] playerOne] playerName];
+        teamTwoString = [teamTwoString stringByAppendingString:@" & "];
+        teamTwoString = [teamTwoString stringByAppendingString:[[[_match teamTwo] playerTwo] playerName]];
+        [reply setObject:teamTwoString forKey:kTeamTwoName];
+    }
+    else {
+        NSString *teamOneString = [[[_match teamOne] playerOne] playerName];
+        teamOneString = [teamOneString stringByAppendingString:@" "];
+        teamOneString = [teamOneString stringByAppendingString:[[[_match teamOne] playerOne] playerLastName]];
+        [reply setObject:teamOneString forKey:kTeamOneName];
+        
+        NSString *teamTwoString = [[[_match teamTwo] playerOne] playerName];
+        teamTwoString = [teamTwoString stringByAppendingString:@" "];
+        teamTwoString = [teamTwoString stringByAppendingString:[[[_match teamTwo] playerOne] playerLastName]];
+        [reply setObject:teamTwoString forKey:kTeamTwoName];
+    }
+    
+    [reply setObject:[NSNumber numberWithInt:_servingPlayerSelector] forKey:kServingPlayer];
+    
+    Set *tmp = [_setsArray lastObject];
+    [reply setObject:tmp.teamOneScore forKey:kTeamOneSets];
+    [reply setObject:tmp.teamTwoScore forKey:kTeamTwoSets];
+    
+    NSMutableArray *gamesArray = [_setGamesTextViews lastObject];
+    NSDictionary *dict = [gamesArray lastObject];
+    UITextField *oldFieldOne = (UITextField*)dict[@"TextFieldOne"];
+    UITextField *oldFieldTwo = (UITextField*)dict[@"TextFieldTwo"];
+    [reply setObject:oldFieldOne.text forKey:kTeamOneScore];
+    [reply setObject:oldFieldTwo.text forKey:kTeamTwoScore];
+    
+    replyHandler(reply);
+}
+
+-(void)pairWatch {
+    if ([WCSession isSupported]) {
+        _wcSession = [WCSession defaultSession];
+        _wcSession.delegate = self;
+        [_wcSession activateSession];
+        if ([_wcSession isPaired]) {
+            if ([_wcSession isWatchAppInstalled]) {
+                NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+                if ([[_match doubles] boolValue]) {
+                    NSString *teamOneString = [[[_match teamOne] playerOne] playerName];
+                    teamOneString = [teamOneString stringByAppendingString:@" & "];
+                    teamOneString = [teamOneString stringByAppendingString:[[[_match teamOne] playerTwo] playerName]];
+                    [data setObject:teamOneString forKey:kTeamOneName];
+                    [data setObject:[NSNumber numberWithInt:0] forKey:kTeamOneScore];
+                    
+                    NSString *teamTwoString = [[[_match teamTwo] playerOne] playerName];
+                    teamTwoString = [teamTwoString stringByAppendingString:@" & "];
+                    teamTwoString = [teamTwoString stringByAppendingString:[[[_match teamTwo] playerTwo] playerName]];
+                    [data setObject:teamTwoString forKey:kTeamTwoName];
+                    [data setObject:[NSNumber numberWithInt:0] forKey:kTeamTwoScore];
+                }
+                else {
+                    NSString *teamOneString = [[[_match teamOne] playerOne] playerName];
+                    teamOneString = [teamOneString stringByAppendingString:@" "];
+                    teamOneString = [teamOneString stringByAppendingString:[[[_match teamOne] playerOne] playerLastName]];
+                    [data setObject:teamOneString forKey:kTeamOneName];
+                    
+                    NSString *teamTwoString = [[[_match teamTwo] playerOne] playerName];
+                    teamTwoString = [teamTwoString stringByAppendingString:@" "];
+                    teamTwoString = [teamTwoString stringByAppendingString:[[[_match teamTwo] playerOne] playerLastName]];
+                    [data setObject:teamTwoString forKey:kTeamTwoName];
+                }
+                [_wcSession sendMessage:data replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                    //up up
+                } errorHandler:^(NSError * _Nonnull error) {
+                    //up up
+                }];
+            }
+        }
+    }
 }
 
 /*

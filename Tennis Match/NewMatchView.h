@@ -37,5 +37,6 @@
 -(void)addNewSet;
 -(void)showSetsChoice;
 -(void)doneShowingSetsChoice;
+-(void)pairWatch;
 
 @end

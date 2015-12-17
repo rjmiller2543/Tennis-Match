@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Notification - Tennis Match Watchkit App.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>19</integer>
+		</dict>
+		<key>Tennis Match Watchkit App.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
+		</dict>
 		<key>Tennis Match.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +22,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>5003DA981C20DEB800BDA05B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>50B8F1C41ACF5FFA002D3D51</key>
 		<dict>
 			<key>primary</key>
